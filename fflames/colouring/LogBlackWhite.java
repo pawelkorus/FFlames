@@ -14,7 +14,7 @@ import java.awt.Color;
  *
  * @author victories
  */
-public class LogBlackWhite implements fflames.interfaces.IKolor{
+public class LogBlackWhite implements fflames.interfaces.IColour{
     private int width, height, maxHits;
     private int[][] screenHits; 
     /** Creates a new instance of LogBlackWhite */

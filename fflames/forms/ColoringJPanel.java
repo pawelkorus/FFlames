@@ -7,7 +7,7 @@
 package fflames.forms;
 
 import fflames.ColoringListModel;
-import fflames.interfaces.IKolor;
+import fflames.interfaces.IColour;
 
 /**
  * 
@@ -108,7 +108,7 @@ public class ColoringJPanel extends javax.swing.JPanel {
 		}
 	}// GEN-LAST:event_coloringListSelectionHandler
 
-	public IKolor getColoring() {
+	public IColour getColoring() {
 		return colListModel.getColoring(coloringsJList.getSelectedIndex(),
 				buttonsPanel.getColors());
 	}

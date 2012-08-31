@@ -10,7 +10,7 @@
 package fflames;
 
 import fflames.colouring.*;
-import fflames.interfaces.IKolor;
+import fflames.interfaces.IColour;
 /**
  *
  * @author victories
@@ -21,7 +21,7 @@ public class ColorsFactory {
     public ColorsFactory() {
     }
     
-    public IKolor getColoring(int index, java.util.Vector<java.awt.Color> parameters) {
+    public IColour getColoring(int index, java.util.Vector<java.awt.Color> parameters) {
         switch(index) {
             case 0: return new BlackWhite();
             case 1: return new LinearBlackWhite();

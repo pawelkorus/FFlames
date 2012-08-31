@@ -14,7 +14,7 @@ import java.awt.Color;
  *
  * @author victories
  */
-public class BlackWhite implements fflames.interfaces.IKolor{
+public class BlackWhite implements fflames.interfaces.IColour{
     
     /** Creates a new instance of BlackWhite */
     public BlackWhite() {

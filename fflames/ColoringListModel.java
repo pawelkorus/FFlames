@@ -12,7 +12,7 @@ package fflames;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
-import fflames.interfaces.IKolor;
+import fflames.interfaces.IColour;
 
 import java.util.Vector;
 import java.awt.Color;
@@ -36,7 +36,7 @@ public class ColoringListModel implements ListModel {
     public String getElementAt(int index) { return lista[index]; }
     public int getSize() { return lista.length; }
     
-    public IKolor getColoring(int index, Vector<Color> parameters) {
+    public IColour getColoring(int index, Vector<Color> parameters) {
         return colorsFactory.getColoring(index, parameters);
     }
 }

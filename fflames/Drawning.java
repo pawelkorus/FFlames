@@ -23,7 +23,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import fflames.forms.MyFractals;
-import fflames.interfaces.IKolor;
+import fflames.interfaces.IColour;
 
 /**
  * 
@@ -36,7 +36,7 @@ public class Drawning extends SwingWorker<BufferedImage, Void> {
 	private Double xmin, xmax, ymin, ymax, xscale, yscale, xoffset, yoffset, x,
 			y, tempx, tempy;
 	private Functions funkcje;
-	private IKolor coloring;
+	private IColour coloring;
 	private int quantityOfIter, width, height, whichFunction;
 	private Graphics2D g;
 	private int howToDraw;
@@ -52,7 +52,7 @@ public class Drawning extends SwingWorker<BufferedImage, Void> {
 	 * @param _image
 	 * @param _howToDraw
 	 */
-	public Drawning(Functions _funkcje, int _quantityOfIter, IKolor _coloring,
+	public Drawning(Functions _funkcje, int _quantityOfIter, IColour _coloring,
 			Point2D.Double pF, Point2D.Double pT, BufferedImage _image,
 			int _howToDraw) {
 		quantityOfIter = _quantityOfIter;
