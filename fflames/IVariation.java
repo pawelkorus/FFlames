@@ -1,5 +1,5 @@
 /*
- * IWariation.java
+ * IVariation.java
  *
  * Created on March 5, 2008, 11:09 PM
  *
@@ -10,14 +10,13 @@
 package fflames;
 
 import java.awt.geom.Point2D;
-import javax.swing.*;
 import java.util.Vector;
 
 /**
  * Interfejs wariacji
  * @author victories
  */
-public interface IWariation {
+public interface IVariation {
     /**
      * Funkcja zwracaj�ca wsp�czynnik wariacji
      * @return Warto�� double wsp�czynnika
@@ -51,16 +50,16 @@ public interface IWariation {
     public void setParameters(Vector<Double> parameters);
     
     /**
-     * Funkcja zwracaj�ca dla danej wariacji ustawione parametry. Na pierwszej
-     * pozycji znajduje si� wsp�czynnik, na dalszych dodatkowe paramtry
-     * @return Wektro zawieraj�cy warto�ci dodatkowych 
-     * paramet�w
+     * Funkcja zwracająca dla danej wariacji ustawione parametry. Na pierwszej
+     * pozycji znajduje się współczynnik, na dalszych dodatkowe paramtry
+     * @return Wektro zawierający wartości dodatkowych 
+     * parametów
      */
     public Vector<Double> getParameters();
     
     /**
-     * Funkcja zwracaj�ca nazw� wariacji
-     * @return Obiekt typu String zawiraj�cy nazw� wariacji
+     * Returns the name of the variation
+     * @return String
      */
     public String getWariationName();
     

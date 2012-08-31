@@ -13,15 +13,13 @@ import java.io.IOException;
 import java.util.Vector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-
-import fflames.colouring.*;
 /**
  *
  * @author victories
  */
 public class Transform {
     private AffineTransform affineTr;
-    private Vector<IWariation> wariations;
+    private Vector<IVariation> wariations;
     private Double propability;
 
     /**
@@ -30,9 +28,9 @@ public class Transform {
      * @param _wariations wektor wariacji
      * @param pr prawdopodobienstwo wybrania tej transformacji
      */
-    public Transform(AffineTransform _affineTr, Vector<IWariation> _wariations, Double pr) {
+    public Transform(AffineTransform _affineTr, Vector<IVariation> _wariations, Double pr) {
         affineTr = new AffineTransform(_affineTr);
-        wariations = new Vector<IWariation>(_wariations);
+        wariations = new Vector<IVariation>(_wariations);
         /* Spawdzenie czy kt�rakolwiek z wariacji jest zale�na od wsp�czynnik�w 
          transformacji afinicznej. Je�li tak to przekazanie wsp�czynnik�w 
          transformacji */
@@ -57,9 +55,9 @@ public class Transform {
      * @param _wariation wariacja
      * @param pr prawdopodobienstwo wybrania tej transformacji
      */
-    public Transform(AffineTransform _affineTr, IWariation _wariation, Double pr)  {
+    public Transform(AffineTransform _affineTr, IVariation _wariation, Double pr)  {
         affineTr = new AffineTransform(_affineTr);
-        wariations = new Vector<IWariation>(); wariations.add(_wariation);
+        wariations = new Vector<IVariation>(); wariations.add(_wariation);
         /* Spawdzenie czy wariacja jest zale�na od wsp�czynnik�w transformacji
         afinicznej. Je�li tak to przekazanie wsp�czynnik�w transformacji */
         if(wariations.firstElement().isDependent()) {
@@ -106,7 +104,7 @@ public class Transform {
         return affineTr;
     }
 
-    public Vector<IWariation> getWariations() {
+    public Vector<IVariation> getWariations() {
         return wariations;
     }
 

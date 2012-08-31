@@ -4,23 +4,29 @@
  * Created on March 18, 2008, 4:10 PM
  */
 
-package fflames;
+package fflames.forms;
 
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.table.TableModel;
+
+import fflames.IVariation;
+import fflames.VariationsFactory;
+import fflames.VariationsTableModel;
 /**
  *
  * @author  victories
  */
 public class WariationsJPanel extends javax.swing.JPanel {
     
-    /** Creates new form WariationsJPanel */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2305910609219372143L;
+
+	/** Creates new form WariationsJPanel */
     public WariationsJPanel() {
         initComponents();
         
@@ -40,10 +46,10 @@ public class WariationsJPanel extends javax.swing.JPanel {
 
         wariationsTableJScrollPane = new javax.swing.JScrollPane();
         wariationsJTable = new javax.swing.JTable();
-        parametersTextFieldsPanel = new fflames.TextFieldsPanel();
+        parametersTextFieldsPanel = new fflames.forms.TextFieldsPanel();
         ustawParametryJButton = new javax.swing.JButton();
 
-        wariationsJTable.setModel(new WariationsTableModel());
+        wariationsJTable.setModel(new VariationsTableModel());
         wariationsTableJScrollPane.setViewportView(wariationsJTable);
 
         ustawParametryJButton.setText("Ustaw parametry");
@@ -92,18 +98,18 @@ public class WariationsJPanel extends javax.swing.JPanel {
      * Funkcja zwracaj�ca wybrane przez u�ytkownika wariacje. Wybrane przez
      * u�ytkownika wariacje, to wariacje, dla kt�rych u�ytkownik ustawi�
      * warto�� wsp�czynnika wi�ksz� od zera.
-     * @return Obiekt typu Vector<IWariation> zawieraj�cy wariacje wybrane przez
+     * @return Obiekt typu Vector<IVariation> zawieraj�cy wariacje wybrane przez
      * u�ytkownika
      * @throws java.lang.Exception 
      */
-    public Vector<IWariation> getWariations() throws Exception {
+    public Vector<IVariation> getWariations() throws Exception {
         boolean anyWariation = false;
-        Vector<IWariation> wariations = new Vector<IWariation>();
-        WariationsTableModel tableModel = (WariationsTableModel) wariationsJTable.getModel();
-        IWariation temp;
+        Vector<IVariation> wariations = new Vector<IVariation>();
+        VariationsTableModel tableModel = (VariationsTableModel) wariationsJTable.getModel();
+        IVariation temp;
         
         for(int i=0; i<tableModel.getRowCount(); i++) {
-            temp = (IWariation)tableModel.getWariation(i);
+            temp = (IVariation)tableModel.getWariation(i);
             if(temp.getCoefficient() != 0.0) {
                 anyWariation = true;
                 wariations.add(temp);
@@ -119,23 +125,23 @@ public class WariationsJPanel extends javax.swing.JPanel {
      * Ustawia warto�ci w tabeli wed�ug zadanego wektora wariacji
      * @param wariations obiekt typu Vector<IWariations> z wariacjami
      */
-    public void setWariations(Vector<IWariation> wariations) {
-        ((WariationsTableModel) wariationsJTable.getModel()).clearParameters();
+    public void setWariations(Vector<IVariation> wariations) {
+        ((VariationsTableModel) wariationsJTable.getModel()).clearParameters();
         
-        for(IWariation wariation : wariations) {
+        for(IVariation wariation : wariations) {
             wariationsJTable.getModel().setValueAt(wariation.getCoefficient().toString(), 
-                                                    WariationsFactory.getWariationNumber(wariation.getWariationName()), 
+                                                    VariationsFactory.getWariationNumber(wariation.getWariationName()), 
                                                     1);
             if(wariation.getParametersQuantity() > 0) {
                 wariationsJTable.getModel().setValueAt(wariation.getParameters(), 
-                                                    WariationsFactory.getWariationNumber(wariation.getWariationName()), 
+                                                    VariationsFactory.getWariationNumber(wariation.getWariationName()), 
                                                     0);
             }
         }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private fflames.TextFieldsPanel parametersTextFieldsPanel;
+    private fflames.forms.TextFieldsPanel parametersTextFieldsPanel;
     private javax.swing.JButton ustawParametryJButton;
     private javax.swing.JTable wariationsJTable;
     private javax.swing.JScrollPane wariationsTableJScrollPane;
@@ -145,7 +151,7 @@ public class WariationsJPanel extends javax.swing.JPanel {
         public void valueChanged(ListSelectionEvent e) {
             ListSelectionModel lsm = (ListSelectionModel) e.getSource();
             if(!lsm.isSelectionEmpty() && e.getValueIsAdjusting()) {
-                int parQuantity = WariationsFactory.getWariation(lsm.getMinSelectionIndex(), 0.0).
+                int parQuantity = VariationsFactory.getWariation(lsm.getMinSelectionIndex(), 0.0).
                         getParametersQuantity();
                 if(parQuantity > 0) ustawParametryJButton.setVisible(true);
                 else ustawParametryJButton.setVisible(false);

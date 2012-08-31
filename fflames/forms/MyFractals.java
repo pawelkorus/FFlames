@@ -4,7 +4,7 @@
  * Created on March 5, 2008, 9:43 PM
  */
 
-package fflames;
+package fflames.forms;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -22,15 +22,22 @@ import javax.imageio.ImageIO;
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
 
-import fflames.colouring.*;
-
-import javax.xml.parsers.*;
+import fflames.Drawning;
+import fflames.Functions;
+import fflames.IVariation;
+import fflames.Transform;
+import fflames.VariationsFactory;
 /**
  *
  * @author  victories
  */
 public class MyFractals extends javax.swing.JFrame {
-    /** Creates new form MyFractals */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7603616574289128827L;
+
+	/** Creates new form MyFractals */
     public MyFractals() {
         functions = new Functions();
         functions.addListDataListener(new FunctionsListener());
@@ -87,8 +94,8 @@ public class MyFractals extends javax.swing.JFrame {
         prLabel = new javax.swing.JLabel();
         wspPrTextField = new javax.swing.JTextField();
         losujTransJButton = new javax.swing.JButton();
-        wariationsJPanel = new fflames.WariationsJPanel();
-        coloringJPanel = new fflames.ColoringJPanel();
+        wariationsJPanel = new fflames.forms.WariationsJPanel();
+        coloringJPanel = new fflames.forms.ColoringJPanel();
         infoJPanel = new javax.swing.JPanel();
         infoAutorJLabel = new javax.swing.JLabel();
         infoTytulJLabel = new javax.swing.JLabel();
@@ -96,7 +103,7 @@ public class MyFractals extends javax.swing.JFrame {
         infoDesc2JLabel = new javax.swing.JLabel();
         otworzDaneJButton = new javax.swing.JButton();
         zapiszDaneJButton = new javax.swing.JButton();
-        rysunekJPanel = new fflames.RysunekJPanel();
+        rysunekJPanel = new fflames.forms.RysunekJPanel();
         rysujFragButton = new javax.swing.JButton();
         wskJProgressBar = new javax.swing.JProgressBar();
         saveImageButton = new javax.swing.JButton();
@@ -646,7 +653,7 @@ public class MyFractals extends javax.swing.JFrame {
     private javax.swing.ButtonGroup bgrDrawning;
     private javax.swing.JButton btnCancel;
     private javax.swing.JLabel cLabel;
-    private fflames.ColoringJPanel coloringJPanel;
+    private fflames.forms.ColoringJPanel coloringJPanel;
     private javax.swing.JLabel dLabel;
     private javax.swing.JButton dodajButton;
     private javax.swing.JLabel eLabel;
@@ -673,12 +680,12 @@ public class MyFractals extends javax.swing.JFrame {
     private javax.swing.JTextField rotationsQuantityJTF;
     private javax.swing.JButton rysujButton;
     private javax.swing.JButton rysujFragButton;
-    private fflames.RysunekJPanel rysunekJPanel;
+    private fflames.forms.RysunekJPanel rysunekJPanel;
     private javax.swing.JButton saveImageButton;
     private javax.swing.JLabel symetrieJLabel;
     private javax.swing.JPanel trAfJPanel;
     private javax.swing.JButton usunButton;
-    private fflames.WariationsJPanel wariationsJPanel;
+    private fflames.forms.WariationsJPanel wariationsJPanel;
     private javax.swing.JTextField widthJTextField;
     private javax.swing.JLabel wielkoscObrJLabel;
     private javax.swing.JProgressBar wskJProgressBar;
@@ -746,7 +753,7 @@ public class MyFractals extends javax.swing.JFrame {
     
     class XMLHandler extends DefaultHandler {
         private double[] affTrCoefs = new double[6];
-        private Vector<IWariation> wariations = new Vector<IWariation>();
+        private Vector<IVariation> wariations = new Vector<IVariation>();
         private Vector<Double> param = new Vector<Double>();
         private Double coefficient = new Double(0.0);
         private Double propability = new Double(0.0);
@@ -770,7 +777,7 @@ public class MyFractals extends javax.swing.JFrame {
             if(localName.compareTo("Function") == 0) {
                 functions.addElement(new Transform(new AffineTransform(affTrCoefs), wariations, propability));
                 coloringJPanel.setFunctionsCount(functions.getFunctionsQuantity());
-                wariations = new Vector<IWariation>();
+                wariations = new Vector<IVariation>();
                 param.removeAllElements();
             }
             else if(localName.compareTo("Wsp") == 0) i++;
@@ -788,7 +795,7 @@ public class MyFractals extends javax.swing.JFrame {
                 if(flag == 3) coefficient = Double.valueOf(value);
                 if(flag == 4) param.add(Double.valueOf(value));
                 if(flag == 5) { 
-                    wariations.add(WariationsFactory.getWariation(value, coefficient));
+                    wariations.add(VariationsFactory.getWariation(value, coefficient));
                     if(param.size() > 0) wariations.lastElement().setParameters(param);
                 }
             }

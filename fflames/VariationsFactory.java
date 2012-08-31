@@ -1,5 +1,5 @@
 /*
- * WariationsFactory.java
+ * VariationsFactory.java
  *
  * Created on March 23, 2008, 3:55 PM
  *
@@ -14,7 +14,7 @@ import fflames.variation.*;
  *
  * @author victories
  */
-public class WariationsFactory {
+public class VariationsFactory {
     static private String[] names = {"Linear", "Sinusoidal", "Spherical",
                                      "Swirl", "Horseshoe", "Polar",
                                      "Handkerchief", "Heart", "Disc",
@@ -33,11 +33,11 @@ public class WariationsFactory {
                                      "Blade", "Secant", "Cross"};
     
     /**
-     * Creates a new instance of WariationsFactory
+     * Creates a new instance of VariationsFactory
      */
-    public WariationsFactory() {}
+    public VariationsFactory() {}
     
-    public static IWariation getWariation(String name, Double coefficient) {
+    public static IVariation getWariation(String name, Double coefficient) {
         if(name.compareTo("Linear") == 0) return new Linear(coefficient);
         if(name.compareTo("Sinusoidal") == 0) return new Sinusoidal(coefficient);
         if(name.compareTo("Spherical") == 0) return new Spherical(coefficient);
@@ -90,7 +90,7 @@ public class WariationsFactory {
         return new Linear(coefficient);
     }
     
-    public static IWariation getWariation(int index, Double coefficient) {
+    public static IVariation getWariation(int index, Double coefficient) {
         return getWariation(names[index], coefficient);
     }
     

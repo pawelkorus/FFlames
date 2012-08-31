@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package fflames;
+package fflames.forms;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +17,11 @@ import java.util.*;
  * @author victories
  */
 public class TextFieldsPanel extends javax.swing.JPanel {
-    private Vector<JTextField> kontrolki; 
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2394536362851380440L;
+	private Vector<JTextField> kontrolki; 
     /** Creates a new instance of TextFieldsPanel */
     public TextFieldsPanel() {
         super(new GridLayout(1, 1));

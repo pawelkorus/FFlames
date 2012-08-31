@@ -7,13 +7,13 @@ package fflames.variation;
 
 import java.util.Vector;
 
-import fflames.IWariation;
+import fflames.IVariation;
 
 /** Klasa abstrakcyjna dla wariacji
  *
  * @author Victories
  */
-public abstract class AbstractWariation implements IWariation {
+public abstract class AbstractWariation implements IVariation {
     /**
      * 
      */

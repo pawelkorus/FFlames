@@ -10,9 +10,6 @@
 package fflames.colouring;
 
 import java.awt.Color;
-
-import java.awt.geom.Point2D;
-import java.awt.Color;
 /**
  *
  * @author victories

@@ -1,5 +1,5 @@
 /*
- * WariationsTableModel.java
+ * VariationsTableModel.java
  *
  * Created on March 18, 2008, 1:11 PM
  *
@@ -11,22 +11,24 @@ package fflames;
 
 import javax.swing.table.*;
 
-import fflames.variation.*;
-
 import java.util.Vector;
 import java.util.Hashtable;
 /**
  *
  * @author victories
  */
-public class WariationsTableModel extends AbstractTableModel {
-    private String[] columnNames = {"Wariacja", "Wsp�czynnik"};
+public class VariationsTableModel extends AbstractTableModel {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8168467956040246878L;
+	private String[] columnNames = {"Wariacja", "Wsp�czynnik"};
     private Hashtable<Integer, Vector<Double>> parameters = new Hashtable<Integer, Vector<Double>>();
     /**
-     * Creates a new instance of WariationsTableModel
+     * Creates a new instance of VariationsTableModel
      */
-    public WariationsTableModel() {
-        for(int i=0; i < WariationsFactory.getWariationQuantity(); i++) {
+    public VariationsTableModel() {
+        for(int i=0; i < VariationsFactory.getWariationQuantity(); i++) {
             parameters.put(new Integer(i), new Vector<Double>()); 
             parameters.get(i).add(0.0);
         }
@@ -49,7 +51,7 @@ public class WariationsTableModel extends AbstractTableModel {
     /******************************************************************************/
     public Object getValueAt(int row, int col) {
         if(col == 0)
-            return WariationsFactory.getWariationName(row);
+            return VariationsFactory.getWariationName(row);
         else return parameters.get(row).get(0);
     }
 
@@ -64,10 +66,10 @@ public class WariationsTableModel extends AbstractTableModel {
      * Funkcja zwraca Wariacja odpowiadaj�c� danemu wierszowi w tabeli
      * z odpowiedaj�c� mu warto�ci� wsp�czynnika.
      * @param row numer wiersza
-     * @return Obiekt typu IWariation
+     * @return Obiekt typu IVariation
      */
-    public IWariation getWariation(int row) {
-        IWariation temp = WariationsFactory.getWariation(row, parameters.get(row).firstElement());
+    public IVariation getWariation(int row) {
+        IVariation temp = VariationsFactory.getWariation(row, parameters.get(row).firstElement());
         if( temp.getParametersQuantity() > 0 ) {
             Vector<Double> parTemp = new Vector<Double>(parameters.get(row));
             parTemp.remove(0);
