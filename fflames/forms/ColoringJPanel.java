@@ -7,7 +7,7 @@
 package fflames.forms;
 
 import fflames.ColoringListModel;
-import fflames.IKolor;
+import fflames.interfaces.IKolor;
 
 /**
  * 

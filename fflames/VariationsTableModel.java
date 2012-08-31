@@ -11,6 +11,8 @@ package fflames;
 
 import javax.swing.table.*;
 
+import fflames.interfaces.IVariation;
+
 import java.util.Vector;
 import java.util.Hashtable;
 /**

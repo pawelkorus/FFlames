@@ -7,7 +7,7 @@ package fflames.variation;
 
 import java.util.Vector;
 
-import fflames.IVariation;
+import fflames.interfaces.IVariation;
 
 /** Klasa abstrakcyjna dla wariacji
  *

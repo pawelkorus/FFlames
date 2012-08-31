@@ -10,6 +10,7 @@
 package fflames;
 
 import fflames.colouring.*;
+import fflames.interfaces.IKolor;
 /**
  *
  * @author victories

@@ -14,7 +14,7 @@ import java.awt.Color;
  *
  * @author victories
  */
-public class LinearBlackWhite implements fflames.IKolor {
+public class LinearBlackWhite implements fflames.interfaces.IKolor {
     int width, height;
     private int[][] screenHits;
     /** Creates a new instance of LinearBlackWhite */

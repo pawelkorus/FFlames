@@ -9,6 +9,7 @@
 
 package fflames;
 
+import fflames.interfaces.IVariation;
 import fflames.variation.*;
 /**
  *

@@ -24,9 +24,9 @@ import org.xml.sax.helpers.*;
 
 import fflames.Drawning;
 import fflames.Functions;
-import fflames.IVariation;
 import fflames.Transform;
 import fflames.VariationsFactory;
+import fflames.interfaces.IVariation;
 /**
  *
  * @author  victories

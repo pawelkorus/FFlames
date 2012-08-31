@@ -12,9 +12,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 
-import fflames.IVariation;
 import fflames.VariationsFactory;
 import fflames.VariationsTableModel;
+import fflames.interfaces.IVariation;
 /**
  *
  * @author  victories

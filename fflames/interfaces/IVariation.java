@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package fflames;
+package fflames.interfaces;
 
 import java.awt.geom.Point2D;
 import java.util.Vector;

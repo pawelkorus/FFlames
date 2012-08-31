@@ -15,7 +15,7 @@ import java.util.Vector;
  *
  * @author victories
  */
-public class LinearColoring implements fflames.IKolor {
+public class LinearColoring implements fflames.interfaces.IKolor {
     int width, height;
     private int[][] screenHits;
     private Vector<Color> colors;
