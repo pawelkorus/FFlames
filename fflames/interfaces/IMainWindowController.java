@@ -9,6 +9,6 @@ public interface IMainWindowController {
 	boolean openProject(String fileName);
 	boolean saveProject(String fileName);
 	
-	boolean loadFractalFile(File file, Functions functions) throws IOException;
-	boolean saveFractalFile(File file, Functions functions);
+	void loadFractalFile(File file, Functions functions) throws IOException;
+	void saveFractalFile(File file, Functions functions) throws IOException;
 }

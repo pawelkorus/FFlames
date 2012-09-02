@@ -695,33 +695,21 @@ public class MyFractals extends javax.swing.JFrame {
 				_controller.loadFractalFile(fileChooser.getSelectedFile(), functions);
 				coloringJPanel.setFunctionsCount(functions.getFunctionsQuantity());
 			} catch (IOException e) {
-				JOptionPane.showMessageDialog(this, "Error when reading from choosen file", "File import error",
+				JOptionPane.showMessageDialog(this, "Error when reading from choosen file", "Import error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}// GEN-LAST:event_otworzDaneJButtonActionPerformed
 
 	private void zapiszDaneJButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_zapiszDaneJButtonActionPerformed
-		OutputStream bout = null;
-		OutputStreamWriter out = null;
-
 		int returnValue = fileChooser.showSaveDialog(this);
 
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			try {
-				bout = new BufferedOutputStream(new FileOutputStream(fileChooser.getSelectedFile().getName()));
-				out = new OutputStreamWriter(bout, "8859_2");
-
-				out.write("<?xml version=\"1.0\" encoding=\"ISO-8859-2\"?>\r\r");
-				out.write("<Fractal>\n");
-
-				functions.writeXML(out);
-
-				out.write("</Fractal>\r\n");
-				out.flush();
-				out.close();
-			} catch (Exception e) {
-				e.printStackTrace();
+				_controller.saveFractalFile(fileChooser.getSelectedFile(), functions);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(this, "Error when writing to choosen file", "Export error",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}// GEN-LAST:event_zapiszDaneJButtonActionPerformed

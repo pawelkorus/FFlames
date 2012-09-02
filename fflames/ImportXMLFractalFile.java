@@ -35,7 +35,7 @@ public class ImportXMLFractalFile {
 		return load(r);
 	}
 	
-	private boolean load(InputStreamReader input) throws IOException {
+	public boolean load(InputStreamReader input) throws IOException {
 		_functions.removeAllElemens();
 
 		try {

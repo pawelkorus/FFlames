@@ -32,14 +32,14 @@ public final class MainWindowController implements IMainWindowController {
 	}
 
 	@Override
-	public boolean loadFractalFile(File file, Functions functions) throws IOException {
+	public void loadFractalFile(File file, Functions functions) throws IOException {
 		ImportXMLFractalFile importer = new ImportXMLFractalFile(functions);
-		return importer.load(file);
+		importer.load(file);
 	}
 
 	@Override
-	public boolean saveFractalFile(File file, Functions functions) {
-		// TODO Auto-generated method stub
-		return false;
+	public void saveFractalFile(File file, Functions functions) throws IOException {
+		ExportXMLFileFractal exporter = new ExportXMLFileFractal(functions);
+		exporter.save(file);
 	}
 }
