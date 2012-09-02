@@ -24,6 +24,7 @@ import javax.swing.SwingWorker;
 
 import fflames.forms.MyFractals;
 import fflames.interfaces.IColour;
+import fflames.model.Functions;
 
 /**
  * 

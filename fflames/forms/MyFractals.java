@@ -23,11 +23,11 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.*;
 
 import fflames.Drawning;
-import fflames.Functions;
-import fflames.Transform;
-import fflames.VariationsFactory;
 import fflames.interfaces.IMainWindowController;
 import fflames.interfaces.IVariation;
+import fflames.model.Functions;
+import fflames.model.Transform;
+import fflames.model.VariationsFactory;
 
 /**
  * 

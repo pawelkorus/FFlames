@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package fflames;
+package fflames.model;
 
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import fflames.forms.MyFractals;
 import fflames.interfaces.IMainWindowController;
+import fflames.model.Functions;
 
 public final class MainWindowController implements IMainWindowController {
 	

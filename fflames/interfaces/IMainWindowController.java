@@ -3,7 +3,7 @@ package fflames.interfaces;
 import java.io.File;
 import java.io.IOException;
 
-import fflames.Functions;
+import fflames.model.Functions;
 
 public interface IMainWindowController {
 	boolean openProject(String fileName);

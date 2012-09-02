@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package fflames;
+package fflames.model;
 
 import fflames.interfaces.IVariation;
 import fflames.variation.*;
