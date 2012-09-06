@@ -1,13 +1,14 @@
 package fflames;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import fflames.forms.MyFractals;
+import fflames.interfaces.IColour;
 import fflames.interfaces.IMainWindowController;
 import fflames.model.Functions;
 
 public final class MainWindowController implements IMainWindowController {
-	
 	/**
      * @param args the command line arguments
      */
@@ -41,5 +42,12 @@ public final class MainWindowController implements IMainWindowController {
 	public void saveFractalFile(File file, Functions functions) throws IOException {
 		ExportXMLFileFractal exporter = new ExportXMLFileFractal(functions);
 		exporter.save(file);
+	}
+
+	@Override
+	public void draw(Functions functions, IColour coloringMethod, int numberOfIterations, BufferedImage image) {
+		FractalGenerator fractalGenerator = new FractalGenerator(functions, coloringMethod, image);
+		fractalGenerator.setNumberOfIterations(numberOfIterations);
+		fractalGenerator.execute();
 	}
 }

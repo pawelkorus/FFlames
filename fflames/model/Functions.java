@@ -12,6 +12,8 @@ package fflames.model;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import javax.swing.ListModel;
+
+import java.util.Iterator;
 import java.util.Vector;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListDataEvent;
@@ -37,26 +39,9 @@ public class Functions implements ListModel {
 	}
 
 	private void fireContentsChanged(Object object, int type, int index) {
-		setPropabilities();
 		for (int i = 0; i < listeners.size(); i++) {
-			listeners.get(i).contentsChanged(
-					new ListDataEvent(object, type, 0, index));
+			listeners.get(i).contentsChanged(new ListDataEvent(object, type, 0, index));
 		}
-	}
-
-	/**
-	 * Funkcja obliczajaca wektor prawdopodobieństw z uwzględnieniem
-	 * przekształceń symetrycznych.
-	 */
-	private void setPropabilities() {
-		propabilities.removeAllElements();
-
-		double groupPr = 1.0 / (rotations.size() + 1.0);
-
-		for (int i = 0; i < functions.size(); i++)
-			propabilities.add(functions.get(i).getPropability() * groupPr);
-		for (int i = 0; i < rotations.size(); i++)
-			propabilities.add(groupPr);
 	}
 
 	/**
@@ -68,20 +53,19 @@ public class Functions implements ListModel {
 	 *         1
 	 */
 	public int checkPropabilities() {
-		Double pr = new Double(0.0);
-		// Po��czenie transformacji i przekszta�ce� symetrycznych
-		Vector<Transform> temp = new Vector<Transform>(functions);
-		temp.addAll(rotations);
-
-		for (int i = 0; i < temp.size() - 1; i++) {
-			pr += propabilities.get(i);
+		Double propabilitySum = new Double(0.0);
+		Iterator<Double> it = propabilities.iterator();
+		while (it.hasNext()) {
+			propabilitySum += it.next();
 		}
-		if (pr + propabilities.lastElement() < 1.0) {
-			propabilities.set(propabilities.size() - 1, 1.0 - pr);
+
+		if (propabilitySum < 1.0) {
 			return -1;
-		} else if (pr + propabilities.lastElement() > 1.0)
+		} else if (propabilitySum > 1.0) {
 			return 1;
-		return 0;
+		} else {
+			return 0;
+		}
 	}
 
 	public void addListDataListener(ListDataListener l) {
@@ -93,8 +77,7 @@ public class Functions implements ListModel {
 	}
 
 	public String getElementAt(int index) {
-		return functions.get(index).toString()
-				+ propabilities.get(index).toString();
+		return functions.get(index).toString() + propabilities.get(index).toString();
 	}
 
 	public int getSize() {
@@ -111,16 +94,19 @@ public class Functions implements ListModel {
 
 	public void addElement(Transform transform) {
 		functions.add(transform);
+		propabilities.add(transform.getPropability());
 		fireContentsChanged(this, ListDataEvent.CONTENTS_CHANGED, getSize());
 	}
 
 	public void removeElement(int index) {
 		functions.remove(index);
+		propabilities.remove(index);
 		fireContentsChanged(this, ListDataEvent.CONTENTS_CHANGED, getSize());
 	}
 
 	public void removeAllElemens() {
 		functions.removeAllElements();
+		propabilities.removeAllElements();
 		rotations.removeAllElements();
 		fireContentsChanged(this, ListDataEvent.CONTENTS_CHANGED, getSize());
 	}
@@ -151,12 +137,22 @@ public class Functions implements ListModel {
 	 *         jest funkcj? obracaj?c?
 	 */
 	public boolean oblicz(int index, Point2D point) {
-		if (index > functions.size() - 1) {
-			rotations.get(index - functions.size()).oblicz(point);
-			return false;
+		if (rotations.isEmpty()) {
+			if (index >= 0 && index < functions.size()) {
+				functions.get(index).oblicz(point);
+				return true;
+			} else {
+				return false;
+			}
 		} else {
-			functions.get(index).oblicz(point);
-			return true;
+			int random = (int) Math.round(Math.random() * rotations.size());
+			if (random == 0) {
+				functions.get(index).oblicz(point);
+				return true;
+			} else {
+				rotations.get(random - 1).oblicz(point);
+				return true;
+			}
 		}
 	}
 
@@ -186,9 +182,8 @@ public class Functions implements ListModel {
 		// Obliczenie kata w radianach
 		double angle = Math.toRadians(360.0 / (rotQuantity + 1.0));
 		for (int i = 0; i < rotQuantity; i++) {
-			rotations.add(new Transform(new AffineTransform(Math.cos(angle),
-					-Math.sin(angle), Math.sin(angle), Math.cos(angle), 0, 0),
-					new Linear(1.0), new Double(1.0)));
+			rotations.add(new Transform(new AffineTransform(Math.cos(angle), -Math.sin(angle), Math.sin(angle), Math
+					.cos(angle), 0, 0), new Linear(1.0), new Double(1.0)));
 			angle += angle;
 		}
 

@@ -1,5 +1,6 @@
 package fflames.interfaces;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -11,4 +12,6 @@ public interface IMainWindowController {
 	
 	void loadFractalFile(File file, Functions functions) throws IOException;
 	void saveFractalFile(File file, Functions functions) throws IOException;
+	
+	void draw(Functions functions, IColour coloringMethod, int numberOfIterations, BufferedImage image);
 }

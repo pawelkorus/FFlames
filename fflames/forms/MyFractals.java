@@ -22,12 +22,13 @@ import javax.imageio.ImageIO;
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
 
-import fflames.Drawning;
 import fflames.interfaces.IMainWindowController;
 import fflames.interfaces.IVariation;
 import fflames.model.Functions;
 import fflames.model.Transform;
 import fflames.model.VariationsFactory;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /**
  * 
@@ -108,13 +109,10 @@ public class MyFractals extends javax.swing.JFrame {
 		infoTytulJLabel = new javax.swing.JLabel();
 		infoWersjaJLabel = new javax.swing.JLabel();
 		infoDesc2JLabel = new javax.swing.JLabel();
-		otworzDaneJButton = new javax.swing.JButton();
-		zapiszDaneJButton = new javax.swing.JButton();
+		loadFractalFileFromXmlJButton = new javax.swing.JButton();
+		saveFractalToXmlJButton = new javax.swing.JButton();
 		rysunekJPanel = new fflames.forms.RysunekJPanel();
-		rysujFragButton = new javax.swing.JButton();
-		wskJProgressBar = new javax.swing.JProgressBar();
 		saveImageButton = new javax.swing.JButton();
-		btnCancel = new javax.swing.JButton();
 
 		fileChooser.setApproveButtonText("Otw�rz");
 		fileChooser.setCurrentDirectory(null);
@@ -494,33 +492,23 @@ public class MyFractals extends javax.swing.JFrame {
 
 		jTP.addTab("O programie", infoJPanel);
 
-		otworzDaneJButton.setText("Otworz dane");
-		otworzDaneJButton.addActionListener(new java.awt.event.ActionListener() {
+		loadFractalFileFromXmlJButton.setText("Load fractal from XML file");
+		loadFractalFileFromXmlJButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				otworzDaneJButtonActionPerformed(evt);
+				loadFractalFileFromXmlJButtonActionPerformed(evt);
 			}
 		});
 
-		zapiszDaneJButton.setText("Zapisz dane");
-		zapiszDaneJButton.addActionListener(new java.awt.event.ActionListener() {
+		saveFractalToXmlJButton.setText("Save fractal as Xml file");
+		saveFractalToXmlJButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				zapiszDaneJButtonActionPerformed(evt);
+				saveFractalToXmlJButtonActionPerformed(evt);
 			}
 		});
 
 		rysunekJPanel.setMinimumSize(new java.awt.Dimension(640, 480));
 		rysunekJPanel.setPreferredSize(new java.awt.Dimension(640, 480));
 		rysunekJPanel.setLayout(new java.awt.FlowLayout());
-
-		rysujFragButton.setText("Rysuj fragment");
-		rysujFragButton.setEnabled(false);
-		rysujFragButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				rysujFragButtonActionPerformed(evt);
-			}
-		});
-
-		wskJProgressBar.setStringPainted(true);
 
 		saveImageButton.setText("Zapisz obrazek");
 		saveImageButton.addActionListener(new java.awt.event.ActionListener() {
@@ -529,165 +517,89 @@ public class MyFractals extends javax.swing.JFrame {
 			}
 		});
 
-		btnCancel.setText("Anuluj");
-		btnCancel.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnCancelActionPerformed(evt);
-			}
-		});
-
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+		layout.setHorizontalGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(
+				layout.createSequentialGroup()
+						.addContainerGap()
+						.addGroup(
+								layout.createParallelGroup(Alignment.LEADING)
+										.addGroup(
+												layout.createSequentialGroup()
+														.addComponent(jTP, GroupLayout.PREFERRED_SIZE, 425,
+																GroupLayout.PREFERRED_SIZE)
+														.addPreferredGap(ComponentPlacement.UNRELATED)
+														.addGroup(
+																layout.createParallelGroup(Alignment.LEADING)
+																		.addComponent(wybraneFunkcjeLabel)
+																		.addComponent(listaFunkcjiScrollPane,
+																				GroupLayout.PREFERRED_SIZE, 381,
+																				GroupLayout.PREFERRED_SIZE)))
+										.addGroup(
+												layout.createSequentialGroup()
+														.addGroup(
+																layout.createParallelGroup(Alignment.LEADING)
+																		.addComponent(dodajButton,
+																				GroupLayout.DEFAULT_SIZE, 214,
+																				Short.MAX_VALUE)
+																		.addComponent(usunButton,
+																				GroupLayout.DEFAULT_SIZE, 214,
+																				Short.MAX_VALUE)
+																		.addComponent(loadFractalFileFromXmlJButton,
+																				GroupLayout.DEFAULT_SIZE,
+																				GroupLayout.DEFAULT_SIZE,
+																				Short.MAX_VALUE)
+																		.addComponent(saveFractalToXmlJButton,
+																				GroupLayout.DEFAULT_SIZE, 214,
+																				Short.MAX_VALUE)
+																		.addComponent(rysujButton, Alignment.TRAILING,
+																				GroupLayout.DEFAULT_SIZE, 214,
+																				Short.MAX_VALUE)
+																		.addComponent(saveImageButton,
+																				GroupLayout.DEFAULT_SIZE, 214,
+																				Short.MAX_VALUE))
+														.addPreferredGap(ComponentPlacement.RELATED)
+														.addComponent(rysunekJPanel, GroupLayout.PREFERRED_SIZE, 640,
+																GroupLayout.PREFERRED_SIZE))).addContainerGap()));
+		layout.setVerticalGroup(layout
+				.createParallelGroup(Alignment.TRAILING)
 				.addGroup(
 						layout.createSequentialGroup()
 								.addContainerGap()
 								.addGroup(
-										layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+										layout.createParallelGroup(Alignment.LEADING)
 												.addGroup(
 														layout.createSequentialGroup()
-																.addComponent(jTP,
-																		javax.swing.GroupLayout.PREFERRED_SIZE, 425,
-																		javax.swing.GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(wybraneFunkcjeLabel)
-																				.addComponent(
-																						listaFunkcjiScrollPane,
-																						javax.swing.GroupLayout.PREFERRED_SIZE,
-																						381,
-																						javax.swing.GroupLayout.PREFERRED_SIZE)))
+																.addComponent(wybraneFunkcjeLabel)
+																.addPreferredGap(ComponentPlacement.RELATED)
+																.addComponent(listaFunkcjiScrollPane,
+																		GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))
+												.addComponent(jTP, GroupLayout.PREFERRED_SIZE, 168,
+														GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(
+										layout.createParallelGroup(Alignment.LEADING)
 												.addGroup(
-														layout.createSequentialGroup()
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(
-																						dodajButton,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						178, Short.MAX_VALUE)
-																				.addComponent(
-																						wskJProgressBar,
-																						javax.swing.GroupLayout.Alignment.TRAILING,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						178, Short.MAX_VALUE)
-																				.addComponent(
-																						usunButton,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						178, Short.MAX_VALUE)
-																				.addComponent(
-																						otworzDaneJButton,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						178, Short.MAX_VALUE)
-																				.addComponent(
-																						zapiszDaneJButton,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						178, Short.MAX_VALUE)
-																				.addComponent(
-																						rysujFragButton,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						178, Short.MAX_VALUE)
-																				.addComponent(
-																						rysujButton,
-																						javax.swing.GroupLayout.Alignment.TRAILING,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						178, Short.MAX_VALUE)
-																				.addComponent(
-																						saveImageButton,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						178, Short.MAX_VALUE)
-																				.addComponent(
-																						btnCancel,
-																						javax.swing.GroupLayout.DEFAULT_SIZE,
-																						178, Short.MAX_VALUE))
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(rysunekJPanel,
-																		javax.swing.GroupLayout.PREFERRED_SIZE, 640,
-																		javax.swing.GroupLayout.PREFERRED_SIZE)))
+														layout.createSequentialGroup().addComponent(dodajButton)
+																.addPreferredGap(ComponentPlacement.RELATED)
+																.addComponent(usunButton).addGap(30)
+																.addComponent(loadFractalFileFromXmlJButton)
+																.addPreferredGap(ComponentPlacement.RELATED)
+																.addComponent(saveFractalToXmlJButton).addGap(36)
+																.addComponent(rysujButton).addGap(65)
+																.addComponent(saveImageButton))
+												.addComponent(rysunekJPanel, Alignment.TRAILING,
+														GroupLayout.PREFERRED_SIZE, 469, GroupLayout.PREFERRED_SIZE))
 								.addContainerGap()));
-		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				javax.swing.GroupLayout.Alignment.TRAILING,
-				layout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addGroup(
-												layout.createSequentialGroup()
-														.addComponent(wybraneFunkcjeLabel)
-														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(listaFunkcjiScrollPane,
-																javax.swing.GroupLayout.DEFAULT_SIZE, 148,
-																Short.MAX_VALUE))
-										.addComponent(jTP, javax.swing.GroupLayout.PREFERRED_SIZE, 168,
-												javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-										.addGroup(
-												layout.createSequentialGroup()
-														.addComponent(dodajButton)
-														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(usunButton)
-														.addGap(30, 30, 30)
-														.addComponent(otworzDaneJButton)
-														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(zapiszDaneJButton)
-														.addGap(36, 36, 36)
-														.addComponent(rysujButton)
-														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(rysujFragButton)
-														.addGap(34, 34, 34)
-														.addComponent(saveImageButton)
-														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-																javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addComponent(btnCancel)
-														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(wskJProgressBar,
-																javax.swing.GroupLayout.PREFERRED_SIZE,
-																javax.swing.GroupLayout.DEFAULT_SIZE,
-																javax.swing.GroupLayout.PREFERRED_SIZE))
-										.addComponent(rysunekJPanel, javax.swing.GroupLayout.Alignment.TRAILING,
-												javax.swing.GroupLayout.PREFERRED_SIZE, 469,
-												javax.swing.GroupLayout.PREFERRED_SIZE)).addContainerGap()));
+		getContentPane().setLayout(layout);
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
-
-	private void rysujFragButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_rysujFragButtonActionPerformed
-		bI = new BufferedImage(Integer.parseInt(widthJTextField.getText()),
-				Integer.parseInt(hieghtJTextField.getText()), BufferedImage.TYPE_INT_ARGB);
-
-		functions.addRotations(Integer.parseInt(rotationsQuantityJTF.getText()));
-		if (functions.checkPropabilities() == 1)
-			JOptionPane.showInternalMessageDialog(this.getContentPane(), "Suma prawdopodobie�stw jest wi�ksza ni� 1!",
-					"Uwaga", JOptionPane.WARNING_MESSAGE);
-
-		int howToDraw = 2;
-		if (jrbDrawSlow.isSelected())
-			howToDraw = 1;
-
-		drawning = new Drawning(functions, Integer.parseInt(iloscIteracjiJTextField.getText()),
-				coloringJPanel.getColoring(), rysunekJPanel.getPointFrom(), rysunekJPanel.getPointTo(), bI, howToDraw);
-		drawning.addPropertyChangeListener(new ProgressBarChange());
-		drawning.execute();
-	}// GEN-LAST:event_rysujFragButtonActionPerformed
 
 	/**
 	 * 
 	 * @param evt
 	 */
-	private void otworzDaneJButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_otworzDaneJButtonActionPerformed
+	private void loadFractalFileFromXmlJButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_otworzDaneJButtonActionPerformed
 		int returnValue = fileChooser.showOpenDialog(this);
 
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -701,7 +613,7 @@ public class MyFractals extends javax.swing.JFrame {
 		}
 	}// GEN-LAST:event_otworzDaneJButtonActionPerformed
 
-	private void zapiszDaneJButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_zapiszDaneJButtonActionPerformed
+	private void saveFractalToXmlJButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_zapiszDaneJButtonActionPerformed
 		int returnValue = fileChooser.showSaveDialog(this);
 
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -715,23 +627,15 @@ public class MyFractals extends javax.swing.JFrame {
 	}// GEN-LAST:event_zapiszDaneJButtonActionPerformed
 
 	private void rysujButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_rysujButtonActionPerformed
-		functions.addRotations(Integer.parseInt(rotationsQuantityJTF.getText()));
-		if (functions.checkPropabilities() == 1)
-			JOptionPane.showInternalMessageDialog(this.getContentPane(), "Suma prawdopodobie�stw jest wi�ksza ni� 1!",
-					"Uwaga", JOptionPane.WARNING_MESSAGE);
-
-		rysunekJPanel.resetPoints();
 		bI = new BufferedImage(Integer.parseInt(widthJTextField.getText()),
 				Integer.parseInt(hieghtJTextField.getText()), BufferedImage.TYPE_INT_ARGB);
 
-		int howToDraw = 2;
-		if (jrbDrawSlow.isSelected())
-			howToDraw = 1;
+		rysunekJPanel.resetPoints();
 
-		drawning = new Drawning(functions, Integer.parseInt(iloscIteracjiJTextField.getText()),
-				coloringJPanel.getColoring(), rysunekJPanel.getPointFrom(), rysunekJPanel.getPointTo(), bI, howToDraw);
-		drawning.addPropertyChangeListener(new ProgressBarChange());
-		drawning.execute();
+		_controller.draw(functions, coloringJPanel.getColoring(), Integer.parseInt(iloscIteracjiJTextField.getText()),
+				bI);
+
+		rysunekJPanel.setImage(bI);
 	}// GEN-LAST:event_rysujButtonActionPerformed
 
 	private void usunButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_usunButtonActionPerformed
@@ -779,15 +683,10 @@ public class MyFractals extends javax.swing.JFrame {
 		}
 	}// GEN-LAST:event_saveImageButtonActionPerformed
 
-	private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnCancelActionPerformed
-		drawning.cancel(true);
-	}// GEN-LAST:event_btnCancelActionPerformed
-
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JLabel aLabel;
 	private javax.swing.JLabel bLabel;
 	private javax.swing.ButtonGroup bgrDrawning;
-	private javax.swing.JButton btnCancel;
 	private javax.swing.JLabel cLabel;
 	private fflames.forms.ColoringJPanel coloringJPanel;
 	private javax.swing.JLabel dLabel;
@@ -811,11 +710,10 @@ public class MyFractals extends javax.swing.JFrame {
 	private javax.swing.JScrollPane listaFunkcjiScrollPane;
 	private javax.swing.JButton losujTransJButton;
 	private javax.swing.JPanel opcjeJPanel;
-	private javax.swing.JButton otworzDaneJButton;
+	private javax.swing.JButton loadFractalFileFromXmlJButton;
 	private javax.swing.JLabel prLabel;
 	private javax.swing.JTextField rotationsQuantityJTF;
 	private javax.swing.JButton rysujButton;
-	private javax.swing.JButton rysujFragButton;
 	private fflames.forms.RysunekJPanel rysunekJPanel;
 	private javax.swing.JButton saveImageButton;
 	private javax.swing.JLabel symetrieJLabel;
@@ -824,7 +722,6 @@ public class MyFractals extends javax.swing.JFrame {
 	private fflames.forms.WariationsJPanel wariationsJPanel;
 	private javax.swing.JTextField widthJTextField;
 	private javax.swing.JLabel wielkoscObrJLabel;
-	private javax.swing.JProgressBar wskJProgressBar;
 	private javax.swing.JTextField wspATextField;
 	private javax.swing.JTextField wspBTextField;
 	private javax.swing.JTextField wspCTextField;
@@ -834,26 +731,10 @@ public class MyFractals extends javax.swing.JFrame {
 	private javax.swing.JTextField wspPrTextField;
 	private javax.swing.JLabel wybraneFunkcjeLabel;
 	private javax.swing.JLabel xJLabel;
-	private javax.swing.JButton zapiszDaneJButton;
+	private javax.swing.JButton saveFractalToXmlJButton;
 	// End of variables declaration//GEN-END:variables
 	private Functions functions;
 	private BufferedImage bI;
-	private Drawning drawning;
-
-	class ProgressBarChange implements PropertyChangeListener {
-		public ProgressBarChange() {
-		};
-
-		public void propertyChange(PropertyChangeEvent evt) {
-			if (evt.getPropertyName().compareTo("progress") == 0) {
-				int progress = (Integer) evt.getNewValue();
-				wskJProgressBar.setValue(progress);
-			}
-			if (((SwingWorker) evt.getSource()).isDone() == true) {
-				rysunekJPanel.setImage(bI.getScaledInstance(640, 480, Image.SCALE_FAST));
-			}
-		}
-	}
 
 	class FunctionsListener implements ListDataListener {
 
@@ -867,7 +748,6 @@ public class MyFractals extends javax.swing.JFrame {
 
 		public void contentsChanged(ListDataEvent e) {
 			rysujButton.setEnabled(!(functions.getSize() == 0));
-			rysujFragButton.setEnabled(!(functions.getSize() == 0));
 		}
 
 	}
@@ -890,4 +770,8 @@ public class MyFractals extends javax.swing.JFrame {
 	}
 
 	private IMainWindowController _controller;
+
+	public void setImage(BufferedImage image) {
+		rysunekJPanel.setImage(image);
+	}
 }

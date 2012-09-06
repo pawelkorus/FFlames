@@ -60,8 +60,8 @@ public class Transform {
     public Transform(AffineTransform _affineTr, IVariation _wariation, Double pr)  {
         affineTr = new AffineTransform(_affineTr);
         wariations = new Vector<IVariation>(); wariations.add(_wariation);
-        /* Spawdzenie czy wariacja jest zale�na od wsp�czynnik�w transformacji
-        afinicznej. Je�li tak to przekazanie wsp�czynnik�w transformacji */
+        /* Spawdzenie czy wariacja jest zależna od współczynników transformacji
+        afinicznej. Jeśli tak to przekazanie wspóczynników transformacji */
         if(wariations.firstElement().isDependent()) {
                 Vector<Double> temp = new Vector<Double>();
                 double[] parameters = new double[6];
