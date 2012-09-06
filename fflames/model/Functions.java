@@ -26,7 +26,7 @@ import java.awt.geom.Point2D;
  * 
  * @author victories
  */
-public class Functions implements ListModel {
+public class Functions implements ListModel<String> {
 	private Vector<ListDataListener> listeners = new Vector<ListDataListener>();
 	private Vector<Transform> functions = new Vector<Transform>();
 	private Vector<Transform> rotations = new Vector<Transform>();
@@ -76,6 +76,9 @@ public class Functions implements ListModel {
 		listeners.remove(l);
 	}
 
+	/**
+	 * @override
+	 */
 	public String getElementAt(int index) {
 		return functions.get(index).toString() + propabilities.get(index).toString();
 	}

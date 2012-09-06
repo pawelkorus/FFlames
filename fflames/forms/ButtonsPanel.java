@@ -46,17 +46,12 @@ public class ButtonsPanel extends javax.swing.JPanel {
 		if (buttons.size() < ilosc) {
 			((GridLayout) getLayout()).setRows(ilosc);
 			for (int i = buttons.size(); i < ilosc; i++) {
-				buttons.add(new JButton("Wybierz kolor"));
-				buttons.get(buttons.size() - 1).addActionListener(
-						new java.awt.event.ActionListener() {
-							public void actionPerformed(
-									java.awt.event.ActionEvent evt) {
-								((JButton) evt.getSource())
-										.setBackground(JColorChooser
-												.showDialog(null,
-														"Wybierz kolor", null));
-							}
-						});
+				buttons.add(new JButton("Choose color"));
+				buttons.get(buttons.size() - 1).addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(java.awt.event.ActionEvent evt) {
+						((JButton) evt.getSource()).setBackground(JColorChooser.showDialog(null, "Choose color", null));
+					}
+				});
 				add(buttons.get(i));
 			}
 			validate();
