@@ -6,27 +6,19 @@
 
 package fflames.forms;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.lang.Double;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.*;
 import javax.swing.*;
-import java.awt.*;
 import java.io.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
 
 import fflames.interfaces.IMainWindowController;
 import fflames.interfaces.IVariation;
-import fflames.model.Functions;
-import fflames.model.Transform;
-import fflames.model.VariationsFactory;
+import fflames.model.TransformTableModel;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
@@ -44,14 +36,9 @@ public class MyFractals extends javax.swing.JFrame {
 	public MyFractals(IMainWindowController controller) {
 		super();
 
-		functions = new Functions();
-		functions.addListDataListener(new FunctionsListener());
-
 		_controller = controller;
 
 		initComponents();
-
-		listaFunkcji.getSelectionModel().addListSelectionListener(new ListaFunListSelectionHandler());
 
 		bI = new BufferedImage(640, 480, BufferedImage.TYPE_INT_ARGB);
 	}
@@ -73,7 +60,10 @@ public class MyFractals extends javax.swing.JFrame {
 		usunButton = new javax.swing.JButton();
 		dodajButton = new javax.swing.JButton();
 		listaFunkcjiScrollPane = new javax.swing.JScrollPane();
-		listaFunkcji = new javax.swing.JList();
+		transformsList = new JTable();
+		transformsList.setShowGrid(false);
+		transformsList.setFillsViewportHeight(true);
+		transformsList.setShowVerticalLines(false);
 		jTP = new javax.swing.JTabbedPane();
 		opcjeJPanel = new javax.swing.JPanel();
 		iloscIteracjiJLabel = new javax.swing.JLabel();
@@ -149,10 +139,8 @@ public class MyFractals extends javax.swing.JFrame {
 				dodajButtonActionPerformed(evt);
 			}
 		});
-
-		listaFunkcji.setModel(functions);
-		listaFunkcji.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-		listaFunkcjiScrollPane.setViewportView(listaFunkcji);
+		transformsList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		listaFunkcjiScrollPane.setColumnHeaderView(transformsList);
 
 		iloscIteracjiJLabel.setText("Ilosc iteracji:");
 
@@ -603,13 +591,7 @@ public class MyFractals extends javax.swing.JFrame {
 		int returnValue = fileChooser.showOpenDialog(this);
 
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
-			try {
-				_controller.loadFractalFile(fileChooser.getSelectedFile(), functions);
-				coloringJPanel.setFunctionsCount(functions.getFunctionsQuantity());
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(this, "Error when reading from choosen file", "Import error",
-						JOptionPane.ERROR_MESSAGE);
-			}
+			_controller.loadFractalFile(fileChooser.getSelectedFile());
 		}
 	}// GEN-LAST:event_otworzDaneJButtonActionPerformed
 
@@ -617,12 +599,7 @@ public class MyFractals extends javax.swing.JFrame {
 		int returnValue = fileChooser.showSaveDialog(this);
 
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
-			try {
-				_controller.saveFractalFile(fileChooser.getSelectedFile(), functions);
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(this, "Error when writing to choosen file", "Export error",
-						JOptionPane.ERROR_MESSAGE);
-			}
+			_controller.saveFractalFile(fileChooser.getSelectedFile());
 		}
 	}// GEN-LAST:event_zapiszDaneJButtonActionPerformed
 
@@ -632,32 +609,27 @@ public class MyFractals extends javax.swing.JFrame {
 
 		rysunekJPanel.resetPoints();
 
-		_controller.draw(functions, coloringJPanel.getColoring(), Integer.parseInt(iloscIteracjiJTextField.getText()),
-				bI);
+		_controller.draw(coloringJPanel.getColoring(), Integer.parseInt(iloscIteracjiJTextField.getText()), bI);
 
 		rysunekJPanel.setImage(bI);
 	}// GEN-LAST:event_rysujButtonActionPerformed
 
 	private void usunButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_usunButtonActionPerformed
 		try {
-			((Functions) listaFunkcji.getModel()).removeElement(listaFunkcji.getSelectedIndex());
-			coloringJPanel.setFunctionsCount(functions.getSize());
-
+			int[] selectedRows = transformsList.getSelectedRows();
+			_controller.removeTransformation(selectedRows);
 		} catch (Exception ex) {
 		}
 	}// GEN-LAST:event_usunButtonActionPerformed
 
 	private void dodajButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_dodajButtonActionPerformed
-		try {
-			functions.addElement(new Transform(new AffineTransform(new Double(wspATextField.getText()), new Double(
-					wspDTextField.getText()), new Double(wspBTextField.getText()), new Double(wspETextField.getText()),
-					new Double(wspCTextField.getText()), new Double(wspFTextField.getText())), wariationsJPanel
-					.getWariations(), new Double(wspPrTextField.getText())));
-			coloringJPanel.setFunctionsCount(functions.getFunctionsQuantity());
-		} catch (Exception ex) {
-			JOptionPane.showInternalMessageDialog(this.getContentPane(), ex.getMessage(), "Uwaga",
-					JOptionPane.WARNING_MESSAGE);
-		}
+		double[] affineParams = { Double.parseDouble(wspATextField.getText()),
+				Double.parseDouble(wspDTextField.getText()), Double.parseDouble(wspBTextField.getText()),
+				Double.parseDouble(wspETextField.getText()), Double.parseDouble(wspCTextField.getText()),
+				Double.parseDouble(wspFTextField.getText()) };
+		Double propability = new Double(wspPrTextField.getText());
+		Vector<IVariation> variations = wariationsJPanel.getWariations();
+		_controller.addTransformation(affineParams, variations, propability);
 	}// GEN-LAST:event_dodajButtonActionPerformed
 
 	private void losujTransJButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_losujTransJButtonActionPerformed
@@ -706,7 +678,7 @@ public class MyFractals extends javax.swing.JFrame {
 	private javax.swing.JTabbedPane jTP;
 	private javax.swing.JRadioButton jrbDrawFast;
 	private javax.swing.JRadioButton jrbDrawSlow;
-	private javax.swing.JList listaFunkcji;
+	private JTable transformsList;
 	private javax.swing.JScrollPane listaFunkcjiScrollPane;
 	private javax.swing.JButton losujTransJButton;
 	private javax.swing.JPanel opcjeJPanel;
@@ -733,38 +705,21 @@ public class MyFractals extends javax.swing.JFrame {
 	private javax.swing.JLabel xJLabel;
 	private javax.swing.JButton saveFractalToXmlJButton;
 	// End of variables declaration//GEN-END:variables
-	private Functions functions;
 	private BufferedImage bI;
-
-	class FunctionsListener implements ListDataListener {
-
-		public void intervalAdded(ListDataEvent e) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
-		public void intervalRemoved(ListDataEvent e) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
-		public void contentsChanged(ListDataEvent e) {
-			rysujButton.setEnabled(!(functions.getSize() == 0));
-		}
-
-	}
 
 	class ListaFunListSelectionHandler implements ListSelectionListener {
 
 		public void valueChanged(ListSelectionEvent e) {
 			double[] coefs = new double[6];
-			functions.getTransformAt(listaFunkcji.getSelectedIndex()).getAffineTr().getMatrix(coefs);
+			// functions.getTransformAt(transformsList.getSelectedIndex()).getAffineTr().getMatrix(coefs);
 			wspATextField.setText(String.valueOf(coefs[0]));
 			wspBTextField.setText(String.valueOf(coefs[2]));
 			wspCTextField.setText(String.valueOf(coefs[4]));
 			wspDTextField.setText(String.valueOf(coefs[1]));
 			wspETextField.setText(String.valueOf(coefs[3]));
 			wspFTextField.setText(String.valueOf(coefs[5]));
-			wspPrTextField.setText(functions.getPr(listaFunkcji.getSelectedIndex()).toString());
-			wariationsJPanel.setWariations(functions.getTransformAt(listaFunkcji.getSelectedIndex()).getWariations());
+			// wspPrTextField.setText(functions.getPr(transformsList.getSelectedIndex()).toString());
+			// wariationsJPanel.setWariations(functions.getTransformAt(transformsList.getSelectedIndex()).getWariations());
 		}
 
 	}
@@ -773,5 +728,17 @@ public class MyFractals extends javax.swing.JFrame {
 
 	public void setImage(BufferedImage image) {
 		rysunekJPanel.setImage(image);
+	}
+
+	public void setTransformTableModel(TransformTableModel model) {
+		transformsList.setModel(model);
+		model.addTableModelListener(new TableModelListener() {
+			@Override
+			public void tableChanged(TableModelEvent e) {
+				TransformTableModel model = (TransformTableModel) e.getSource();
+				coloringJPanel.setFunctionsCount(model.getRowCount());
+				rysujButton.setEnabled(!(model.getRowCount() == 0));
+			}
+		});
 	}
 }

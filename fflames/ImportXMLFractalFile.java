@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import org.xml.sax.Attributes;
@@ -15,47 +16,45 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import fflames.interfaces.*;
-import fflames.model.Functions;
 import fflames.model.Transform;
 import fflames.model.VariationsFactory;
+import fflames.exceptions.ImportXMLFractalFileException;
 
 public class ImportXMLFractalFile {
-	public ImportXMLFractalFile(Functions _functions) {
+	public ImportXMLFractalFile() {
 		super();
-		this._functions = _functions;
 	}
 
-	public boolean load(String path) throws IOException {
+	public void load(ArrayList<Transform> transforms, String path) throws IOException, ImportXMLFractalFileException {
 		File file = new File(path);
-		return load(file);
+		load(transforms, file);
 	}
 	
-	public boolean load(File file) throws IOException {
+	public void load(ArrayList<Transform> transforms, File file) throws IOException, ImportXMLFractalFileException {
 		FileReader r = new FileReader(file);
-		return load(r);
+		load(transforms, r);
 	}
 	
-	public boolean load(InputStreamReader input) throws IOException {
-		_functions.removeAllElemens();
-
+	public void load(ArrayList<Transform> transforms, InputStreamReader input) throws IOException, ImportXMLFractalFileException {
 		try {
 			XMLReader xr = XMLReaderFactory.createXMLReader();
 			
-			XMLHandler handler = new XMLHandler();
+			XMLHandler handler = new XMLHandler(transforms);
 			xr.setContentHandler(handler);
 			xr.setErrorHandler(handler);
 
 			xr.parse(new InputSource(input));
-			
-			return true;
 		} catch (SAXException e) {
-			_functions.removeAllElemens();
+			throw new ImportXMLFractalFileException(e);
 		}
-		
-		return false;
 	}
 	
 	class XMLHandler extends DefaultHandler {
+		XMLHandler(ArrayList<Transform> transforms) {
+			super();
+			_transforms = transforms;
+		}
+		
 		private double[] affTrCoefs = new double[6];
 		private Vector<IVariation> wariations = new Vector<IVariation>();
 		private Vector<Double> param = new Vector<Double>();
@@ -63,10 +62,7 @@ public class ImportXMLFractalFile {
 		private Double propability = new Double(0.0);
 		private int flag = 0;
 		private int i = 0;
-
-		XMLHandler() {
-			super();
-		}
+		ArrayList<Transform> _transforms;
 
 		@Override
 		public void startElement(String uri, String localName, String qName,
@@ -88,7 +84,7 @@ public class ImportXMLFractalFile {
 		@Override
 		public void endElement(String uri, String localName, String qName) {
 			if (localName.compareTo("Function") == 0) {
-				_functions.addElement(new Transform(new AffineTransform(
+				_transforms.add(new Transform(new AffineTransform(
 						affTrCoefs), wariations, propability));
 				wariations = new Vector<IVariation>();
 				param.removeAllElements();
@@ -122,6 +118,4 @@ public class ImportXMLFractalFile {
 			}
 		}
 	}
-	
-	private Functions _functions;
 }

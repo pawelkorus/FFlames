@@ -4,18 +4,19 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Vector;
 
 import fflames.interfaces.IColour;
-import fflames.model.Functions;
+import fflames.model.Transform;
 
 public class FractalGenerator {
 	
-	public FractalGenerator(Functions _functions, IColour _coloringMethod, BufferedImage _output) {
+	public FractalGenerator(ArrayList<Transform> transforms, IColour _coloringMethod, BufferedImage _output) {
 		super();
-		this._functions = _functions;
+		_transforms = transforms;
 		this._coloringMethod = _coloringMethod;
 		this._output = _output;
 		this._randomNumberGenerator = new Random();
@@ -104,20 +105,20 @@ public class FractalGenerator {
 	
 	private void calculateNextPoint(Point2D.Double point) {
 		int index = selectFunctionIndex();
-		_functions.oblicz(index, point);
+		_transforms.get(index).oblicz(point);
 	}
 	
 	private int selectFunctionIndex() {
 		double random = _randomNumberGenerator.nextDouble();
 		double currentPr = 0.0;
-		for(int i = 0; i < _functions.getSize() - 1; i++) {
-			currentPr += _functions.getPr(i);
+		for(int i = 0; i < _transforms.size() - 1; i++) {
+			currentPr += _transforms.get(i).getPropability();
 			if(random <= currentPr) return i;
 		}
-		return _functions.getSize() - 1;
+		return _transforms.size() - 1;
 	}
 	
-	Functions _functions;
+	ArrayList<Transform> _transforms;
 	IColour _coloringMethod;
 	BufferedImage _output;
 	int _numberOfIterations;
