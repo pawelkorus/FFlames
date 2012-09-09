@@ -71,4 +71,10 @@ public interface IVariation {
      * przekszta�cenia afinicznego. W innym wypadku zwraca warto�� false.
      */
     public boolean isDependent();
+    
+    /**
+     * Cheks corectenss of the variation 
+     * @return true if the variation is correct. false otherwise.
+     */
+    public boolean isValid();
 }

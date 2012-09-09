@@ -48,4 +48,8 @@ public abstract class AbstractWariation implements IVariation {
     public boolean isDependent() {
         return false;
     }
+    
+    public boolean isValid() {
+    	return true;
+    }
 }
