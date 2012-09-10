@@ -44,6 +44,10 @@ public class RysunekJPanel extends javax.swing.JPanel {
 		pointTo.setLocation(1.0, 1.0);
 	}
 
+	public Image getImage() {
+		return image;
+	}
+
 	public void setImage(Image bI) {
 		image = bI;
 		repaint();
@@ -80,24 +84,18 @@ public class RysunekJPanel extends javax.swing.JPanel {
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
 		this.setLayout(layout);
-		layout.setHorizontalGroup(layout.createParallelGroup(
-				javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 390,
+		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 390,
 				Short.MAX_VALUE));
-		layout.setVerticalGroup(layout.createParallelGroup(
-				javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 301,
+		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 301,
 				Short.MAX_VALUE));
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void formMouseReleased(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_formMouseReleased
-		Point2D.Double tempFrom = new Point2D.Double(pointFrom.getX()
-				+ (event.getX() / 640.0) * (pointTo.getX() - pointFrom.getX()),
-				pointFrom.getY() + (event.getY() / 480.0)
-						* (pointTo.getY() - pointFrom.getY()));
-		pointTo.setLocation(
-				pointFrom.getX() + (evt.getX() / 640.0)
-						* (pointTo.getX() - pointFrom.getX()),
-				pointFrom.getY() + (evt.getY() / 480.0)
-						* (pointTo.getY() - pointFrom.getY()));
+		Point2D.Double tempFrom = new Point2D.Double(pointFrom.getX() + (event.getX() / 640.0)
+				* (pointTo.getX() - pointFrom.getX()), pointFrom.getY() + (event.getY() / 480.0)
+				* (pointTo.getY() - pointFrom.getY()));
+		pointTo.setLocation(pointFrom.getX() + (evt.getX() / 640.0) * (pointTo.getX() - pointFrom.getX()),
+				pointFrom.getY() + (evt.getY() / 480.0) * (pointTo.getY() - pointFrom.getY()));
 		pointFrom.setLocation(tempFrom.getX(), tempFrom.getY());
 	}// GEN-LAST:event_formMouseReleased
 

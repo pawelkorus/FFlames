@@ -13,10 +13,11 @@ public final class Application implements Runnable {
 	public void run() {
 		_transformsModel = new TransformTableModel();
 		
+		_mainWindow = new MyFractals();
+		_mainWindow.setTransformTableModel(_transformsModel);
+		
 		_mainWindowController = new MainWindowController(_transformsModel, _mainWindow);
 		
-		_mainWindow = new MyFractals(_mainWindowController);
-		_mainWindow.setTransformTableModel(_transformsModel);
 		_mainWindow.setVisible(true);
 	}
 
