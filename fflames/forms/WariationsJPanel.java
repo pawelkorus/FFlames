@@ -7,7 +7,6 @@
 package fflames.forms;
 
 import java.util.Vector;
-import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
@@ -15,6 +14,7 @@ import javax.swing.event.ListSelectionEvent;
 import fflames.interfaces.IVariation;
 import fflames.model.VariationsFactory;
 import fflames.model.VariationsTableModel;
+import javax.swing.BoxLayout;
 
 /**
  * 
@@ -31,8 +31,6 @@ public class WariationsJPanel extends javax.swing.JPanel {
 	public WariationsJPanel() {
 		initComponents();
 
-		ustawParametryJButton.setVisible(false);
-
 		ListSelectionModel lsm = wariationsJTable.getSelectionModel();
 		lsm.addListSelectionListener(new WariationJTableListSelectionHandler());
 	}
@@ -45,66 +43,15 @@ public class WariationsJPanel extends javax.swing.JPanel {
 	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
 		wariationsTableJScrollPane = new javax.swing.JScrollPane();
 		wariationsJTable = new javax.swing.JTable();
-		parametersTextFieldsPanel = new fflames.forms.TextFieldsPanel();
-		ustawParametryJButton = new javax.swing.JButton();
 
 		wariationsJTable.setModel(new VariationsTableModel());
 		wariationsTableJScrollPane.setViewportView(wariationsJTable);
-
-		ustawParametryJButton.setText("Ustaw parametry");
-		ustawParametryJButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				ustawParametryJButtonActionPerformed(evt);
-			}
-		});
-
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-		this.setLayout(layout);
-		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				javax.swing.GroupLayout.Alignment.TRAILING,
-				layout.createSequentialGroup()
-						.addComponent(wariationsTableJScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 254,
-								Short.MAX_VALUE)
-						.addGroup(
-								layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addGroup(
-												layout.createSequentialGroup()
-														.addGap(6, 6, 6)
-														.addComponent(ustawParametryJButton,
-																javax.swing.GroupLayout.DEFAULT_SIZE, 177,
-																Short.MAX_VALUE))
-										.addGroup(
-												layout.createSequentialGroup()
-														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(parametersTextFieldsPanel,
-																javax.swing.GroupLayout.DEFAULT_SIZE, 177,
-																Short.MAX_VALUE)))));
-		layout.setVerticalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						javax.swing.GroupLayout.Alignment.TRAILING,
-						layout.createSequentialGroup()
-								.addComponent(parametersTextFieldsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 157,
-										Short.MAX_VALUE)
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(ustawParametryJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 17,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-				.addComponent(wariationsTableJScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE));
+		add(wariationsTableJScrollPane);
 	}// </editor-fold>//GEN-END:initComponents
-
-	private void ustawParametryJButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_ustawParametryJButtonActionPerformed
-		try {
-			wariationsJTable.getModel().setValueAt(parametersTextFieldsPanel.getTextFieldsValues(),
-					wariationsJTable.getSelectedRow(), 0);
-		} catch (Exception ex) {// GEN-LAST:event_ustawParametryJButtonActionPerformed
-			JOptionPane.showInternalMessageDialog(this.getParent().getParent(), ex.getMessage(), "Uwaga",
-					JOptionPane.WARNING_MESSAGE);
-		}
-	}
 
 	/**
 	 * Funkcja zwracaj�ca wybrane przez u�ytkownika wariacje. Wybrane przez
@@ -149,9 +96,6 @@ public class WariationsJPanel extends javax.swing.JPanel {
 		}
 	}
 
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private fflames.forms.TextFieldsPanel parametersTextFieldsPanel;
-	private javax.swing.JButton ustawParametryJButton;
 	private javax.swing.JTable wariationsJTable;
 	private javax.swing.JScrollPane wariationsTableJScrollPane;
 
@@ -159,16 +103,6 @@ public class WariationsJPanel extends javax.swing.JPanel {
 
 	class WariationJTableListSelectionHandler implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent e) {
-			ListSelectionModel lsm = (ListSelectionModel) e.getSource();
-			if (!lsm.isSelectionEmpty() && e.getValueIsAdjusting()) {
-				int parQuantity = VariationsFactory.getWariation(lsm.getMinSelectionIndex(), 0.0)
-						.getParametersQuantity();
-				if (parQuantity > 0)
-					ustawParametryJButton.setVisible(true);
-				else
-					ustawParametryJButton.setVisible(false);
-				parametersTextFieldsPanel.valueTextField(parQuantity);
-			}
 		}
 	}
 }

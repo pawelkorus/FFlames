@@ -13,109 +13,158 @@ import javax.swing.table.*;
 
 import fflames.interfaces.IVariation;
 
+import java.util.ArrayList;
 import java.util.Vector;
-import java.util.Hashtable;
+
 /**
- *
+ * 
  * @author victories
  */
 public class VariationsTableModel extends AbstractTableModel {
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = -8168467956040246878L;
-	private String[] columnNames = {"Wariacja", "Wsp�czynnik"};
-    private Hashtable<Integer, Vector<Double>> parameters = new Hashtable<Integer, Vector<Double>>();
-    /**
-     * Creates a new instance of VariationsTableModel
-     */
-    public VariationsTableModel() {
-        for(int i=0; i < VariationsFactory.getWariationQuantity(); i++) {
-            parameters.put(new Integer(i), new Vector<Double>()); 
-            parameters.get(i).add(0.0);
-        }
-    }
-   
-    public int getColumnCount() {
-        return columnNames.length;
-    }
-    
-    public int getRowCount() {
-        return parameters.keySet().size();
-    }
-    
-    @Override public String getColumnName(int col) {
-        return columnNames[col];
-    }
-   
-    /******************************************************************************/
-    /* TO DO: W przypadku gdy wariacja ma wiecej parametrow nie sa inicjalizowane */
-    /******************************************************************************/
-    public Object getValueAt(int row, int col) {
-        if(col == 0)
-            return VariationsFactory.getWariationName(row);
-        else return parameters.get(row).get(0);
-    }
 
-    public Vector<Double> getParameters(int row) {
-        Vector<Double> temp = new Vector<Double>();
-        temp = parameters.get(row);
-        temp.remove(temp.firstElement());
-        return temp;
-    }
-    
-    /**
-     * Funkcja zwraca Wariacja odpowiadaj�c� danemu wierszowi w tabeli
-     * z odpowiedaj�c� mu warto�ci� wsp�czynnika.
-     * @param row numer wiersza
-     * @return Obiekt typu IVariation
-     */
-    public IVariation getWariation(int row) {
-        IVariation temp = VariationsFactory.getWariation(row, parameters.get(row).firstElement());
-        if( temp.getParametersQuantity() > 0 ) {
-            Vector<Double> parTemp = new Vector<Double>(parameters.get(row));
-            parTemp.remove(0);
-            temp.setParameters(parTemp);
-        }
-        return temp;
-    }
-    
-    @Override
-    @SuppressWarnings("unchecked")
-    public void setValueAt(Object value, int row, int col) {
-        //Musi by� String - java wywoluje tez ta funkcje i przekazuje tutaj stringa
-        if(col == 1) parameters.get(row).set(0, new Double((String) value));
-        else {
-            //Usuwanie wszystkich parametr�w opr�cz pierwszego (pierwszy to 
-            //wsp�czynnik) i dodawanie nowych
-            Double temp = parameters.get(row).firstElement();
-            parameters.get(row).removeAllElements();
-            parameters.get(row).add(temp);
-            parameters.get(row).addAll( (Vector<Double>) value);
-        }
-        fireTableCellUpdated(row, col);
-    }
-    
-    @Override
-    public boolean isCellEditable(int row, int col) {
-        if(col == 1) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    
+	private ArrayList<Vector<Double>> _parameters = new ArrayList<Vector<Double>>();
+	private ArrayList<Double> _coefficients = new ArrayList<Double>();
+	private int _columns;
+	private int _rows;
 
-    /**
-     * Funkcja zeruje wszystkie wsp�czynniki ustawione wcze�niej przez 
-     * u�ytkownika
-     */
-    public void clearParameters() {
-        for(Integer i:parameters.keySet()) {
-            parameters.get(i).removeAllElements();
-            parameters.get(i).add(0.0);
-            setValueAt(parameters.get(i).firstElement().toString(), i, 1);
-        }
-    }
+	/**
+	 * Creates a new instance of VariationsTableModel
+	 */
+	public VariationsTableModel() {
+		_rows = VariationsFactory.getWariationQuantity();
+
+		int maxAdditionalParams = 0;
+		_parameters.ensureCapacity(_rows);
+		_coefficients.ensureCapacity(_rows);
+		for (int i = 0; i < _rows; i++) {
+			_coefficients.add(Double.valueOf(0));
+
+			IVariation tmp = VariationsFactory.getWariation(i, Double.valueOf(0));
+			int parametersQuantity = tmp.getParametersQuantity();
+
+			Vector<Double> parameters = new Vector<Double>(parametersQuantity);
+			for (int j = 0; j < parametersQuantity; j++) {
+				parameters.add(Double.valueOf(0));
+			}
+			_parameters.add(parameters);
+
+			if (maxAdditionalParams < parametersQuantity) {
+				maxAdditionalParams = parametersQuantity;
+			}
+		}
+
+		_columns = 2 + maxAdditionalParams;
+	}
+
+	public int getColumnCount() {
+		return _columns;
+	}
+
+	public int getRowCount() {
+		return _rows;
+	}
+
+	@Override
+	public String getColumnName(int index) {
+		if (index < 0)
+			return "";
+		else if (index == 0)
+			return "Name";
+		else if (index == 1)
+			return "Coefficient";
+		else
+			return "Param";
+	}
+
+	public Object getValueAt(int row, int col) {
+		if (row < 0 || row >= _rows || col < 0 || col >= _columns) {
+			return null;
+		} else {
+			if (col == 0)
+				return VariationsFactory.getWariationName(row);
+			else if (col == 1)
+				return _coefficients.get(row);
+			else {
+				int paramIndex = col - 2;
+				Vector<Double> additionalParams = _parameters.get(row);
+				if (paramIndex < additionalParams.size()) {
+					return additionalParams.get(paramIndex);
+				} else {
+					return "";
+				}
+			}
+
+		}
+	}
+
+	public Vector<Double> getParameters(int row) {
+		if (row < 0 || row >= _parameters.size())
+			return new Vector<Double>();
+
+		return _parameters.get(row);
+	}
+
+	/**
+	 * Returns IVariation object corresponding to the given row.
+	 * 
+	 * @param row
+	 *            row index
+	 * @return Variation object
+	 */
+	public IVariation getWariation(int row) {
+		IVariation temp = VariationsFactory.getWariation(row, _coefficients.get(row));
+		if (temp.getParametersQuantity() > 0) {
+			Vector<Double> parTemp = new Vector<Double>(_parameters.get(row));
+			temp.setParameters(parTemp);
+		}
+		return temp;
+	}
+
+	@Override
+	public void setValueAt(Object value, int row, int col) {
+		if (row < 0 || row >= _rows || col < 0 || col >= _columns) {
+			return;
+		}
+
+		if (col == 1)
+			_coefficients.set(row, Double.valueOf(value.toString()));
+		else {
+			int paramIndex = col - 2;
+			Vector<Double> additionalParams = _parameters.get(row);
+			if (paramIndex < additionalParams.size()) {
+				additionalParams.set(paramIndex, Double.valueOf(value.toString()));
+			}
+		}
+		fireTableCellUpdated(row, col);
+	}
+
+	@Override
+	public boolean isCellEditable(int row, int col) {
+		if (row < 0 || row >= _rows || col < 0 || col >= _columns)
+			return false;
+
+		if (col == 0) {
+			return false;
+		} else if (col == 1) {
+			return true;
+		} else {
+			int paramsCol = col - 2;
+			return paramsCol < _parameters.get(row).size();
+		}
+	}
+
+	/**
+	 * Resets variation coefficient and all additional parameters to 0
+	 */
+	public void clearParameters() {
+		for (int i = 0; i < _rows; i++) {
+			_coefficients.set(i, Double.valueOf(0));
+			Vector<Double> parameters = _parameters.get(i);
+			int parametersNum = parameters.size();
+			for (int j = 0; j < parametersNum; j++) {
+				parameters.set(j, Double.valueOf(0));
+			}
+		}
+	}
 }

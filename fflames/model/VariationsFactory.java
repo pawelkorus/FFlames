@@ -88,7 +88,7 @@ public class VariationsFactory {
         if(name.compareTo("Secant") == 0) return new Secant(coefficient);
         if(name.compareTo("TwinTrian") == 0) return new TwinTrian(coefficient);
         if(name.compareTo("Cross") == 0) return new Cross(coefficient);
-        return new Linear(coefficient);
+        return new NullVariation();
     }
     
     public static IVariation getWariation(int index, Double coefficient) {
