@@ -8,20 +8,20 @@ package fflames.forms;
 
 import java.lang.Double;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.event.*;
 import javax.swing.*;
-import java.io.*;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 
 import fflames.interfaces.IColour;
 import fflames.interfaces.IVariation;
 import fflames.model.TransformTableModel;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 /**
  * 
@@ -73,22 +73,6 @@ public class MyFractals extends javax.swing.JFrame {
 		rotationsQuantityJTF = new javax.swing.JTextField();
 		jrbDrawFast = new javax.swing.JRadioButton();
 		jrbDrawSlow = new javax.swing.JRadioButton();
-		trAfJPanel = new javax.swing.JPanel();
-		aLabel = new javax.swing.JLabel();
-		wspATextField = new javax.swing.JTextField();
-		dLabel = new javax.swing.JLabel();
-		wspDTextField = new javax.swing.JTextField();
-		bLabel = new javax.swing.JLabel();
-		wspBTextField = new javax.swing.JTextField();
-		cLabel = new javax.swing.JLabel();
-		eLabel = new javax.swing.JLabel();
-		wspETextField = new javax.swing.JTextField();
-		fLabel = new javax.swing.JLabel();
-		wspFTextField = new javax.swing.JTextField();
-		wspCTextField = new javax.swing.JTextField();
-		prLabel = new javax.swing.JLabel();
-		wspPrTextField = new javax.swing.JTextField();
-		losujTransJButton = new javax.swing.JButton();
 		wariationsJPanel = new fflames.forms.WariationsJPanel();
 		coloringJPanel = new fflames.forms.ColoringJPanel();
 		infoJPanel = new javax.swing.JPanel();
@@ -236,198 +220,40 @@ public class MyFractals extends javax.swing.JFrame {
 
 		jTP.addTab("Opcje", opcjeJPanel);
 
-		aLabel.setText("A");
+		_affineTranformTab = new JPanel();
+		jTP.addTab("Affine transform", null, _affineTranformTab, null);
+		_affineTranformTab.setLayout(new GridLayout(0, 1, 0, 0));
 
-		wspATextField.setText("0");
+		_affineTransformEditor = new AffineTransformEditor();
+		GridBagLayout gbl__affineTransformEditor = (GridBagLayout) _affineTransformEditor.getLayout();
+		gbl__affineTransformEditor.columnWidths = new int[] { 0, 31, 0, 26, 0, 0 };
+		gbl__affineTransformEditor.columnWeights = new double[] { 0.0, 1.0, 0.0, 1.0, 0.0, 0.0 };
+		_affineTranformTab.add(_affineTransformEditor);
 
-		dLabel.setText("D");
+		JLabel lblPropability = new JLabel("Propability:");
+		GridBagConstraints gbc_lblPropability = new GridBagConstraints();
+		gbc_lblPropability.gridwidth = 5;
+		gbc_lblPropability.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPropability.anchor = GridBagConstraints.EAST;
+		gbc_lblPropability.gridx = 0;
+		gbc_lblPropability.gridy = 2;
+		_affineTransformEditor.add(lblPropability, gbc_lblPropability);
 
-		wspDTextField.setText("0");
+		_tfPropability = new JTextField();
+		GridBagConstraints gbc__tfPropability = new GridBagConstraints();
+		gbc__tfPropability.insets = new Insets(0, 0, 5, 0);
+		gbc__tfPropability.fill = GridBagConstraints.HORIZONTAL;
+		gbc__tfPropability.gridx = 5;
+		gbc__tfPropability.gridy = 2;
+		_affineTransformEditor.add(_tfPropability, gbc__tfPropability);
+		_tfPropability.setColumns(10);
 
-		bLabel.setText("B");
-
-		wspBTextField.setText("0");
-
-		cLabel.setText("C");
-
-		eLabel.setText("E");
-
-		wspETextField.setText("0");
-
-		fLabel.setText("F");
-
-		wspFTextField.setText("0");
-
-		wspCTextField.setText("0");
-
-		prLabel.setText("Pr.");
-
-		wspPrTextField.setText("1");
-
-		losujTransJButton.setText("Losuj");
-		losujTransJButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				losujTransJButtonActionPerformed(evt);
-			}
-		});
-
-		javax.swing.GroupLayout trAfJPanelLayout = new javax.swing.GroupLayout(trAfJPanel);
-		trAfJPanel.setLayout(trAfJPanelLayout);
-		trAfJPanelLayout
-				.setHorizontalGroup(trAfJPanelLayout
-						.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(
-								trAfJPanelLayout
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												trAfJPanelLayout
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-														.addGroup(
-																trAfJPanelLayout
-																		.createSequentialGroup()
-																		.addGroup(
-																				trAfJPanelLayout
-																						.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.LEADING)
-																						.addGroup(
-																								trAfJPanelLayout
-																										.createSequentialGroup()
-																										.addComponent(
-																												aLabel)
-																										.addPreferredGap(
-																												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																										.addComponent(
-																												wspATextField,
-																												javax.swing.GroupLayout.PREFERRED_SIZE,
-																												60,
-																												javax.swing.GroupLayout.PREFERRED_SIZE))
-																						.addGroup(
-																								trAfJPanelLayout
-																										.createSequentialGroup()
-																										.addComponent(
-																												dLabel)
-																										.addPreferredGap(
-																												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																										.addComponent(
-																												wspDTextField,
-																												javax.swing.GroupLayout.PREFERRED_SIZE,
-																												60,
-																												javax.swing.GroupLayout.PREFERRED_SIZE)))
-																		.addPreferredGap(
-																				javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																		.addGroup(
-																				trAfJPanelLayout
-																						.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.LEADING)
-																						.addGroup(
-																								trAfJPanelLayout
-																										.createSequentialGroup()
-																										.addComponent(
-																												bLabel)
-																										.addPreferredGap(
-																												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																										.addComponent(
-																												wspBTextField,
-																												javax.swing.GroupLayout.PREFERRED_SIZE,
-																												60,
-																												javax.swing.GroupLayout.PREFERRED_SIZE)
-																										.addPreferredGap(
-																												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																										.addComponent(
-																												cLabel))
-																						.addGroup(
-																								trAfJPanelLayout
-																										.createSequentialGroup()
-																										.addComponent(
-																												eLabel)
-																										.addPreferredGap(
-																												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																										.addComponent(
-																												wspETextField,
-																												javax.swing.GroupLayout.PREFERRED_SIZE,
-																												60,
-																												javax.swing.GroupLayout.PREFERRED_SIZE)
-																										.addPreferredGap(
-																												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																										.addComponent(
-																												fLabel)))
-																		.addPreferredGap(
-																				javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																		.addGroup(
-																				trAfJPanelLayout
-																						.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.LEADING)
-																						.addComponent(
-																								wspFTextField,
-																								javax.swing.GroupLayout.PREFERRED_SIZE,
-																								60,
-																								javax.swing.GroupLayout.PREFERRED_SIZE)
-																						.addGroup(
-																								trAfJPanelLayout
-																										.createSequentialGroup()
-																										.addComponent(
-																												wspCTextField,
-																												javax.swing.GroupLayout.PREFERRED_SIZE,
-																												60,
-																												javax.swing.GroupLayout.PREFERRED_SIZE)
-																										.addPreferredGap(
-																												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																										.addComponent(
-																												prLabel)
-																										.addPreferredGap(
-																												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																										.addComponent(
-																												wspPrTextField,
-																												javax.swing.GroupLayout.PREFERRED_SIZE,
-																												60,
-																												javax.swing.GroupLayout.PREFERRED_SIZE))))
-														.addComponent(losujTransJButton))
-										.addContainerGap(108, Short.MAX_VALUE)));
-		trAfJPanelLayout.setVerticalGroup(trAfJPanelLayout.createParallelGroup(
-				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				trAfJPanelLayout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								trAfJPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(aLabel)
-										.addComponent(wspATextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(bLabel)
-										.addComponent(wspBTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(cLabel)
-										.addComponent(wspCTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(prLabel)
-										.addComponent(wspPrTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								trAfJPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(dLabel)
-										.addComponent(eLabel)
-										.addComponent(wspDTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(wspETextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(fLabel)
-										.addComponent(wspFTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
-						.addComponent(losujTransJButton).addContainerGap()));
-
-		jTP.addTab("Transformacja afiniczna", trAfJPanel);
+		JButton _btnRandom = new JButton("Random");
+		GridBagConstraints gbc__btnRandom = new GridBagConstraints();
+		gbc__btnRandom.fill = GridBagConstraints.HORIZONTAL;
+		gbc__btnRandom.gridx = 5;
+		gbc__btnRandom.gridy = 3;
+		_affineTransformEditor.add(_btnRandom, gbc__btnRandom);
 		jTP.addTab("Wariacje", wariationsJPanel);
 		jTP.addTab("Kolorowanie", coloringJPanel);
 
@@ -485,7 +311,6 @@ public class MyFractals extends javax.swing.JFrame {
 														.addPreferredGap(ComponentPlacement.UNRELATED)
 														.addGroup(
 																layout.createParallelGroup(Alignment.LEADING)
-																		.addComponent(wybraneFunkcjeLabel)
 																		.addComponent(listaFunkcjiScrollPane,
 																				GroupLayout.PREFERRED_SIZE, 381,
 																				GroupLayout.PREFERRED_SIZE)))
@@ -524,7 +349,6 @@ public class MyFractals extends javax.swing.JFrame {
 										layout.createParallelGroup(Alignment.LEADING)
 												.addGroup(
 														layout.createSequentialGroup()
-																.addComponent(wybraneFunkcjeLabel)
 																.addPreferredGap(ComponentPlacement.RELATED)
 																.addComponent(listaFunkcjiScrollPane,
 																		GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))
@@ -550,25 +374,10 @@ public class MyFractals extends javax.swing.JFrame {
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
 
-	private void losujTransJButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_losujTransJButtonActionPerformed
-		wspATextField.setText(String.valueOf(Math.random()).substring(0, 6));
-		wspBTextField.setText(String.valueOf(Math.random()).substring(0, 6));
-		wspCTextField.setText(String.valueOf(Math.random()).substring(0, 6));
-		wspDTextField.setText(String.valueOf(Math.random()).substring(0, 6));
-		wspETextField.setText(String.valueOf(Math.random()).substring(0, 6));
-		wspFTextField.setText(String.valueOf(Math.random()).substring(0, 6));
-	}// GEN-LAST:event_losujTransJButtonActionPerformed
-
 	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JLabel aLabel;
-	private javax.swing.JLabel bLabel;
 	private javax.swing.ButtonGroup bgrDrawning;
-	private javax.swing.JLabel cLabel;
 	private fflames.forms.ColoringJPanel coloringJPanel;
-	private javax.swing.JLabel dLabel;
 	private javax.swing.JButton dodajButton;
-	private javax.swing.JLabel eLabel;
-	private javax.swing.JLabel fLabel;
 	private javax.swing.JFileChooser fileChooser;
 	private javax.swing.JTextField hieghtJTextField;
 	private javax.swing.JLabel iloscIteracjiJLabel;
@@ -584,44 +393,41 @@ public class MyFractals extends javax.swing.JFrame {
 	private javax.swing.JRadioButton jrbDrawSlow;
 	private JTable transformsList;
 	private javax.swing.JScrollPane listaFunkcjiScrollPane;
-	private javax.swing.JButton losujTransJButton;
 	private javax.swing.JPanel opcjeJPanel;
 	private javax.swing.JButton loadFractalFileFromXmlJButton;
-	private javax.swing.JLabel prLabel;
 	private javax.swing.JTextField rotationsQuantityJTF;
 	private javax.swing.JButton rysujButton;
 	private fflames.forms.RysunekJPanel rysunekJPanel;
 	private javax.swing.JButton saveImageButton;
 	private javax.swing.JLabel symetrieJLabel;
-	private javax.swing.JPanel trAfJPanel;
 	private javax.swing.JButton usunButton;
 	private fflames.forms.WariationsJPanel wariationsJPanel;
 	private javax.swing.JTextField widthJTextField;
 	private javax.swing.JLabel wielkoscObrJLabel;
-	private javax.swing.JTextField wspATextField;
-	private javax.swing.JTextField wspBTextField;
-	private javax.swing.JTextField wspCTextField;
-	private javax.swing.JTextField wspDTextField;
-	private javax.swing.JTextField wspETextField;
-	private javax.swing.JTextField wspFTextField;
-	private javax.swing.JTextField wspPrTextField;
 	private javax.swing.JLabel wybraneFunkcjeLabel;
 	private javax.swing.JLabel xJLabel;
 	private javax.swing.JButton saveFractalToXmlJButton;
+	private JPanel _affineTranformTab;
+	private JTextField _tfPropability;
+	private AffineTransformEditor _affineTransformEditor;
 
 	// End of variables declaration//GEN-END:variables
 
 	class ListaFunListSelectionHandler implements ListSelectionListener {
 
 		public void valueChanged(ListSelectionEvent e) {
-			double[] coefs = new double[6];
+			/**
+			 * @todo
+			 */
 			// functions.getTransformAt(transformsList.getSelectedIndex()).getAffineTr().getMatrix(coefs);
-			wspATextField.setText(String.valueOf(coefs[0]));
-			wspBTextField.setText(String.valueOf(coefs[2]));
-			wspCTextField.setText(String.valueOf(coefs[4]));
-			wspDTextField.setText(String.valueOf(coefs[1]));
-			wspETextField.setText(String.valueOf(coefs[3]));
-			wspFTextField.setText(String.valueOf(coefs[5]));
+			/*
+			 * wspATextField.setText(String.valueOf(coefs[0]));
+			 * wspBTextField.setText(String.valueOf(coefs[2]));
+			 * wspCTextField.setText(String.valueOf(coefs[4]));
+			 * wspDTextField.setText(String.valueOf(coefs[1]));
+			 * wspETextField.setText(String.valueOf(coefs[3]));
+			 * wspFTextField.setText(String.valueOf(coefs[5]));
+			 */
 			// wspPrTextField.setText(functions.getPr(transformsList.getSelectedIndex()).toString());
 			// wariationsJPanel.setWariations(functions.getTransformAt(transformsList.getSelectedIndex()).getWariations());
 		}
@@ -632,16 +438,8 @@ public class MyFractals extends javax.swing.JFrame {
 		rysunekJPanel.setImage(image);
 	}
 
-	public double[] getAffineTransformCoefficients() {
-		double[] affineParams = { Double.parseDouble(wspATextField.getText()),
-				Double.parseDouble(wspDTextField.getText()), Double.parseDouble(wspBTextField.getText()),
-				Double.parseDouble(wspETextField.getText()), Double.parseDouble(wspCTextField.getText()),
-				Double.parseDouble(wspFTextField.getText()) };
-		return affineParams;
-	}
-
 	public Double getFunctionPropability() {
-		return new Double(wspPrTextField.getText());
+		return new Double(_tfPropability.getText());
 	}
 
 	public Vector<IVariation> getVariations() {
@@ -706,5 +504,9 @@ public class MyFractals extends javax.swing.JFrame {
 
 	public RysunekJPanel getRysunekJPanel() {
 		return rysunekJPanel;
+	}
+
+	public AffineTransformEditor getAffineTransformEditor() {
+		return _affineTransformEditor;
 	}
 }

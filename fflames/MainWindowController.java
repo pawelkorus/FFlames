@@ -129,7 +129,7 @@ public final class MainWindowController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			double[] affineTransformParams = _view.getAffineTransformCoefficients();
+			double[] affineTransformParams = _view.getAffineTransformEditor().getValues();
 			Vector<IVariation> variations = _view.getVariations();
 			Double propability = _view.getFunctionPropability();
 			_transformsModel.add(new Transform(new AffineTransform(affineTransformParams), variations, propability));
