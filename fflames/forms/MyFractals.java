@@ -82,7 +82,7 @@ public class MyFractals extends javax.swing.JFrame {
 		infoDesc2JLabel = new javax.swing.JLabel();
 		loadFractalFileFromXmlJButton = new javax.swing.JButton();
 		saveFractalToXmlJButton = new javax.swing.JButton();
-		rysunekJPanel = new fflames.forms.RysunekJPanel();
+		rysunekJPanel = new fflames.forms.PreviewJPanel();
 		saveImageButton = new javax.swing.JButton();
 
 		fileChooser.setApproveButtonText("Otw�rz");
@@ -397,7 +397,7 @@ public class MyFractals extends javax.swing.JFrame {
 	private javax.swing.JButton loadFractalFileFromXmlJButton;
 	private javax.swing.JTextField rotationsQuantityJTF;
 	private javax.swing.JButton rysujButton;
-	private fflames.forms.RysunekJPanel rysunekJPanel;
+	private fflames.forms.PreviewJPanel rysunekJPanel;
 	private javax.swing.JButton saveImageButton;
 	private javax.swing.JLabel symetrieJLabel;
 	private javax.swing.JButton usunButton;
@@ -502,7 +502,7 @@ public class MyFractals extends javax.swing.JFrame {
 		saveImageButton.addActionListener(listener);
 	}
 
-	public RysunekJPanel getRysunekJPanel() {
+	public PreviewJPanel getRysunekJPanel() {
 		return rysunekJPanel;
 	}
 

@@ -113,7 +113,7 @@ public final class MainWindowController {
 			Integer numberOfIterations = _view.getIterationsNumber();
 			IColour coloringMethod = _view.getColoringMethod();
 			
-			BufferedImage image = new BufferedImage(_view.getWidth(), _view.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			BufferedImage image = new BufferedImage(_view.getImageWidth(), _view.getImageHeight(), BufferedImage.TYPE_INT_ARGB);
 			
 			FractalGenerator fractalGenerator = new FractalGenerator(_transformsModel.getTransforms(), coloringMethod, image);
 			fractalGenerator.setNumberOfIterations(numberOfIterations);

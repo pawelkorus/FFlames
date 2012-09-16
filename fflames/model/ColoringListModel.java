@@ -16,27 +16,38 @@ import fflames.interfaces.IColour;
 
 import java.util.Vector;
 import java.awt.Color;
+
 /**
- *
+ * 
  * @author victories
  */
 public class ColoringListModel implements ListModel {
-    private Vector<ListDataListener> listeners;
-    private String[] lista = {"Black & White", "Linear Black & White", 
-                              "Log Black & White", "Linear Coloring"};
-    private ColorsFactory colorsFactory = new ColorsFactory();
-    
-    /** Creates a new instance of ColoringListModel */
-    public ColoringListModel() {
-        listeners = new Vector<ListDataListener>();
-    }
-    
-    public void addListDataListener(ListDataListener l) { listeners.add(l); }
-    public void removeListDataListener(ListDataListener l) { listeners.remove(l); }
-    public String getElementAt(int index) { return lista[index]; }
-    public int getSize() { return lista.length; }
-    
-    public IColour getColoring(int index, Vector<Color> parameters) {
-        return colorsFactory.getColoring(index, parameters);
-    }
+	private Vector<ListDataListener> listeners;
+	private String[] lista = { "Black & White", "Linear Black & White", "Log Black & White", "Linear Coloring" };
+	private ColorsFactory colorsFactory = new ColorsFactory();
+
+	/** Creates a new instance of ColoringListModel */
+	public ColoringListModel() {
+		listeners = new Vector<ListDataListener>();
+	}
+
+	public void addListDataListener(ListDataListener l) {
+		listeners.add(l);
+	}
+
+	public void removeListDataListener(ListDataListener l) {
+		listeners.remove(l);
+	}
+
+	public String getElementAt(int index) {
+		return lista[index];
+	}
+
+	public int getSize() {
+		return lista.length;
+	}
+
+	public IColour getColoring(int index, Vector<Color> parameters) {
+		return colorsFactory.getColoring(index, parameters);
+	}
 }

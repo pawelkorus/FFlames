@@ -1,5 +1,5 @@
 /*
- * RysunekJPanel.java
+ * PreviewJPanel.java
  *
  * Created on April 22, 2008, 9:16 PM
  */
@@ -16,7 +16,7 @@ import java.awt.geom.Point2D;
  * 
  * @author victories
  */
-public class RysunekJPanel extends javax.swing.JPanel {
+public class PreviewJPanel extends javax.swing.JPanel {
 	/**
 	 * 
 	 */
@@ -26,8 +26,8 @@ public class RysunekJPanel extends javax.swing.JPanel {
 	private Point2D.Double pointTo = new Point2D.Double(0.0, 0.0);
 	private MouseEvent event;
 
-	/** Creates new form RysunekJPanel */
-	public RysunekJPanel() {
+	/** Creates new form PreviewJPanel */
+	public PreviewJPanel() {
 		initComponents();
 	}
 
