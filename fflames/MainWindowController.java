@@ -12,11 +12,14 @@ import java.util.Vector;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import fflames.exceptions.ImportXMLFractalFileException;
 import fflames.forms.MyFractals;
 import fflames.interfaces.IColour;
 import fflames.interfaces.IVariation;
+import fflames.model.ColorsFactory;
 import fflames.model.Transform;
 import fflames.model.TransformTableModel;
 
@@ -64,6 +67,8 @@ public final class MainWindowController {
 			}
 			
 		});	
+		
+		_view.getColoringEditor().addListSelectionListener(new ColoringMethodChangeListener());
 	}
 
 	public void loadFractalFile() {
@@ -85,6 +90,18 @@ public final class MainWindowController {
 		_imageFileChooser.addActionListener(listener);
 		_imageFileChooser.showSaveDialog(_view);
 		_imageFileChooser.removeActionListener(listener);
+	}
+	
+	class ColoringMethodChangeListener implements ListSelectionListener {
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			int selectedIndex = e.getFirstIndex();
+			if(selectedIndex == 2) {
+				_view.getColoringEditor().setNumberOfColorSlots(_transformsModel.getRowCount());
+			} else {
+				_view.getColoringEditor().setNumberOfColorSlots(0);
+			}
+		}
 	}
 	
 	class SaveImageListener implements ActionListener {
@@ -111,7 +128,9 @@ public final class MainWindowController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Integer numberOfIterations = _view.getIterationsNumber();
-			IColour coloringMethod = _view.getColoringMethod();
+			
+			ColorsFactory colorsFactory = new ColorsFactory();
+			IColour coloringMethod = colorsFactory.getColoring(_view.getColoringEditor().getSelectedIndex(), _view.getColoringEditor().getSelectedColors()); 
 			
 			BufferedImage image = new BufferedImage(_view.getImageWidth(), _view.getImageHeight(), BufferedImage.TYPE_INT_ARGB);
 			

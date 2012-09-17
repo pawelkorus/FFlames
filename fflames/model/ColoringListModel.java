@@ -21,7 +21,7 @@ import java.awt.Color;
  * 
  * @author victories
  */
-public class ColoringListModel implements ListModel {
+public class ColoringListModel implements ListModel<String> {
 	private Vector<ListDataListener> listeners;
 	private String[] lista = { "Black & White", "Linear Black & White", "Log Black & White", "Linear Coloring" };
 	private ColorsFactory colorsFactory = new ColorsFactory();
@@ -41,6 +41,10 @@ public class ColoringListModel implements ListModel {
 
 	public String getElementAt(int index) {
 		return lista[index];
+	}
+
+	public int getColoursNumberAt(int index) {
+		return colorsFactory.getColoring(index, null).getParametersQuantity();
 	}
 
 	public int getSize() {

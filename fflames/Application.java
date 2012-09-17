@@ -16,7 +16,7 @@ public final class Application implements Runnable {
 		_mainWindow = new MyFractals();
 		_mainWindow.setTransformTableModel(_transformsModel);
 		
-		_mainWindowController = new MainWindowController(_transformsModel, _mainWindow);
+		MainWindowController _mainWindowController = new MainWindowController(_transformsModel, _mainWindow);
 		
 		_mainWindow.setVisible(true);
 	}

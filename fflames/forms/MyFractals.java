@@ -13,7 +13,6 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
-import fflames.interfaces.IColour;
 import fflames.interfaces.IVariation;
 import fflames.model.TransformTableModel;
 import javax.swing.GroupLayout.Alignment;
@@ -255,7 +254,7 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc__btnRandom.gridy = 3;
 		_affineTransformEditor.add(_btnRandom, gbc__btnRandom);
 		jTP.addTab("Wariacje", wariationsJPanel);
-		jTP.addTab("Kolorowanie", coloringJPanel);
+		jTP.addTab("Coloring", coloringJPanel);
 
 		infoAutorJLabel.setText("Autor programu: Pawe� Korus (victories@tlen.pl), inf. in�. III r.");
 
@@ -450,10 +449,6 @@ public class MyFractals extends javax.swing.JFrame {
 		return transformsList.getSelectedRows();
 	}
 
-	public IColour getColoringMethod() {
-		return coloringJPanel.getColoring();
-	}
-
 	public Integer getIterationsNumber() {
 		return Integer.parseInt(iloscIteracjiJTextField.getText());
 	}
@@ -472,7 +467,6 @@ public class MyFractals extends javax.swing.JFrame {
 			@Override
 			public void tableChanged(TableModelEvent e) {
 				TransformTableModel model = (TransformTableModel) e.getSource();
-				coloringJPanel.setFunctionsCount(model.getRowCount());
 				rysujButton.setEnabled(!(model.getRowCount() == 0));
 			}
 		});
@@ -508,5 +502,9 @@ public class MyFractals extends javax.swing.JFrame {
 
 	public AffineTransformEditor getAffineTransformEditor() {
 		return _affineTransformEditor;
+	}
+
+	public ColoringJPanel getColoringEditor() {
+		return coloringJPanel;
 	}
 }
