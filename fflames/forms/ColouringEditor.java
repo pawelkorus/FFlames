@@ -10,8 +10,6 @@ import java.awt.Color;
 import java.util.Vector;
 
 import javax.swing.event.ListSelectionListener;
-
-import fflames.interfaces.IColour;
 import fflames.model.ColoringListModel;
 
 /**
@@ -81,10 +79,6 @@ public class ColouringEditor extends javax.swing.JPanel {
 
 	public Vector<Color> getSelectedColors() {
 		return buttonsPanel.getColors();
-	}
-
-	public IColour getColoring() {
-		return colListModel.getColoring(coloringsJList.getSelectedIndex(), buttonsPanel.getColors());
 	}
 
 	public int getSelectedIndex() {
