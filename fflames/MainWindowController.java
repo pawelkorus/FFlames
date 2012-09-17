@@ -23,6 +23,8 @@ import fflames.model.ColorsFactory;
 import fflames.model.Transform;
 import fflames.model.TransformTableModel;
 
+import javax.swing.JList;
+
 public final class MainWindowController {
 	TransformTableModel _transformsModel;
 	MyFractals _view;
@@ -95,11 +97,17 @@ public final class MainWindowController {
 	class ColoringMethodChangeListener implements ListSelectionListener {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			int selectedIndex = e.getFirstIndex();
-			if(selectedIndex == 2) {
-				_view.getColoringEditor().setNumberOfColorSlots(_transformsModel.getRowCount());
-			} else {
-				_view.getColoringEditor().setNumberOfColorSlots(0);
+			if(e.getValueIsAdjusting()) {
+				int selectedIndex = _view.getColoringEditor().getSelectedIndex();
+				ColorsFactory factory = new ColorsFactory();
+				int buttonsNumber = factory.getColoring(selectedIndex, null).getParametersQuantity();
+				if(buttonsNumber == 1) {
+					_view.getColoringEditor().setNumberOfColorSlots(1);	
+				} else if(buttonsNumber == 2) {
+					_view.getColoringEditor().setNumberOfColorSlots(_transformsModel.getRowCount());
+				} else {
+					_view.getColoringEditor().setNumberOfColorSlots(0);
+				}
 			}
 		}
 	}

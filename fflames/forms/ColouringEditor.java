@@ -12,6 +12,18 @@ import java.util.Vector;
 import javax.swing.event.ListSelectionListener;
 import fflames.model.ColoringListModel;
 
+import javax.swing.JButton;
+import javax.swing.JColorChooser;
+import javax.swing.JPanel;
+import javax.swing.BoxLayout;
+import java.awt.Component;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+
 /**
  * 
  * @author victories
@@ -24,6 +36,30 @@ public class ColouringEditor extends javax.swing.JPanel {
 
 	/** Creates new form ColouringEditor */
 	public ColouringEditor() {
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+
+		JPanel panel = new JPanel();
+		panel.setAlignmentY(Component.TOP_ALIGNMENT);
+		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panel.setBorder(null);
+		add(panel);
+		panel.setLayout(new BorderLayout(0, 0));
+
+		_list = new JList<String>();
+		_list.setAlignmentY(Component.TOP_ALIGNMENT);
+		_list.setAlignmentX(Component.LEFT_ALIGNMENT);
+		_list.setLayoutOrientation(JList.VERTICAL_WRAP);
+		_list.setVisibleRowCount(20);
+		_list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		_list.setBorder(null);
+		_list.setModel(new ColoringListModel());
+		panel.add(_list);
+
+		_buttonsPanel = new JPanel();
+		_buttonsPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		_buttonsPanel.setAlignmentY(Component.TOP_ALIGNMENT);
+		add(_buttonsPanel);
+		_buttonsPanel.setLayout(new BoxLayout(_buttonsPanel, BoxLayout.Y_AXIS));
 		initComponents();
 	}
 
@@ -35,62 +71,54 @@ public class ColouringEditor extends javax.swing.JPanel {
 	// <editor-fold defaultstate="collapsed"
 	// desc=" Generated Code ">//GEN-BEGIN:initComponents
 	private void initComponents() {
-		coloringsJScrollPane = new javax.swing.JScrollPane();
-		coloringsJList = new javax.swing.JList<String>();
-		buttonsPanel = new fflames.forms.ButtonsPanel();
-
-		coloringsJList.setModel(colListModel);
-		coloringsJList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-
-		coloringsJScrollPane.setViewportView(coloringsJList);
-
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-		this.setLayout(layout);
-		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				javax.swing.GroupLayout.Alignment.TRAILING,
-				layout.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(coloringsJScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 175,
-								javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap()));
-		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				layout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addComponent(coloringsJScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 96,
-												Short.MAX_VALUE)
-										.addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 96,
-												Short.MAX_VALUE)).addContainerGap()));
 	}// </editor-fold>//GEN-END:initComponents
 
 	public void addListSelectionListener(ListSelectionListener listener) {
-		coloringsJList.addListSelectionListener(listener);
+		_list.addListSelectionListener(listener);
 	}
 
 	public void removeListSelectionListener(ListSelectionListener listener) {
-		coloringsJList.removeListSelectionListener(listener);
+		_list.removeListSelectionListener(listener);
 	}
 
 	public void setNumberOfColorSlots(int value) {
-		buttonsPanel.setButtonsQuantity(value);
+		_buttonsPanel.removeAll();
+
+		for (int i = 0; i < value; i++) {
+			JButton btn = new JButton("Choose color");
+			btn.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent evt) {
+					((JButton) evt.getSource()).setBackground(JColorChooser.showDialog(null, "Choose color", null));
+				}
+			});
+			_buttonsPanel.add(btn);
+		}
+
+		validate();
 	}
 
 	public Vector<Color> getSelectedColors() {
-		return buttonsPanel.getColors();
+		Vector<Color> colors = new Vector<Color>();
+		for (int i = 0; i < _buttonsPanel.getComponentCount(); i++) {
+			JButton btn = (JButton) _buttonsPanel.getComponent(i);
+			colors.add(btn.getBackground());
+		}
+		return colors;
 	}
 
 	public int getSelectedIndex() {
-		return coloringsJList.getSelectedIndex();
+		return _list.getSelectedIndex();
 	}
 
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private fflames.forms.ButtonsPanel buttonsPanel;
-	private javax.swing.JList<String> coloringsJList;
-	private javax.swing.JScrollPane coloringsJScrollPane;
-	// End of variables declaration//GEN-END:variables
-	private ColoringListModel colListModel = new ColoringListModel();
-
 	public int functionsCount = 0;
+	private JList<String> _list;
+	private JPanel _buttonsPanel;
+
+	protected JList<String> getList() {
+		return _list;
+	}
+
+	protected JPanel getButtonsPanel() {
+		return _buttonsPanel;
+	}
 }
