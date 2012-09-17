@@ -73,7 +73,7 @@ public class MyFractals extends javax.swing.JFrame {
 		jrbDrawFast = new javax.swing.JRadioButton();
 		jrbDrawSlow = new javax.swing.JRadioButton();
 		wariationsJPanel = new fflames.forms.WariationsJPanel();
-		coloringJPanel = new fflames.forms.ColoringJPanel();
+		coloringJPanel = new fflames.forms.ColouringEditor();
 		infoJPanel = new javax.swing.JPanel();
 		infoAutorJLabel = new javax.swing.JLabel();
 		infoTytulJLabel = new javax.swing.JLabel();
@@ -375,7 +375,7 @@ public class MyFractals extends javax.swing.JFrame {
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.ButtonGroup bgrDrawning;
-	private fflames.forms.ColoringJPanel coloringJPanel;
+	private fflames.forms.ColouringEditor coloringJPanel;
 	private javax.swing.JButton dodajButton;
 	private javax.swing.JFileChooser fileChooser;
 	private javax.swing.JTextField hieghtJTextField;
@@ -504,7 +504,7 @@ public class MyFractals extends javax.swing.JFrame {
 		return _affineTransformEditor;
 	}
 
-	public ColoringJPanel getColoringEditor() {
+	public ColouringEditor getColoringEditor() {
 		return coloringJPanel;
 	}
 }

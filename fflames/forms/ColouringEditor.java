@@ -1,5 +1,5 @@
 /*
- * ColoringJPanel.java
+ * ColouringEditor.java
  *
  * Created on March 21, 2008, 2:25 AM
  */
@@ -18,14 +18,14 @@ import fflames.model.ColoringListModel;
  * 
  * @author victories
  */
-public class ColoringJPanel extends javax.swing.JPanel {
+public class ColouringEditor extends javax.swing.JPanel {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1766888684765540914L;
 
-	/** Creates new form ColoringJPanel */
-	public ColoringJPanel() {
+	/** Creates new form ColouringEditor */
+	public ColouringEditor() {
 		initComponents();
 	}
 
