@@ -1,5 +1,5 @@
 /*
- * WariationsJPanel.java
+ * VariationsEditor.java
  *
  * Created on March 18, 2008, 4:10 PM
  */
@@ -20,15 +20,15 @@ import javax.swing.BoxLayout;
  * 
  * @author victories
  */
-public class WariationsJPanel extends javax.swing.JPanel {
+public class VariationsEditor extends javax.swing.JPanel {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2305910609219372143L;
 
-	/** Creates new form WariationsJPanel */
-	public WariationsJPanel() {
+	/** Creates new form VariationsEditor */
+	public VariationsEditor() {
 		initComponents();
 
 		ListSelectionModel lsm = wariationsJTable.getSelectionModel();

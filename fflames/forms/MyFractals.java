@@ -72,7 +72,7 @@ public class MyFractals extends javax.swing.JFrame {
 		rotationsQuantityJTF = new javax.swing.JTextField();
 		jrbDrawFast = new javax.swing.JRadioButton();
 		jrbDrawSlow = new javax.swing.JRadioButton();
-		wariationsJPanel = new fflames.forms.WariationsJPanel();
+		wariationsJPanel = new fflames.forms.VariationsEditor();
 		coloringJPanel = new fflames.forms.ColouringEditor();
 		infoJPanel = new javax.swing.JPanel();
 		infoAutorJLabel = new javax.swing.JLabel();
@@ -400,7 +400,7 @@ public class MyFractals extends javax.swing.JFrame {
 	private javax.swing.JButton saveImageButton;
 	private javax.swing.JLabel symetrieJLabel;
 	private javax.swing.JButton usunButton;
-	private fflames.forms.WariationsJPanel wariationsJPanel;
+	private fflames.forms.VariationsEditor wariationsJPanel;
 	private javax.swing.JTextField widthJTextField;
 	private javax.swing.JLabel wielkoscObrJLabel;
 	private javax.swing.JLabel wybraneFunkcjeLabel;
