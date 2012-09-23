@@ -20,6 +20,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Dimension;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.Component;
 
 /**
  * 
@@ -48,7 +51,6 @@ public class MyFractals extends javax.swing.JFrame {
 	private void initComponents() {
 
 		fileChooser = new javax.swing.JFileChooser();
-		bgrDrawning = new javax.swing.ButtonGroup();
 		imageFileChooser = new javax.swing.JFileChooser();
 		wybraneFunkcjeLabel = new javax.swing.JLabel();
 
@@ -85,8 +87,6 @@ public class MyFractals extends javax.swing.JFrame {
 		hieghtJTextField = new javax.swing.JTextField();
 		symetrieJLabel = new javax.swing.JLabel();
 		rotationsQuantityJTF = new javax.swing.JTextField();
-		jrbDrawFast = new javax.swing.JRadioButton();
-		jrbDrawSlow = new javax.swing.JRadioButton();
 		wariationsJPanel = new fflames.forms.VariationsEditor();
 		wariationsJPanel.setMinimumSize(new Dimension(200, 200));
 		coloringJPanel = new fflames.forms.ColouringEditor();
@@ -114,98 +114,71 @@ public class MyFractals extends javax.swing.JFrame {
 
 		rotationsQuantityJTF.setText("0");
 
-		bgrDrawning.add(jrbDrawFast);
-		jrbDrawFast.setSelected(true);
-		jrbDrawFast.setText("Rysuj szybko");
-
-		bgrDrawning.add(jrbDrawSlow);
-		jrbDrawSlow.setText("Rysuj dok�adnie");
-
 		javax.swing.GroupLayout opcjeJPanelLayout = new javax.swing.GroupLayout(opcjeJPanel);
-		opcjeJPanel.setLayout(opcjeJPanelLayout);
-		opcjeJPanelLayout.setHorizontalGroup(opcjeJPanelLayout.createParallelGroup(
-				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
+		opcjeJPanelLayout.setHorizontalGroup(opcjeJPanelLayout.createParallelGroup(Alignment.LEADING).addGroup(
 				opcjeJPanelLayout
 						.createSequentialGroup()
 						.addContainerGap()
 						.addGroup(
 								opcjeJPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+										.createParallelGroup(Alignment.LEADING)
 										.addGroup(
 												opcjeJPanelLayout
 														.createSequentialGroup()
 														.addComponent(iloscIteracjiJLabel)
-														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+														.addPreferredGap(ComponentPlacement.UNRELATED)
 														.addComponent(iloscIteracjiJTextField,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 91,
-																javax.swing.GroupLayout.PREFERRED_SIZE))
+																GroupLayout.PREFERRED_SIZE, 91,
+																GroupLayout.PREFERRED_SIZE))
 										.addGroup(
 												opcjeJPanelLayout
 														.createSequentialGroup()
 														.addComponent(wielkoscObrJLabel)
-														.addGap(15, 15, 15)
-														.addComponent(widthJTextField,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 45,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+														.addGap(15)
+														.addComponent(widthJTextField, GroupLayout.PREFERRED_SIZE, 45,
+																GroupLayout.PREFERRED_SIZE)
+														.addPreferredGap(ComponentPlacement.RELATED)
 														.addComponent(xJLabel)
-														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(hieghtJTextField,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 44,
-																javax.swing.GroupLayout.PREFERRED_SIZE))
+														.addPreferredGap(ComponentPlacement.RELATED)
+														.addComponent(hieghtJTextField, GroupLayout.PREFERRED_SIZE, 44,
+																GroupLayout.PREFERRED_SIZE))
 										.addGroup(
 												opcjeJPanelLayout
 														.createSequentialGroup()
 														.addComponent(symetrieJLabel)
-														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-														.addComponent(rotationsQuantityJTF,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 51,
-																javax.swing.GroupLayout.PREFERRED_SIZE)))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
-						.addGroup(
-								opcjeJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-										.addComponent(jrbDrawFast).addComponent(jrbDrawSlow))
-						.addContainerGap(21, Short.MAX_VALUE)));
-
-		opcjeJPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] { hieghtJTextField,
-				widthJTextField });
-
-		opcjeJPanelLayout.setVerticalGroup(opcjeJPanelLayout.createParallelGroup(
-				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
+														.addPreferredGap(ComponentPlacement.UNRELATED)
+														.addComponent(rotationsQuantityJTF, GroupLayout.PREFERRED_SIZE,
+																51, GroupLayout.PREFERRED_SIZE)))
+						.addContainerGap(261, Short.MAX_VALUE)));
+		opcjeJPanelLayout.setVerticalGroup(opcjeJPanelLayout.createParallelGroup(Alignment.LEADING).addGroup(
 				opcjeJPanelLayout
 						.createSequentialGroup()
 						.addContainerGap()
 						.addGroup(
 								opcjeJPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+										.createParallelGroup(Alignment.BASELINE)
 										.addComponent(iloscIteracjiJLabel)
-										.addComponent(iloscIteracjiJTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(jrbDrawFast))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(iloscIteracjiJTextField, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.RELATED)
 						.addGroup(
 								opcjeJPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+										.createParallelGroup(Alignment.BASELINE)
 										.addComponent(wielkoscObrJLabel)
-										.addComponent(hieghtJTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(hieghtJTextField, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 										.addComponent(xJLabel)
-										.addComponent(widthJTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(jrbDrawSlow))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(widthJTextField, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.RELATED)
 						.addGroup(
 								opcjeJPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+										.createParallelGroup(Alignment.BASELINE)
 										.addComponent(symetrieJLabel)
-										.addComponent(rotationsQuantityJTF, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(57, 57, 57)));
+										.addComponent(rotationsQuantityJTF, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(57)));
+		opcjeJPanelLayout.linkSize(SwingConstants.HORIZONTAL, new Component[] { widthJTextField, hieghtJTextField });
+		opcjeJPanel.setLayout(opcjeJPanelLayout);
 
 		jTP.addTab("Opcje", opcjeJPanel);
 
@@ -381,7 +354,6 @@ public class MyFractals extends javax.swing.JFrame {
 	}// </editor-fold>//GEN-END:initComponents
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.ButtonGroup bgrDrawning;
 	private fflames.forms.ColouringEditor coloringJPanel;
 	private javax.swing.JButton dodajButton;
 	private javax.swing.JFileChooser fileChooser;
@@ -395,8 +367,6 @@ public class MyFractals extends javax.swing.JFrame {
 	private javax.swing.JLabel infoTytulJLabel;
 	private javax.swing.JLabel infoWersjaJLabel;
 	private javax.swing.JTabbedPane jTP;
-	private javax.swing.JRadioButton jrbDrawFast;
-	private javax.swing.JRadioButton jrbDrawSlow;
 	private JTable transformsList;
 	private javax.swing.JScrollPane listaFunkcjiScrollPane;
 	private javax.swing.JPanel opcjeJPanel;
