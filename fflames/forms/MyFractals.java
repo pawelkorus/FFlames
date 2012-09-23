@@ -15,12 +15,11 @@ import java.awt.image.BufferedImage;
 
 import fflames.interfaces.IVariation;
 import fflames.model.TransformTableModel;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.GridLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Dimension;
 
 /**
  * 
@@ -52,37 +51,6 @@ public class MyFractals extends javax.swing.JFrame {
 		bgrDrawning = new javax.swing.ButtonGroup();
 		imageFileChooser = new javax.swing.JFileChooser();
 		wybraneFunkcjeLabel = new javax.swing.JLabel();
-		rysujButton = new javax.swing.JButton();
-		usunButton = new javax.swing.JButton();
-		dodajButton = new javax.swing.JButton();
-		listaFunkcjiScrollPane = new javax.swing.JScrollPane();
-		transformsList = new JTable();
-		transformsList.setShowGrid(false);
-		transformsList.setFillsViewportHeight(true);
-		transformsList.setShowVerticalLines(false);
-		jTP = new javax.swing.JTabbedPane();
-		opcjeJPanel = new javax.swing.JPanel();
-		iloscIteracjiJLabel = new javax.swing.JLabel();
-		iloscIteracjiJTextField = new javax.swing.JTextField();
-		wielkoscObrJLabel = new javax.swing.JLabel();
-		widthJTextField = new javax.swing.JTextField();
-		xJLabel = new javax.swing.JLabel();
-		hieghtJTextField = new javax.swing.JTextField();
-		symetrieJLabel = new javax.swing.JLabel();
-		rotationsQuantityJTF = new javax.swing.JTextField();
-		jrbDrawFast = new javax.swing.JRadioButton();
-		jrbDrawSlow = new javax.swing.JRadioButton();
-		wariationsJPanel = new fflames.forms.VariationsEditor();
-		coloringJPanel = new fflames.forms.ColouringEditor();
-		infoJPanel = new javax.swing.JPanel();
-		infoAutorJLabel = new javax.swing.JLabel();
-		infoTytulJLabel = new javax.swing.JLabel();
-		infoWersjaJLabel = new javax.swing.JLabel();
-		infoDesc2JLabel = new javax.swing.JLabel();
-		loadFractalFileFromXmlJButton = new javax.swing.JButton();
-		saveFractalToXmlJButton = new javax.swing.JButton();
-		rysunekJPanel = new fflames.forms.PreviewJPanel();
-		saveImageButton = new javax.swing.JButton();
 
 		fileChooser.setApproveButtonText("Otw�rz");
 		fileChooser.setCurrentDirectory(null);
@@ -97,16 +65,38 @@ public class MyFractals extends javax.swing.JFrame {
 		setName("mainFrame"); // NOI18N
 
 		wybraneFunkcjeLabel.setText("Wybrane funkcje:");
-
-		rysujButton.setText("Rysuj");
-		rysujButton.setEnabled(false);
-
-		usunButton.setText("Usun");
-
-		dodajButton.setText("Dodaj");
-
-		transformsList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		listaFunkcjiScrollPane.setColumnHeaderView(transformsList);
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[] { 214, 341, 423, 0 };
+		gridBagLayout.rowHeights = new int[] { 200, 25, 25, 42, 25, 25, 48, 25, 77, 201, 0 };
+		gridBagLayout.columnWeights = new double[] { 0.0, 1.0, 1.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		getContentPane().setLayout(gridBagLayout);
+		jTP = new javax.swing.JTabbedPane();
+		jTP.setPreferredSize(new Dimension(200, 200));
+		jTP.setMinimumSize(new Dimension(200, 200));
+		opcjeJPanel = new javax.swing.JPanel();
+		opcjeJPanel.setPreferredSize(new Dimension(200, 200));
+		opcjeJPanel.setMinimumSize(new Dimension(200, 200));
+		iloscIteracjiJLabel = new javax.swing.JLabel();
+		iloscIteracjiJTextField = new javax.swing.JTextField();
+		wielkoscObrJLabel = new javax.swing.JLabel();
+		widthJTextField = new javax.swing.JTextField();
+		xJLabel = new javax.swing.JLabel();
+		hieghtJTextField = new javax.swing.JTextField();
+		symetrieJLabel = new javax.swing.JLabel();
+		rotationsQuantityJTF = new javax.swing.JTextField();
+		jrbDrawFast = new javax.swing.JRadioButton();
+		jrbDrawSlow = new javax.swing.JRadioButton();
+		wariationsJPanel = new fflames.forms.VariationsEditor();
+		wariationsJPanel.setMinimumSize(new Dimension(200, 200));
+		coloringJPanel = new fflames.forms.ColouringEditor();
+		coloringJPanel.setMinimumSize(new Dimension(200, 200));
+		infoJPanel = new javax.swing.JPanel();
+		infoJPanel.setMinimumSize(new Dimension(200, 200));
+		infoAutorJLabel = new javax.swing.JLabel();
+		infoTytulJLabel = new javax.swing.JLabel();
+		infoWersjaJLabel = new javax.swing.JLabel();
+		infoDesc2JLabel = new javax.swing.JLabel();
 
 		iloscIteracjiJLabel.setText("Ilosc iteracji:");
 
@@ -220,6 +210,7 @@ public class MyFractals extends javax.swing.JFrame {
 		jTP.addTab("Opcje", opcjeJPanel);
 
 		_affineTranformTab = new JPanel();
+		_affineTranformTab.setMinimumSize(new Dimension(200, 200));
 		jTP.addTab("Affine transform", null, _affineTranformTab, null);
 		_affineTranformTab.setLayout(new GridLayout(0, 1, 0, 0));
 
@@ -287,88 +278,104 @@ public class MyFractals extends javax.swing.JFrame {
 						.addComponent(infoDesc2JLabel).addContainerGap(52, Short.MAX_VALUE)));
 
 		jTP.addTab("O programie", infoJPanel);
+		GridBagConstraints gbc_jTP = new GridBagConstraints();
+		gbc_jTP.fill = GridBagConstraints.HORIZONTAL;
+		gbc_jTP.anchor = GridBagConstraints.NORTH;
+		gbc_jTP.insets = new Insets(0, 0, 5, 5);
+		gbc_jTP.gridwidth = 2;
+		gbc_jTP.gridx = 0;
+		gbc_jTP.gridy = 0;
+		getContentPane().add(jTP, gbc_jTP);
+		listaFunkcjiScrollPane = new javax.swing.JScrollPane();
+		listaFunkcjiScrollPane.setMinimumSize(new Dimension(200, 200));
+		listaFunkcjiScrollPane.setMaximumSize(new Dimension(200, 200));
+		transformsList = new JTable();
+		transformsList.setPreferredScrollableViewportSize(new Dimension(200, 200));
+		transformsList.setShowGrid(false);
+		transformsList.setFillsViewportHeight(true);
+		transformsList.setShowVerticalLines(false);
+		transformsList.setTableHeader(null);
 
-		loadFractalFileFromXmlJButton.setText("Load fractal from XML file");
-		saveFractalToXmlJButton.setText("Save fractal as Xml file");
+		transformsList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		listaFunkcjiScrollPane.setViewportView(transformsList);
+		GridBagConstraints gbc_listaFunkcjiScrollPane = new GridBagConstraints();
+		gbc_listaFunkcjiScrollPane.anchor = GridBagConstraints.NORTH;
+		gbc_listaFunkcjiScrollPane.fill = GridBagConstraints.HORIZONTAL;
+		gbc_listaFunkcjiScrollPane.insets = new Insets(0, 0, 5, 0);
+		gbc_listaFunkcjiScrollPane.gridx = 2;
+		gbc_listaFunkcjiScrollPane.gridy = 0;
+		getContentPane().add(listaFunkcjiScrollPane, gbc_listaFunkcjiScrollPane);
+		dodajButton = new javax.swing.JButton();
+
+		dodajButton.setText("Dodaj");
+		GridBagConstraints gbc_dodajButton = new GridBagConstraints();
+		gbc_dodajButton.anchor = GridBagConstraints.NORTH;
+		gbc_dodajButton.fill = GridBagConstraints.HORIZONTAL;
+		gbc_dodajButton.insets = new Insets(0, 0, 5, 5);
+		gbc_dodajButton.gridx = 0;
+		gbc_dodajButton.gridy = 1;
+		getContentPane().add(dodajButton, gbc_dodajButton);
+		rysunekJPanel = new fflames.forms.PreviewJPanel();
 
 		rysunekJPanel.setMinimumSize(new java.awt.Dimension(640, 480));
-		rysunekJPanel.setPreferredSize(new java.awt.Dimension(640, 480));
+		// rysunekJPanel.setPreferredSize(new Dimension(1000000, 1000000));
 		rysunekJPanel.setLayout(new java.awt.FlowLayout());
+		GridBagConstraints gbc_rysunekJPanel = new GridBagConstraints();
+		gbc_rysunekJPanel.fill = GridBagConstraints.BOTH;
+		gbc_rysunekJPanel.gridheight = 9;
+		gbc_rysunekJPanel.gridwidth = 2;
+		gbc_rysunekJPanel.gridx = 1;
+		gbc_rysunekJPanel.gridy = 1;
+		getContentPane().add(rysunekJPanel, gbc_rysunekJPanel);
+		usunButton = new javax.swing.JButton();
+
+		usunButton.setText("Usun");
+		GridBagConstraints gbc_usunButton = new GridBagConstraints();
+		gbc_usunButton.anchor = GridBagConstraints.NORTH;
+		gbc_usunButton.fill = GridBagConstraints.HORIZONTAL;
+		gbc_usunButton.insets = new Insets(0, 0, 5, 5);
+		gbc_usunButton.gridx = 0;
+		gbc_usunButton.gridy = 2;
+		getContentPane().add(usunButton, gbc_usunButton);
+		loadFractalFileFromXmlJButton = new javax.swing.JButton();
+
+		loadFractalFileFromXmlJButton.setText("Load fractal from XML file");
+		GridBagConstraints gbc_loadFractalFileFromXmlJButton = new GridBagConstraints();
+		gbc_loadFractalFileFromXmlJButton.anchor = GridBagConstraints.NORTHWEST;
+		gbc_loadFractalFileFromXmlJButton.insets = new Insets(0, 0, 5, 5);
+		gbc_loadFractalFileFromXmlJButton.gridx = 0;
+		gbc_loadFractalFileFromXmlJButton.gridy = 4;
+		getContentPane().add(loadFractalFileFromXmlJButton, gbc_loadFractalFileFromXmlJButton);
+		saveFractalToXmlJButton = new javax.swing.JButton();
+		saveFractalToXmlJButton.setText("Save fractal as Xml file");
+		GridBagConstraints gbc_saveFractalToXmlJButton = new GridBagConstraints();
+		gbc_saveFractalToXmlJButton.anchor = GridBagConstraints.NORTH;
+		gbc_saveFractalToXmlJButton.fill = GridBagConstraints.HORIZONTAL;
+		gbc_saveFractalToXmlJButton.insets = new Insets(0, 0, 5, 5);
+		gbc_saveFractalToXmlJButton.gridx = 0;
+		gbc_saveFractalToXmlJButton.gridy = 5;
+		getContentPane().add(saveFractalToXmlJButton, gbc_saveFractalToXmlJButton);
+		rysujButton = new javax.swing.JButton();
+
+		rysujButton.setText("Rysuj");
+		rysujButton.setEnabled(false);
+		GridBagConstraints gbc_rysujButton = new GridBagConstraints();
+		gbc_rysujButton.anchor = GridBagConstraints.NORTH;
+		gbc_rysujButton.fill = GridBagConstraints.HORIZONTAL;
+		gbc_rysujButton.insets = new Insets(0, 0, 5, 5);
+		gbc_rysujButton.gridx = 0;
+		gbc_rysujButton.gridy = 7;
+		getContentPane().add(rysujButton, gbc_rysujButton);
+		saveImageButton = new javax.swing.JButton();
 
 		saveImageButton.setText("Zapisz obrazek");
-
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-		layout.setHorizontalGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(
-				layout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								layout.createParallelGroup(Alignment.LEADING)
-										.addGroup(
-												layout.createSequentialGroup()
-														.addComponent(jTP, GroupLayout.PREFERRED_SIZE, 425,
-																GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(ComponentPlacement.UNRELATED)
-														.addGroup(
-																layout.createParallelGroup(Alignment.LEADING)
-																		.addComponent(listaFunkcjiScrollPane,
-																				GroupLayout.PREFERRED_SIZE, 381,
-																				GroupLayout.PREFERRED_SIZE)))
-										.addGroup(
-												layout.createSequentialGroup()
-														.addGroup(
-																layout.createParallelGroup(Alignment.LEADING)
-																		.addComponent(dodajButton,
-																				GroupLayout.DEFAULT_SIZE, 214,
-																				Short.MAX_VALUE)
-																		.addComponent(usunButton,
-																				GroupLayout.DEFAULT_SIZE, 214,
-																				Short.MAX_VALUE)
-																		.addComponent(loadFractalFileFromXmlJButton,
-																				GroupLayout.DEFAULT_SIZE,
-																				GroupLayout.DEFAULT_SIZE,
-																				Short.MAX_VALUE)
-																		.addComponent(saveFractalToXmlJButton,
-																				GroupLayout.DEFAULT_SIZE, 214,
-																				Short.MAX_VALUE)
-																		.addComponent(rysujButton, Alignment.TRAILING,
-																				GroupLayout.DEFAULT_SIZE, 214,
-																				Short.MAX_VALUE)
-																		.addComponent(saveImageButton,
-																				GroupLayout.DEFAULT_SIZE, 214,
-																				Short.MAX_VALUE))
-														.addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(rysunekJPanel, GroupLayout.PREFERRED_SIZE, 640,
-																GroupLayout.PREFERRED_SIZE))).addContainerGap()));
-		layout.setVerticalGroup(layout
-				.createParallelGroup(Alignment.TRAILING)
-				.addGroup(
-						layout.createSequentialGroup()
-								.addContainerGap()
-								.addGroup(
-										layout.createParallelGroup(Alignment.LEADING)
-												.addGroup(
-														layout.createSequentialGroup()
-																.addPreferredGap(ComponentPlacement.RELATED)
-																.addComponent(listaFunkcjiScrollPane,
-																		GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))
-												.addComponent(jTP, GroupLayout.PREFERRED_SIZE, 168,
-														GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addGroup(
-										layout.createParallelGroup(Alignment.LEADING)
-												.addGroup(
-														layout.createSequentialGroup().addComponent(dodajButton)
-																.addPreferredGap(ComponentPlacement.RELATED)
-																.addComponent(usunButton).addGap(30)
-																.addComponent(loadFractalFileFromXmlJButton)
-																.addPreferredGap(ComponentPlacement.RELATED)
-																.addComponent(saveFractalToXmlJButton).addGap(36)
-																.addComponent(rysujButton).addGap(65)
-																.addComponent(saveImageButton))
-												.addComponent(rysunekJPanel, Alignment.TRAILING,
-														GroupLayout.PREFERRED_SIZE, 469, GroupLayout.PREFERRED_SIZE))
-								.addContainerGap()));
-		getContentPane().setLayout(layout);
+		GridBagConstraints gbc_saveImageButton = new GridBagConstraints();
+		gbc_saveImageButton.anchor = GridBagConstraints.NORTH;
+		gbc_saveImageButton.fill = GridBagConstraints.HORIZONTAL;
+		gbc_saveImageButton.insets = new Insets(0, 0, 0, 5);
+		gbc_saveImageButton.gridx = 0;
+		gbc_saveImageButton.gridy = 9;
+		getContentPane().add(saveImageButton, gbc_saveImageButton);
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
