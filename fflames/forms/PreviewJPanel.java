@@ -57,10 +57,17 @@ public class PreviewJPanel extends javax.swing.JPanel {
 	public void paint(Graphics g) {
 		super.paint(g);
 
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, 640, 480);
+		int currentWidth = getWidth();
+		int currentHeight = getHeight();
 
-		g.drawImage(image, 0, 0, null);
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, currentWidth, currentHeight);
+
+		if (image != null) {
+			Image scaledImage = image.getScaledInstance(currentWidth, currentHeight, Image.SCALE_SMOOTH);
+
+			g.drawImage(scaledImage, 0, 0, null);
+		}
 	}
 
 	/**
