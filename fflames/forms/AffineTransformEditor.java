@@ -158,4 +158,28 @@ public class AffineTransformEditor extends JPanel {
 			_textFields[i].setText(String.valueOf(values[i]));
 		}
 	}
+
+	public void setScaleX(Double v) {
+		textField_A.setText(v.toString());
+	}
+
+	public void setScaleY(Double v) {
+		textField_C.setText(v.toString());
+	}
+
+	public void setShearX(Double v) {
+		textField_B.setText(v.toString());
+	}
+
+	public void setShearY(Double v) {
+		textField_D.setText(v.toString());
+	}
+
+	public void setTraslateX(Double v) {
+		textField_E.setText(v.toString());
+	}
+
+	public void setTranslateY(Double v) {
+		textField_F.setText(v.toString());
+	}
 }

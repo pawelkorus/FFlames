@@ -412,27 +412,6 @@ public class MyFractals extends javax.swing.JFrame {
 
 	// End of variables declaration//GEN-END:variables
 
-	class ListaFunListSelectionHandler implements ListSelectionListener {
-
-		public void valueChanged(ListSelectionEvent e) {
-			/**
-			 * @todo
-			 */
-			// functions.getTransformAt(transformsList.getSelectedIndex()).getAffineTr().getMatrix(coefs);
-			/*
-			 * wspATextField.setText(String.valueOf(coefs[0]));
-			 * wspBTextField.setText(String.valueOf(coefs[2]));
-			 * wspCTextField.setText(String.valueOf(coefs[4]));
-			 * wspDTextField.setText(String.valueOf(coefs[1]));
-			 * wspETextField.setText(String.valueOf(coefs[3]));
-			 * wspFTextField.setText(String.valueOf(coefs[5]));
-			 */
-			// wspPrTextField.setText(functions.getPr(transformsList.getSelectedIndex()).toString());
-			// wariationsJPanel.setWariations(functions.getTransformAt(transformsList.getSelectedIndex()).getWariations());
-		}
-
-	}
-
 	public void setImage(BufferedImage image) {
 		rysunekJPanel.setImage(image);
 	}
@@ -441,12 +420,16 @@ public class MyFractals extends javax.swing.JFrame {
 		return new Double(_tfPropability.getText());
 	}
 
-	public Vector<IVariation> getVariations() {
-		return wariationsJPanel.getWariations();
+	public void setFunctionPropability(Double v) {
+		_tfPropability.setText(v.toString());
 	}
 
-	public int[] getSelectedFunctions() {
-		return transformsList.getSelectedRows();
+	public Vector<IVariation> getVariations() {
+		return wariationsJPanel.getVariations();
+	}
+
+	public int getSelectedTransform() {
+		return transformsList.getSelectedRow();
 	}
 
 	public Integer getIterationsNumber() {
@@ -496,6 +479,10 @@ public class MyFractals extends javax.swing.JFrame {
 		saveImageButton.addActionListener(listener);
 	}
 
+	public void addTransformsListSelectionListener(ListSelectionListener listener) {
+		transformsList.getSelectionModel().addListSelectionListener(listener);
+	}
+
 	public PreviewJPanel getRysunekJPanel() {
 		return rysunekJPanel;
 	}
@@ -506,5 +493,9 @@ public class MyFractals extends javax.swing.JFrame {
 
 	public ColouringEditor getColoringEditor() {
 		return coloringJPanel;
+	}
+
+	public VariationsEditor getVariationsEditor() {
+		return wariationsJPanel;
 	}
 }

@@ -1,8 +1,12 @@
 package fflames.model;
 
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.table.AbstractTableModel;
+
+import fflames.interfaces.IVariation;
 
 public class TransformTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = -4510264602645148388L;
@@ -19,14 +23,14 @@ public class TransformTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Transform transform = _transforms.get(rowIndex);
+		// Transform transform = _transforms.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
-			return transform.getPropability();
+			return getPropabilityAt(rowIndex);
 		case 1:
-			return transform.getAffineTr();
+			return getAffineTransformAt(rowIndex);
 		case 2:
-			return transform.getWariations();
+			return getVariationsAt(rowIndex);
 		default:
 			return null;
 		}
@@ -39,6 +43,36 @@ public class TransformTableModel extends AbstractTableModel {
 
 	public ArrayList<Transform> getTransforms() {
 		return _transforms;
+	}
+
+	public Vector<IVariation> getVariationsAt(int index) {
+		try {
+			Transform transform = _transforms.get(index);
+			return transform.getWariations();
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public AffineTransform getAffineTransformAt(int index) {
+		try {
+			Transform transform = _transforms.get(index);
+			return transform.getAffineTr();
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public Double getPropabilityAt(int index) {
+		try {
+			Transform transform = _transforms.get(index);
+			return transform.getPropability();
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public void add(Transform transform) {

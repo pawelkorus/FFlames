@@ -16,14 +16,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import fflames.exceptions.ImportXMLFractalFileException;
+import fflames.forms.AffineTransformEditor;
 import fflames.forms.MyFractals;
 import fflames.interfaces.IColour;
 import fflames.interfaces.IVariation;
 import fflames.model.ColorsFactory;
 import fflames.model.Transform;
 import fflames.model.TransformTableModel;
-
-import javax.swing.JList;
 
 public final class MainWindowController {
 	TransformTableModel _transformsModel;
@@ -71,6 +70,8 @@ public final class MainWindowController {
 		});	
 		
 		_view.getColoringEditor().addListSelectionListener(new ColoringMethodChangeListener());
+		
+		_view.addTransformsListSelectionListener(new TransformListSelectionListener());
 	}
 
 	public void loadFractalFile() {
@@ -168,8 +169,8 @@ public final class MainWindowController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int[] rows = _view.getSelectedFunctions();
-			_transformsModel.remove(rows);
+			int selectedIndex = _view.getSelectedTransform();
+			_transformsModel.remove(selectedIndex);
 		}
 		
 	}
@@ -220,6 +221,26 @@ public final class MainWindowController {
 				
 				_transformsModel.setTransforms(transforms);
 			} 
+		}
+	
+	}
+	
+	class TransformListSelectionListener implements ListSelectionListener
+	{
+
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			int selectedTransform = _view.getSelectedTransform();
+			_view.setFunctionPropability((Double) _transformsModel.getValueAt(selectedTransform, 0));
+			AffineTransform transform = (AffineTransform) _transformsModel.getAffineTransformAt(selectedTransform);
+			AffineTransformEditor affineTransformEditor = _view.getAffineTransformEditor();
+			affineTransformEditor.setScaleX(transform.getScaleX());
+			affineTransformEditor.setScaleY(transform.getScaleY());
+			affineTransformEditor.setShearX(transform.getShearX());
+			affineTransformEditor.setShearY(transform.getShearY());
+			affineTransformEditor.setTraslateX(transform.getTranslateX());
+			affineTransformEditor.setTranslateY(transform.getTranslateY());
+			_view.getVariationsEditor().setVariations(_transformsModel.getVariationsAt(selectedTransform));
 		}
 		
 	}

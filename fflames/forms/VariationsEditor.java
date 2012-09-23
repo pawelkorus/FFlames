@@ -62,7 +62,7 @@ public class VariationsEditor extends javax.swing.JPanel {
 	 *         u�ytkownika
 	 * @throws java.lang.Exception
 	 */
-	public Vector<IVariation> getWariations() {
+	public Vector<IVariation> getVariations() {
 		Vector<IVariation> wariations = new Vector<IVariation>();
 		VariationsTableModel tableModel = (VariationsTableModel) wariationsJTable.getModel();
 		IVariation temp;
@@ -78,20 +78,20 @@ public class VariationsEditor extends javax.swing.JPanel {
 	}
 
 	/**
-	 * Ustawia warto�ci w tabeli wed�ug zadanego wektora wariacji
+	 * Sets model values according to the given variations vector
 	 * 
-	 * @param wariations
-	 *            obiekt typu Vector<IWariations> z wariacjami
+	 * @param variations
+	 *            variations vector
 	 */
-	public void setWariations(Vector<IVariation> wariations) {
+	public void setVariations(Vector<IVariation> variations) {
 		((VariationsTableModel) wariationsJTable.getModel()).clearParameters();
 
-		for (IVariation wariation : wariations) {
-			wariationsJTable.getModel().setValueAt(wariation.getCoefficient().toString(),
-					VariationsFactory.getWariationNumber(wariation.getWariationName()), 1);
-			if (wariation.getParametersQuantity() > 0) {
-				wariationsJTable.getModel().setValueAt(wariation.getParameters(),
-						VariationsFactory.getWariationNumber(wariation.getWariationName()), 0);
+		for (IVariation variation : variations) {
+			wariationsJTable.getModel().setValueAt(variation.getCoefficient().toString(),
+					VariationsFactory.getWariationNumber(variation.getWariationName()), 1);
+			if (variation.getParametersQuantity() > 0) {
+				wariationsJTable.getModel().setValueAt(variation.getParameters(),
+						VariationsFactory.getWariationNumber(variation.getWariationName()), 0);
 			}
 		}
 	}
