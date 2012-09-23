@@ -20,9 +20,6 @@ import java.awt.Component;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 
 /**
  * 
