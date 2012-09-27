@@ -7,10 +7,19 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import java.awt.Insets;
+import java.beans.PropertyChangeEvent;
+
 import javax.swing.border.EmptyBorder;
 
+import fflames.model.AffineTransformModel;
+
 public class AffineTransformEditor extends JPanel {
+	private AffineTransformModel _model = new AffineTransformModel();
+	private PropertyChangeListener _listener = new PropertyChangeListener();
+
 	public AffineTransformEditor() {
+		_model.addPropertyChangeListener(_listener);
+
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0 };
@@ -132,9 +141,9 @@ public class AffineTransformEditor extends JPanel {
 	private JTextField[] _textFields = new JTextField[6];
 	private JTextField textField_A;
 	private JTextField textField_B;
+	private JTextField textField_C;
 	private JTextField textField_D;
 	private JTextField textField_E;
-	private JTextField textField_C;
 	private JTextField textField_F;
 
 	public void reset() {
@@ -143,43 +152,50 @@ public class AffineTransformEditor extends JPanel {
 		}
 	}
 
-	public double[] getValues() {
-		double[] values = new double[6];
-		for (int i = 0; i < 6; i++) {
-			values[i] = Double.valueOf(_textFields[i].toString());
+	public AffineTransformModel getModel() {
+		return _model;
+	}
+
+	public void setModel(AffineTransformModel model) {
+		_model.removePropertyChangeListener(_listener);
+		_model = model;
+		_model.addPropertyChangeListener(_listener);
+	}
+
+	class PropertyChangeListener implements java.beans.PropertyChangeListener {
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			switch (evt.getPropertyName()) {
+			case AffineTransformModel.SCALE_X:
+				textField_A.setText(evt.getNewValue().toString());
+				break;
+			case AffineTransformModel.SCALE_Y:
+				textField_C.setText(evt.getNewValue().toString());
+				break;
+			case AffineTransformModel.SHEAR_X:
+				textField_B.setText(evt.getNewValue().toString());
+				break;
+			case AffineTransformModel.SHEAR_Y:
+				textField_D.setText(evt.getNewValue().toString());
+				break;
+			case AffineTransformModel.TRANSLATE_X:
+				textField_E.setText(evt.getNewValue().toString());
+				break;
+			case AffineTransformModel.TRANSLATE_Y:
+				textField_F.setText(evt.getNewValue().toString());
+				break;
+			case AffineTransformModel.TRANSFORM:
+				AffineTransformModel model = (AffineTransformModel) evt.getSource();
+				textField_A.setText(Double.toString(model.getScaleX()));
+				textField_C.setText(Double.toString(model.getScaleY()));
+				textField_B.setText(Double.toString(model.getShearX()));
+				textField_D.setText(Double.toString(model.getShearY()));
+				textField_E.setText(Double.toString(model.getTranslateX()));
+				textField_F.setText(Double.toString(model.getTranslateY()));
+				break;
+			}
 		}
-		return values;
-	}
 
-	public void setValues(double[] values) {
-		if (6 > values.length)
-			return;
-		for (int i = 0; i < 6; i++) {
-			_textFields[i].setText(String.valueOf(values[i]));
-		}
-	}
-
-	public void setScaleX(Double v) {
-		textField_A.setText(v.toString());
-	}
-
-	public void setScaleY(Double v) {
-		textField_C.setText(v.toString());
-	}
-
-	public void setShearX(Double v) {
-		textField_B.setText(v.toString());
-	}
-
-	public void setShearY(Double v) {
-		textField_D.setText(v.toString());
-	}
-
-	public void setTraslateX(Double v) {
-		textField_E.setText(v.toString());
-	}
-
-	public void setTranslateY(Double v) {
-		textField_F.setText(v.toString());
 	}
 }

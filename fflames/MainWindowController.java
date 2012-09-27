@@ -20,6 +20,7 @@ import fflames.forms.AffineTransformEditor;
 import fflames.forms.MyFractals;
 import fflames.interfaces.IColour;
 import fflames.interfaces.IVariation;
+import fflames.model.AffineTransformModel;
 import fflames.model.ColorsFactory;
 import fflames.model.Transform;
 import fflames.model.TransformTableModel;
@@ -157,10 +158,10 @@ public final class MainWindowController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			double[] affineTransformParams = _view.getAffineTransformEditor().getValues();
+			AffineTransformModel affineTransformModel = _view.getAffineTransformEditor().getModel();
 			Vector<IVariation> variations = _view.getVariations();
 			Double propability = _view.getFunctionPropability();
-			_transformsModel.add(new Transform(new AffineTransform(affineTransformParams), variations, propability));
+			_transformsModel.add(new Transform(affineTransformModel.getTransform(), variations, propability));
 		}
 		
 	}
@@ -234,12 +235,7 @@ public final class MainWindowController {
 			_view.setFunctionPropability((Double) _transformsModel.getValueAt(selectedTransform, 0));
 			AffineTransform transform = (AffineTransform) _transformsModel.getAffineTransformAt(selectedTransform);
 			AffineTransformEditor affineTransformEditor = _view.getAffineTransformEditor();
-			affineTransformEditor.setScaleX(transform.getScaleX());
-			affineTransformEditor.setScaleY(transform.getScaleY());
-			affineTransformEditor.setShearX(transform.getShearX());
-			affineTransformEditor.setShearY(transform.getShearY());
-			affineTransformEditor.setTraslateX(transform.getTranslateX());
-			affineTransformEditor.setTranslateY(transform.getTranslateY());
+			affineTransformEditor.getModel().setTransform(transform);
 			_view.getVariationsEditor().setVariations(_transformsModel.getVariationsAt(selectedTransform));
 		}
 		
