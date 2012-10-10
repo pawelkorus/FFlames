@@ -9,36 +9,59 @@
 
 package fflames.colouring;
 
-import java.awt.Color;
+import java.awt.color.ColorSpace;
+import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
+import java.awt.image.DataBuffer;
+import java.awt.image.WritableRaster;
 /**
  *
  * @author victories
  */
-public class LinearBlackWhite implements fflames.interfaces.IColour {
-    int width, height;
-    private int[][] screenHits;
-    /** Creates a new instance of LinearBlackWhite */
-    public LinearBlackWhite() {
-    }
+public class LinearBlackWhite extends AbstractColouring {
+    @Override
+	public ColorModel getColorModel() {
+		return new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, ComponentColorModel.OPAQUE, DataBuffer.TYPE_BYTE);
+	}
 
-    public void zeruj() {
-        for(int i=0; i<width; i++)
-            for(int j=0; j<height; j++)
-                screenHits[i][j] = 0;
+
+
+	@Override
+	public void writeColour(WritableRaster raster, int interaction, int x, int y, int index) {
+		if(!skip()) {
+			if(x >= 0 && x < _width) {
+				if(y >= 0 && y < _height) {
+					_screenHits[x][y] = _screenHits[x][y] + 1;
+					int hits = _screenHits[x][y];
+					if(hits > _maxHits) {
+						_maxHits = hits;
+					}
+				}
+			}
+		}
+	}
+
+
+
+	@Override
+	public void finalize(WritableRaster raster) {
+		for(int x = 0; x < _width; x++) {
+			for(int y = 0; y < _height; y++) {
+				int hits = _screenHits[x][y];
+				raster.setSample(x, y, 0, ((double)hits)/((double)_maxHits) * 255);
+			}
+		}
+	}
+
+    @Override
+	public void initialize(WritableRaster raster) {
+    	super.initialize(raster);
+    	_width = raster.getWidth();
+    	_height = raster.getHeight();
+    	_maxHits = 0;
+    	_screenHits = new int[_width][_height];
     }
     
-    public void setScreenHits(int _width, int _height) {
-        if((_width != width) || (_height != height)) {
-            width = _width; height =_height;
-            screenHits = new int[width][height];
-        }
-    }
-    
-    public Color getColor(int x, int y, Color color, int whichFunction) { 
-         if(screenHits[x][y] < 255)
-            screenHits[x][y] += 1;
-        return new Color(255, 255, 255, screenHits[x][y]);
-    }
-    
-    public int getParametersQuantity() { return 0; }
+    private int[][] _screenHits;
+    private int _width = 0, _height = 0, _maxHits = 0;
 }

@@ -9,21 +9,26 @@
 
 package fflames.colouring;
 
-import java.awt.Color;
+import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
+import java.awt.image.WritableRaster;
 /**
  *
  * @author victories
  */
-public class BlackWhite implements fflames.interfaces.IColour{
-    
-    /** Creates a new instance of BlackWhite */
-    public BlackWhite() {
-    }
-    
-    public void zeruj() {}
-    public void setScreenHits(int width, int height) {}
-    
-    public Color getColor(int x, int y, Color color, int whichFunction) { return Color.WHITE; }
-    
-    public int getParametersQuantity() { return 0; }
+public class BlackWhite extends AbstractColouring {
+		
+	@Override
+	public ColorModel getColorModel() {
+		byte[] colors = {0, (byte)255}; 
+		
+		return new IndexColorModel(2, 2, colors, colors, colors);
+	}
+
+	@Override
+	public void writeColour(WritableRaster raster, int interaction, int x, int y, int index) {
+		if(!skip()) {
+			raster.setSample(x, y, 0, 1);
+		}
+	}
 }

@@ -142,14 +142,14 @@ public final class MainWindowController {
 			ColorsFactory colorsFactory = new ColorsFactory();
 			IColour coloringMethod = colorsFactory.getColoring(_view.getColoringEditor().getSelectedIndex(), _view.getColoringEditor().getSelectedColors()); 
 			
-			BufferedImage image = new BufferedImage(_view.getImageWidth(), _view.getImageHeight(), BufferedImage.TYPE_INT_ARGB);
+			//BufferedImage image = new BufferedImage(_view.getImageWidth(), _view.getImageHeight(), BufferedImage.TYPE_INT_ARGB);
 			
-			FractalGenerator fractalGenerator = new FractalGenerator(_transformsModel.getTransforms(), coloringMethod, image);
+			FractalGenerator fractalGenerator = new FractalGenerator(_transformsModel.getTransforms(), coloringMethod, _view.getImageWidth(), _view.getImageHeight());
 			fractalGenerator.setNumberOfIterations(numberOfIterations);
 			fractalGenerator.execute();
 			
 			_view.getRysunekJPanel().resetPoints();
-			_view.getRysunekJPanel().setImage(image);
+			_view.getRysunekJPanel().setImage(fractalGenerator.getOutput());
 		}
 		
 	}

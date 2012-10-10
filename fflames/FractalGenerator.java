@@ -1,10 +1,12 @@
 package fflames;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Vector;
@@ -14,11 +16,22 @@ import fflames.model.Transform;
 
 public class FractalGenerator {
 	
+	@Deprecated
 	public FractalGenerator(ArrayList<Transform> transforms, IColour _coloringMethod, BufferedImage _output) {
 		super();
 		_transforms = transforms;
 		this._coloringMethod = _coloringMethod;
-		this._output = _output;
+		this._randomNumberGenerator = new Random();
+		
+		_numberOfIterations = 100000;
+	}
+	
+	public FractalGenerator(ArrayList<Transform> transforms, IColour _coloringMethod, int width, int height) {
+		super();
+		_width = width;
+		_height = height;
+		_transforms = transforms;
+		this._coloringMethod = _coloringMethod;
 		this._randomNumberGenerator = new Random();
 		
 		_numberOfIterations = 100000;
@@ -27,12 +40,15 @@ public class FractalGenerator {
 	public void execute() {
 		Point2D.Double point = new Point2D.Double();
 		Point imagePoint = new Point();
-		Color color = new Color(_randomNumberGenerator.nextFloat(), _randomNumberGenerator.nextFloat(), _randomNumberGenerator.nextFloat());
 		point.setLocation(_randomNumberGenerator.nextDouble(), _randomNumberGenerator.nextDouble());
-		int i = 1, index = 0, width = _output.getWidth(), height = _output.getHeight(); 
+		int i = 1, index = 0;
 		
-		//_output.flush();
-		_coloringMethod.setScreenHits(width, height);
+		ColorModel colorModel = _coloringMethod.getColorModel();
+		
+		_output = new BufferedImage(colorModel, colorModel.createCompatibleWritableRaster(_width, _height), false, new Hashtable<String, Object>());
+		WritableRaster raster = _output.getRaster();
+		
+		_coloringMethod.initialize(raster);
 		
 		Vector<Double> bounds = calculateBounds();
 		Double minx = bounds.elementAt(0);
@@ -41,20 +57,20 @@ public class FractalGenerator {
 		Double maxy = bounds.elementAt(3);
 		
 		while(i <= _numberOfIterations) {
-			calculateNextPoint(point);			
-			Double valX = new Double((point.getX() - minx)/(maxx - minx) * width);
-			Double valY = new Double((point.getY() - miny)/(maxy - miny) * height);
+			index = selectFunctionIndex();
+			calculateNextPoint(point, index);			
+			Double valX = new Double((point.getX() - minx)/(maxx - minx) * _width);
+			Double valY = new Double((point.getY() - miny)/(maxy - miny) * _height);
 			imagePoint.setLocation(valX.intValue(), valY.intValue());
 			
-			if(i > 20) {
-				if(imagePoint.x < width && imagePoint.x >= 0 && imagePoint.y >= 0 && imagePoint.y < height) {
-					color = _coloringMethod.getColor(imagePoint.x, imagePoint.y, color, index);
-					_output.setRGB(imagePoint.x, imagePoint.y, color.getRGB());
-				}
+			if(imagePoint.x < _width && imagePoint.x >= 0 && imagePoint.y >= 0 && imagePoint.y < _height) {
+				_coloringMethod.writeColour(raster, i, imagePoint.x, imagePoint.y, index);
 			}
 			
 			i++;
 		}
+		
+		_coloringMethod.finalize(raster);
 	}
 	
 	public int getNumberOfIterations() {
@@ -65,8 +81,13 @@ public class FractalGenerator {
 		this._numberOfIterations = _numberOfIterations;
 	}
 	
+	public BufferedImage getOutput() {
+		return _output;
+	}
+	
 	private Vector<Double> calculateBounds() {
 		int sampleSize = 20000;
+		int index = 0;
 		
 		Vector<Point2D.Double> points = new Vector<Point2D.Double>();
 		Point2D.Double point = new Point2D.Double(_randomNumberGenerator.nextDouble(), _randomNumberGenerator.nextDouble());
@@ -75,7 +96,8 @@ public class FractalGenerator {
 		Double stdDevx = new Double(0);
 		Double stdDevy = new Double(0);
 		for(int i = 0; i < sampleSize; i++) {
-			calculateNextPoint(point);
+			index = selectFunctionIndex();
+			calculateNextPoint(point, index);
 			if(i >= 20) {
 				meanx += point.getX();
 				meany += point.getY();
@@ -103,8 +125,8 @@ public class FractalGenerator {
 		return result;
 	}
 	
-	private void calculateNextPoint(Point2D.Double point) {
-		int index = selectFunctionIndex();
+	private void calculateNextPoint(Point2D.Double point, int index) {
+		
 		_transforms.get(index).oblicz(point);
 	}
 	
@@ -121,6 +143,6 @@ public class FractalGenerator {
 	ArrayList<Transform> _transforms;
 	IColour _coloringMethod;
 	BufferedImage _output;
-	int _numberOfIterations;
+	int _numberOfIterations, _width, _height;
 	Random _randomNumberGenerator;
 }

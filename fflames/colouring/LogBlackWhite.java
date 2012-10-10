@@ -9,39 +9,61 @@
 
 package fflames.colouring;
 
-import java.awt.Color;
+import java.awt.color.ColorSpace;
+import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
+import java.awt.image.DataBuffer;
+import java.awt.image.WritableRaster;
 /**
  *
  * @author victories
  */
-public class LogBlackWhite implements fflames.interfaces.IColour{
-    private int width, height, maxHits;
-    private int[][] screenHits; 
-    /** Creates a new instance of LogBlackWhite */
-    public LogBlackWhite() {
-        width = 0; height = 0;
-        screenHits = new int[width][height];
-    }
+public class LogBlackWhite extends AbstractColouring {   
+    @Override
+	public ColorModel getColorModel() {
+    	return new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, ComponentColorModel.OPAQUE, DataBuffer.TYPE_BYTE);
+	}
+
+	@Override
+	public void writeColour(WritableRaster raster, int interaction, int x, int y, int index) {
+		if(!skip()) {	
+			if(x >= 0 && x < _width) {
+				if(y >= 0 && y < _height) {
+					int hits = _screenHits[x][y];
+					hits++;
+					_screenHits[x][y] = hits;
+					if(hits > _maxHits) {
+						_maxHits = hits;
+					}
+						
+				}
+			}
+		}
+	}
+
+	@Override
+	public void initialize(WritableRaster raster) {
+		super.initialize(raster);
+		
+		_width = raster.getWidth();
+    	_height = raster.getHeight();
+    	_maxHits = 0;
+    	_screenHits = new int[_width][_height];
+	}
+
+	@Override
+	public void finalize(WritableRaster raster) {
+		double logMaxHits = Math.log((double)_maxHits);
+		
+		for(int x = 0; x < _width; x++) {
+			for(int y = 0; y < _height; y++) {
+				int hits = _screenHits[x][y];
+				double value = Math.log((double)hits)/logMaxHits;
+				raster.setSample(x, y, 0, value * 255);
+			}
+		}
+	}
     
-    public void zeruj() {
-        for(int i=0; i<width; i++)
-            for(int j=0; j<height; j++)
-                screenHits[i][j] = 0;
-    }
-    
-    public void setScreenHits(int _width, int _height) {
-        if((_width != width) || (_height != height)) {
-            width = _width; height =_height;
-            screenHits = new int[width][height];
-            maxHits = 0;
-        }
-    }
-    
-    public Color getColor(int x, int y, Color color, int whichFunction) { 
-        screenHits[x][y] += 1;
-        if(screenHits[x][y] > maxHits) maxHits = screenHits[x][y];
-        return new Color(1.0f, 1.0f, 1.0f, (float)(Math.log10(screenHits[x][y])/Math.log10(maxHits)));
-    }
-    
-    public int getParametersQuantity() { return 0; }
+    private int _width = 0, _height = 0, _maxHits = 0;
+    private int[][] _screenHits; 
 }
