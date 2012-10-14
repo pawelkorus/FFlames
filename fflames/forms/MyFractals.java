@@ -37,6 +37,36 @@ public class MyFractals extends javax.swing.JFrame {
 	/** Creates new form MyFractals */
 	public MyFractals() {
 		super();
+		
+		menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+		
+		JSeparator separator = new JSeparator();
+		mnFile.add(separator);
+		
+		mnOpen = new JMenuItem("Open");
+		mnFile.add(mnOpen);
+		
+		JSeparator separator_1 = new JSeparator();
+		mnFile.add(separator_1);
+		
+		mnSave = new JMenuItem("Save");
+		mnFile.add(mnSave);
+		
+		mnSaveImage = new JMenuItem("Save image");
+		mnFile.add(mnSaveImage);
+		
+		JSeparator separator_2 = new JSeparator();
+		mnFile.add(separator_2);
+		
+		mnAbout = new JMenu("About");
+		menuBar.add(mnAbout);
+		
+		mnAboutFflames = new JMenuItem("About FFlames");
+		mnAbout.add(mnAboutFflames);
 
 		initComponents();
 	}
@@ -91,12 +121,6 @@ public class MyFractals extends javax.swing.JFrame {
 		wariationsJPanel.setMinimumSize(new Dimension(200, 200));
 		coloringJPanel = new fflames.forms.ColouringEditor();
 		coloringJPanel.setMinimumSize(new Dimension(200, 200));
-		infoJPanel = new javax.swing.JPanel();
-		infoJPanel.setMinimumSize(new Dimension(200, 200));
-		infoAutorJLabel = new javax.swing.JLabel();
-		infoTytulJLabel = new javax.swing.JLabel();
-		infoWersjaJLabel = new javax.swing.JLabel();
-		infoDesc2JLabel = new javax.swing.JLabel();
 
 		iloscIteracjiJLabel.setText("Ilosc iteracji:");
 
@@ -219,38 +243,6 @@ public class MyFractals extends javax.swing.JFrame {
 		_affineTransformEditor.add(_btnRandom, gbc__btnRandom);
 		jTP.addTab("Wariacje", wariationsJPanel);
 		jTP.addTab("Coloring", coloringJPanel);
-
-		infoAutorJLabel.setText("Autor programu: Pawe� Korus (victories@tlen.pl), inf. in�. III r.");
-
-		infoTytulJLabel.setText("Tytu� programu: MyFractals");
-
-		infoWersjaJLabel.setText("Wersja: 1.0");
-
-		infoDesc2JLabel.setText("Semestr letni, 2008.");
-
-		javax.swing.GroupLayout infoJPanelLayout = new javax.swing.GroupLayout(infoJPanel);
-		infoJPanel.setLayout(infoJPanelLayout);
-		infoJPanelLayout.setHorizontalGroup(infoJPanelLayout.createParallelGroup(
-				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				infoJPanelLayout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								infoJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addComponent(infoAutorJLabel).addComponent(infoTytulJLabel)
-										.addComponent(infoWersjaJLabel).addComponent(infoDesc2JLabel))
-						.addContainerGap(108, Short.MAX_VALUE)));
-		infoJPanelLayout.setVerticalGroup(infoJPanelLayout.createParallelGroup(
-				javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				infoJPanelLayout.createSequentialGroup().addGap(14, 14, 14).addComponent(infoTytulJLabel)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(infoAutorJLabel)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(infoWersjaJLabel)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(infoDesc2JLabel).addContainerGap(52, Short.MAX_VALUE)));
-
-		jTP.addTab("O programie", infoJPanel);
 		GridBagConstraints gbc_jTP = new GridBagConstraints();
 		gbc_jTP.fill = GridBagConstraints.HORIZONTAL;
 		gbc_jTP.anchor = GridBagConstraints.NORTH;
@@ -361,11 +353,6 @@ public class MyFractals extends javax.swing.JFrame {
 	private javax.swing.JLabel iloscIteracjiJLabel;
 	private javax.swing.JTextField iloscIteracjiJTextField;
 	private javax.swing.JFileChooser imageFileChooser;
-	private javax.swing.JLabel infoAutorJLabel;
-	private javax.swing.JLabel infoDesc2JLabel;
-	private javax.swing.JPanel infoJPanel;
-	private javax.swing.JLabel infoTytulJLabel;
-	private javax.swing.JLabel infoWersjaJLabel;
 	private javax.swing.JTabbedPane jTP;
 	private JTable transformsList;
 	private javax.swing.JScrollPane listaFunkcjiScrollPane;
@@ -386,6 +373,13 @@ public class MyFractals extends javax.swing.JFrame {
 	private JPanel _affineTranformTab;
 	private JTextField _tfPropability;
 	private AffineTransformEditor _affineTransformEditor;
+	private JMenuBar menuBar;
+	private JMenu mnFile;
+	private JMenuItem mnOpen;
+	private JMenuItem mnSave;
+	private JMenu mnAbout;
+	private JMenuItem mnAboutFflames;
+	private JMenuItem mnSaveImage;
 
 	// End of variables declaration//GEN-END:variables
 
@@ -434,10 +428,12 @@ public class MyFractals extends javax.swing.JFrame {
 
 	public void addLoadFractalFileXmlActionListener(ActionListener listener) {
 		loadFractalFileFromXmlJButton.addActionListener(listener);
+		mnOpen.addActionListener(listener);
 	}
 
 	public void addSaveFractalFileXmlActionListener(ActionListener listener) {
 		saveFractalToXmlJButton.addActionListener(listener);
+		mnSave.addActionListener(listener);
 	}
 
 	public void addFunctionActionListener(ActionListener listener) {
@@ -454,12 +450,17 @@ public class MyFractals extends javax.swing.JFrame {
 
 	public void addSaveImageActionListener(ActionListener listener) {
 		saveImageButton.addActionListener(listener);
+		mnSaveImage.addActionListener(listener);
 	}
-
+	
 	public void addTransformsListSelectionListener(ListSelectionListener listener) {
 		transformsList.getSelectionModel().addListSelectionListener(listener);
 	}
 
+	public void addShowAboutInfoActionListener(ActionListener listener) {
+		mnAboutFflames.addActionListener(listener);
+	}
+	
 	public PreviewJPanel getRysunekJPanel() {
 		return rysunekJPanel;
 	}

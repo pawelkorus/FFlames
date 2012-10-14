@@ -9,12 +9,14 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import fflames.exceptions.ImportXMLFractalFileException;
+import fflames.forms.AboutDialog;
 import fflames.forms.AffineTransformEditor;
 import fflames.forms.MyFractals;
 import fflames.interfaces.IColour;
@@ -64,7 +66,6 @@ public final class MainWindowController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveImageFile();
-				
 			}
 			
 		});	
@@ -72,6 +73,8 @@ public final class MainWindowController {
 		_view.getColoringEditor().addListSelectionListener(new ColoringMethodChangeListener());
 		
 		_view.addTransformsListSelectionListener(new TransformListSelectionListener());
+		
+		_view.addShowAboutInfoActionListener(new ShowAboutDialog());
 	}
 
 	public void loadFractalFile() {
@@ -236,6 +239,15 @@ public final class MainWindowController {
 			AffineTransformEditor affineTransformEditor = _view.getAffineTransformEditor();
 			affineTransformEditor.getModel().setTransform(transform);
 			_view.getVariationsEditor().setVariations(_transformsModel.getVariationsAt(selectedTransform));
+		}
+		
+	}
+	
+	class ShowAboutDialog implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JDialog dialog = new AboutDialog();
+			dialog.setVisible(true);
 		}
 		
 	}
