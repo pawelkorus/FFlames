@@ -9,19 +9,14 @@
 
 package fflames.interfaces;
 
-import java.awt.Color;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
+
 /**
  *
  * @author victories
  */
 public interface IColour {
-    @Deprecated
-	public void setScreenHits(int width, int height);
-    @Deprecated
-    public Color getColor(int x, int y, Color color, int whichFunction);
-    
     public int getParametersQuantity(); 
     
     public void initialize(WritableRaster raster);
