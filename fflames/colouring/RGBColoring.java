@@ -21,9 +21,9 @@ import java.util.Vector;
  *
  * @author victories
  */
-public class SimpleColoring extends AbstractColouring {
+public class RGBColoring extends AbstractColouring {
 	
-	public SimpleColoring(Vector<Color> colors) {
+	public RGBColoring(Vector<Color> colors) {
         _colors = colors;
     }
 	
@@ -38,10 +38,6 @@ public class SimpleColoring extends AbstractColouring {
 		_lastColor[1] = _randomGenerator.nextFloat();
 		_lastColor[2] = _randomGenerator.nextFloat();
 	}
-    
-    public Color getColor(int x, int y, Color color, int whichFunction) {
-    	return null;
-    }
     
     public int getParametersQuantity() { return 2; }
 

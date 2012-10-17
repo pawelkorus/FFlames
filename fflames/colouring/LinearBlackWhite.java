@@ -18,50 +18,31 @@ import java.awt.image.WritableRaster;
  *
  * @author victories
  */
-public class LinearBlackWhite extends AbstractColouring {
+public class LinearBlackWhite extends DensityBasedColoring {
     @Override
 	public ColorModel getColorModel() {
 		return new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, ComponentColorModel.OPAQUE, DataBuffer.TYPE_BYTE);
 	}
 
-
-
 	@Override
 	public void writeColour(WritableRaster raster, int interaction, int x, int y, int index) {
 		if(!skip()) {
-			if(x >= 0 && x < _width) {
-				if(y >= 0 && y < _height) {
-					_screenHits[x][y] = _screenHits[x][y] + 1;
-					int hits = _screenHits[x][y];
-					if(hits > _maxHits) {
-						_maxHits = hits;
-					}
-				}
-			}
+			hit(x, y);
 		}
 	}
-
-
 
 	@Override
 	public void finalize(WritableRaster raster) {
-		for(int x = 0; x < _width; x++) {
-			for(int y = 0; y < _height; y++) {
-				int hits = _screenHits[x][y];
-				raster.setSample(x, y, 0, ((double)hits)/((double)_maxHits) * 255);
+		int[][] screenHits = getScreenHits();
+		int maxHits = getMaxHits();
+		int width = raster.getWidth();
+		int height = raster.getHeight();
+		
+		for(int x = 0; x < width; x++) {
+			for(int y = 0; y < height; y++) {
+				int hits = screenHits[x][y];
+				raster.setSample(x, y, 0, ((double)hits)/((double)maxHits) * 255);
 			}
 		}
 	}
-
-    @Override
-	public void initialize(WritableRaster raster) {
-    	super.initialize(raster);
-    	_width = raster.getWidth();
-    	_height = raster.getHeight();
-    	_maxHits = 0;
-    	_screenHits = new int[_width][_height];
-    }
-    
-    private int[][] _screenHits;
-    private int _width = 0, _height = 0, _maxHits = 0;
 }

@@ -23,7 +23,7 @@ import java.awt.Color;
  */
 public class ColoringListModel implements ListModel<String> {
 	private Vector<ListDataListener> listeners;
-	private String[] lista = { "Black & White", "Linear Black & White", "Log Black & White", "Simple Coloring" };
+	private String[] lista = { "Black & White", "Linear Black & White", "Log Black & White", "Simple RGB", "Linear RGB", "Log RGB" };
 	private ColorsFactory colorsFactory = new ColorsFactory();
 
 	/** Creates a new instance of ColoringListModel */
