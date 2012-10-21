@@ -45,9 +45,14 @@ public final class MainWindowController {
 		
 		_view.getColoringEditor().addListSelectionListener(new ColoringMethodChangeListener());
 		
-		_view.addTransformsListSelectionListener(new TransformListSelectionListener());
+		_view.getTranformsList().setModel(_transformsModel);
+		_view.getTranformsList().getSelectionModel().addListSelectionListener(new TransformListSelectionListener());
 	}
 
+	public void showMainWindow() {
+		_view.setVisible(true);
+	}
+	
 	public void loadFractalFile(String filePath) {
 		ArrayList<Transform> transforms = new ArrayList<Transform>();
 		
@@ -110,17 +115,19 @@ public final class MainWindowController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Integer numberOfIterations = _view.getIterationsNumber();
-			
-			ColorsFactory colorsFactory = new ColorsFactory();
-			IColour coloringMethod = colorsFactory.getColoring(_view.getColoringEditor().getSelectedIndex(), _view.getColoringEditor().getSelectedColors()); 
-			
-			FractalGenerator fractalGenerator = new FractalGenerator(_transformsModel.getTransforms(), coloringMethod, _view.getImageWidth(), _view.getImageHeight());
-			fractalGenerator.setNumberOfIterations(numberOfIterations);
-			fractalGenerator.execute();
-			
-			_view.getRysunekJPanel().resetPoints();
-			_view.getRysunekJPanel().setImage(fractalGenerator.getOutput());
+			if(_transformsModel.getRowCount() > 0) {
+				Integer numberOfIterations = _view.getIterationsNumber();
+				
+				ColorsFactory colorsFactory = new ColorsFactory();
+				IColour coloringMethod = colorsFactory.getColoring(_view.getColoringEditor().getSelectedIndex(), _view.getColoringEditor().getSelectedColors()); 
+				
+				FractalGenerator fractalGenerator = new FractalGenerator(_transformsModel.getTransforms(), coloringMethod, _view.getImageWidth(), _view.getImageHeight());
+				fractalGenerator.setNumberOfIterations(numberOfIterations);
+				fractalGenerator.execute();
+				
+				_view.getRysunekJPanel().resetPoints();
+				_view.getRysunekJPanel().setImage(fractalGenerator.getOutput());
+			}
 		}
 		
 	}

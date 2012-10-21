@@ -34,9 +34,6 @@ import java.awt.event.ActionEvent;
  * @author victories
  */
 public class MyFractals extends javax.swing.JFrame {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7603616574289128827L;
 
 	/** Creates new form MyFractals */
@@ -260,15 +257,15 @@ public class MyFractals extends javax.swing.JFrame {
 		listaFunkcjiScrollPane = new javax.swing.JScrollPane();
 		listaFunkcjiScrollPane.setMinimumSize(new Dimension(200, 200));
 		listaFunkcjiScrollPane.setMaximumSize(new Dimension(200, 200));
-		transformsList = new JTable();
-		transformsList.setPreferredScrollableViewportSize(new Dimension(200, 200));
-		transformsList.setShowGrid(false);
-		transformsList.setFillsViewportHeight(true);
-		transformsList.setShowVerticalLines(false);
-		transformsList.setTableHeader(null);
+		_transformsList = new JTable();
+		_transformsList.setPreferredScrollableViewportSize(new Dimension(200, 200));
+		_transformsList.setShowGrid(false);
+		_transformsList.setFillsViewportHeight(true);
+		_transformsList.setShowVerticalLines(false);
+		_transformsList.setTableHeader(null);
 
-		transformsList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		listaFunkcjiScrollPane.setViewportView(transformsList);
+		_transformsList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		listaFunkcjiScrollPane.setViewportView(_transformsList);
 		GridBagConstraints gbc_listaFunkcjiScrollPane = new GridBagConstraints();
 		gbc_listaFunkcjiScrollPane.anchor = GridBagConstraints.NORTH;
 		gbc_listaFunkcjiScrollPane.fill = GridBagConstraints.HORIZONTAL;
@@ -332,7 +329,6 @@ public class MyFractals extends javax.swing.JFrame {
 		
 		rysujButton = new javax.swing.JButton();
 		rysujButton.setText("Rysuj");
-		rysujButton.setEnabled(false);
 		GridBagConstraints gbc_rysujButton = new GridBagConstraints();
 		gbc_rysujButton.anchor = GridBagConstraints.NORTH;
 		gbc_rysujButton.fill = GridBagConstraints.HORIZONTAL;
@@ -364,7 +360,7 @@ public class MyFractals extends javax.swing.JFrame {
 	private javax.swing.JTextField iloscIteracjiJTextField;
 	private javax.swing.JFileChooser imageFileChooser;
 	private javax.swing.JTabbedPane jTP;
-	private JTable transformsList;
+	private JTable _transformsList;
 	private javax.swing.JScrollPane listaFunkcjiScrollPane;
 	private javax.swing.JPanel opcjeJPanel;
 	private javax.swing.JButton loadFractalFileFromXmlJButton;
@@ -413,7 +409,7 @@ public class MyFractals extends javax.swing.JFrame {
 	}
 
 	public int getSelectedTransform() {
-		return transformsList.getSelectedRow();
+		return _transformsList.getSelectedRow();
 	}
 
 	public Integer getIterationsNumber() {
@@ -428,17 +424,6 @@ public class MyFractals extends javax.swing.JFrame {
 		return Integer.parseInt(hieghtJTextField.getText());
 	}
 
-	public void setTransformTableModel(TransformTableModel model) {
-		transformsList.setModel(model);
-		model.addTableModelListener(new TableModelListener() {
-			@Override
-			public void tableChanged(TableModelEvent e) {
-				TransformTableModel model = (TransformTableModel) e.getSource();
-				rysujButton.setEnabled(!(model.getRowCount() == 0));
-			}
-		});
-	}
-
 	public void addFunctionActionListener(ActionListener listener) {
 		dodajButton.addActionListener(listener);
 	}
@@ -451,14 +436,14 @@ public class MyFractals extends javax.swing.JFrame {
 		rysujButton.addActionListener(listener);
 	}
 	
-	public void addTransformsListSelectionListener(ListSelectionListener listener) {
-		transformsList.getSelectionModel().addListSelectionListener(listener);
-	}
-	
 	public PreviewJPanel getRysunekJPanel() {
 		return rysunekJPanel;
 	}
 
+	public JTable getTranformsList() {
+		return _transformsList;
+	}
+	
 	public AffineTransformEditor getAffineTransformEditor() {
 		return _affineTransformEditor;
 	}
