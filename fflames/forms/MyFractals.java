@@ -7,13 +7,17 @@
 package fflames.forms;
 
 import java.lang.Double;
+import java.util.Enumeration;
 import java.util.Vector;
 import javax.swing.event.*;
 import javax.swing.*;
+
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
+import fflames.MainWindowController;
 import fflames.interfaces.IVariation;
+import fflames.model.RecentOpenedModel;
 import fflames.model.TransformTableModel;
 import java.awt.GridLayout;
 import java.awt.GridBagConstraints;
@@ -23,6 +27,7 @@ import java.awt.Dimension;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 
 /**
  * 
@@ -47,26 +52,27 @@ public class MyFractals extends javax.swing.JFrame {
 		JSeparator separator = new JSeparator();
 		mnFile.add(separator);
 		
-		mnOpen = new JMenuItem("Open");
-		mnFile.add(mnOpen);
+		mnFile.add(_openAction);
+		
+		mnOpenRecent = new JMenu("Open recent");
+		mnFile.add(mnOpenRecent);
 		
 		JSeparator separator_1 = new JSeparator();
 		mnFile.add(separator_1);
 		
-		mnSave = new JMenuItem("Save");
-		mnFile.add(mnSave);
+		mnFile.add(_saveAction);
 		
-		mnSaveImage = new JMenuItem("Save image");
-		mnFile.add(mnSaveImage);
+		mnFile.add(_saveImageAction);
 		
 		JSeparator separator_2 = new JSeparator();
 		mnFile.add(separator_2);
 		
+		mnFile.add(_exitAction);
+		
 		mnAbout = new JMenu("About");
 		menuBar.add(mnAbout);
 		
-		mnAboutFflames = new JMenuItem("About FFlames");
-		mnAbout.add(mnAboutFflames);
+		mnAbout.add(_showAboutAction);
 
 		initComponents();
 	}
@@ -91,7 +97,7 @@ public class MyFractals extends javax.swing.JFrame {
 		imageFileChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
 		imageFileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Pliki png", "png"));
 
-		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("MyFractals");
 		setMinimumSize(new java.awt.Dimension(800, 600));
 		setName("mainFrame"); // NOI18N
@@ -100,8 +106,8 @@ public class MyFractals extends javax.swing.JFrame {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 214, 341, 423, 0 };
 		gridBagLayout.rowHeights = new int[] { 200, 25, 25, 42, 25, 25, 48, 25, 77, 201, 0 };
-		gridBagLayout.columnWeights = new double[] { 0.0, 1.0, 1.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gridBagLayout.columnWeights = new double[] { 1.0, 1.0, 1.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		getContentPane().setLayout(gridBagLayout);
 		jTP = new javax.swing.JTabbedPane();
 		jTP.setPreferredSize(new Dimension(200, 200));
@@ -283,7 +289,6 @@ public class MyFractals extends javax.swing.JFrame {
 		rysunekJPanel = new fflames.forms.PreviewJPanel();
 
 		rysunekJPanel.setMinimumSize(new java.awt.Dimension(640, 480));
-		// rysunekJPanel.setPreferredSize(new Dimension(1000000, 1000000));
 		rysunekJPanel.setLayout(new java.awt.FlowLayout());
 		GridBagConstraints gbc_rysunekJPanel = new GridBagConstraints();
 		gbc_rysunekJPanel.fill = GridBagConstraints.BOTH;
@@ -302,17 +307,21 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc_usunButton.gridx = 0;
 		gbc_usunButton.gridy = 2;
 		getContentPane().add(usunButton, gbc_usunButton);
+		
 		loadFractalFileFromXmlJButton = new javax.swing.JButton();
-
 		loadFractalFileFromXmlJButton.setText("Load fractal from XML file");
+		loadFractalFileFromXmlJButton.setAction(_openAction);
 		GridBagConstraints gbc_loadFractalFileFromXmlJButton = new GridBagConstraints();
-		gbc_loadFractalFileFromXmlJButton.anchor = GridBagConstraints.NORTHWEST;
+		gbc_loadFractalFileFromXmlJButton.anchor = GridBagConstraints.NORTH;
+		gbc_loadFractalFileFromXmlJButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_loadFractalFileFromXmlJButton.insets = new Insets(0, 0, 5, 5);
 		gbc_loadFractalFileFromXmlJButton.gridx = 0;
 		gbc_loadFractalFileFromXmlJButton.gridy = 4;
 		getContentPane().add(loadFractalFileFromXmlJButton, gbc_loadFractalFileFromXmlJButton);
+		
 		saveFractalToXmlJButton = new javax.swing.JButton();
 		saveFractalToXmlJButton.setText("Save fractal as Xml file");
+		saveFractalToXmlJButton.setAction(_saveAction);
 		GridBagConstraints gbc_saveFractalToXmlJButton = new GridBagConstraints();
 		gbc_saveFractalToXmlJButton.anchor = GridBagConstraints.NORTH;
 		gbc_saveFractalToXmlJButton.fill = GridBagConstraints.HORIZONTAL;
@@ -320,8 +329,8 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc_saveFractalToXmlJButton.gridx = 0;
 		gbc_saveFractalToXmlJButton.gridy = 5;
 		getContentPane().add(saveFractalToXmlJButton, gbc_saveFractalToXmlJButton);
+		
 		rysujButton = new javax.swing.JButton();
-
 		rysujButton.setText("Rysuj");
 		rysujButton.setEnabled(false);
 		GridBagConstraints gbc_rysujButton = new GridBagConstraints();
@@ -331,9 +340,10 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc_rysujButton.gridx = 0;
 		gbc_rysujButton.gridy = 7;
 		getContentPane().add(rysujButton, gbc_rysujButton);
+		
 		saveImageButton = new javax.swing.JButton();
-
-		saveImageButton.setText("Zapisz obrazek");
+		saveImageButton.setText("Save image");
+		saveImageButton.setAction(_saveImageAction);
 		GridBagConstraints gbc_saveImageButton = new GridBagConstraints();
 		gbc_saveImageButton.anchor = GridBagConstraints.NORTH;
 		gbc_saveImageButton.fill = GridBagConstraints.HORIZONTAL;
@@ -375,11 +385,14 @@ public class MyFractals extends javax.swing.JFrame {
 	private AffineTransformEditor _affineTransformEditor;
 	private JMenuBar menuBar;
 	private JMenu mnFile;
-	private JMenuItem mnOpen;
-	private JMenuItem mnSave;
 	private JMenu mnAbout;
-	private JMenuItem mnAboutFflames;
-	private JMenuItem mnSaveImage;
+	private JMenu mnOpenRecent;
+	private MainWindowController _controller;
+	private OpenAction _openAction = new OpenAction();
+	private SaveAction _saveAction = new SaveAction();
+	private SaveImageAction _saveImageAction = new SaveImageAction();
+	private ExitAction _exitAction = new ExitAction();
+	private ShowAboutAction _showAboutAction = new ShowAboutAction();
 
 	// End of variables declaration//GEN-END:variables
 
@@ -426,16 +439,6 @@ public class MyFractals extends javax.swing.JFrame {
 		});
 	}
 
-	public void addLoadFractalFileXmlActionListener(ActionListener listener) {
-		loadFractalFileFromXmlJButton.addActionListener(listener);
-		mnOpen.addActionListener(listener);
-	}
-
-	public void addSaveFractalFileXmlActionListener(ActionListener listener) {
-		saveFractalToXmlJButton.addActionListener(listener);
-		mnSave.addActionListener(listener);
-	}
-
 	public void addFunctionActionListener(ActionListener listener) {
 		dodajButton.addActionListener(listener);
 	}
@@ -447,18 +450,9 @@ public class MyFractals extends javax.swing.JFrame {
 	public void addDrawActionListener(ActionListener listener) {
 		rysujButton.addActionListener(listener);
 	}
-
-	public void addSaveImageActionListener(ActionListener listener) {
-		saveImageButton.addActionListener(listener);
-		mnSaveImage.addActionListener(listener);
-	}
 	
 	public void addTransformsListSelectionListener(ListSelectionListener listener) {
 		transformsList.getSelectionModel().addListSelectionListener(listener);
-	}
-
-	public void addShowAboutInfoActionListener(ActionListener listener) {
-		mnAboutFflames.addActionListener(listener);
 	}
 	
 	public PreviewJPanel getRysunekJPanel() {
@@ -475,5 +469,147 @@ public class MyFractals extends javax.swing.JFrame {
 
 	public VariationsEditor getVariationsEditor() {
 		return wariationsJPanel;
+	}
+
+	public void setRecentOpened(final RecentOpenedModel model) {
+		for(int i = 0; i < model.getSize(); i++) {
+			mnOpenRecent.add(new OpenAction(model.getElementAt(i)));
+		}
+		model.addListDataListener(new ListDataListener() {
+
+			@Override
+			public void intervalAdded(ListDataEvent e) {
+				for(int i = e.getIndex0(); i <= e.getIndex1(); i++) {
+					mnOpenRecent.add(new JMenuItem(new OpenAction(model.getElementAt(i))), i);
+				}
+			}
+
+			@Override
+			public void intervalRemoved(ListDataEvent e) {
+				for(int i = e.getIndex0(); i <= e.getIndex1(); i++) {
+					mnOpenRecent.remove(e.getIndex0());
+				}
+			}
+
+			@Override
+			public void contentsChanged(ListDataEvent e) {
+			}
+			
+		});
+	}
+	
+	public void setController(MainWindowController controller) {
+		_controller = controller;
+	}
+	
+	private class SaveImageAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
+		public SaveImageAction() {
+			putValue(NAME, "Save Image");
+			putValue(SHORT_DESCRIPTION, "Save fractal to file");
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser fileChooser = new JFileChooser();
+	    	fileChooser.setApproveButtonText("Save");
+			fileChooser.setCurrentDirectory(null);
+			fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PNG files", "png"));
+			int returnValue = fileChooser.showSaveDialog(MyFractals.this);
+			if(returnValue == JFileChooser.APPROVE_OPTION) {
+				_controller.saveImageFile(fileChooser.getSelectedFile());
+			} else {
+				return;
+			}
+		}	
+	}
+	
+	private class SaveAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
+		public SaveAction() {
+			putValue(NAME, "Save");
+			putValue(SHORT_DESCRIPTION, "Save fractal to file");
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser fileChooser = new JFileChooser();
+	    	fileChooser.setApproveButtonText("Save");
+			fileChooser.setCurrentDirectory(null);
+			fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("XML files", "xml"));
+			int returnValue = fileChooser.showSaveDialog(MyFractals.this);
+			if(returnValue == JFileChooser.APPROVE_OPTION) {
+				_controller.saveFractalFile(fileChooser.getSelectedFile().getAbsolutePath());
+			} else {
+				return;
+			}
+		}	
+	}
+	
+	private class OpenAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
+		public OpenAction() {
+			putValue(NAME, "Open");
+			putValue(SHORT_DESCRIPTION, "Open fractal file");
+			putValue(ACTION_COMMAND_KEY, "");
+		}
+		
+		public OpenAction(String name) {
+			putValue(NAME, name);
+			putValue(SHORT_DESCRIPTION, "Open fractal from file");
+			putValue(ACTION_COMMAND_KEY, name);
+		}
+		
+		public void actionPerformed(ActionEvent e) {
+			String command = e.getActionCommand();
+			if(command.isEmpty()) {
+				JFileChooser fileChooser = new JFileChooser();
+		    	fileChooser.setApproveButtonText("Open");
+				fileChooser.setCurrentDirectory(null);
+				fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("XML files", "xml"));
+				int returnValue = fileChooser.showOpenDialog(MyFractals.this);
+				if(returnValue == JFileChooser.APPROVE_OPTION) {
+					command = fileChooser.getSelectedFile().getAbsolutePath();
+				} else {
+					return;
+				}
+			}
+			
+			_controller.loadFractalFile(command);
+		}
+	}
+
+	private class ExitAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
+		public ExitAction() {
+			putValue(NAME, "Exit");
+			putValue(SHORT_DESCRIPTION, "Exit");
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			MyFractals.this.dispose();
+		}
+		
+	}
+
+	private class ShowAboutAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
+		public ShowAboutAction() {
+			putValue(NAME, "About FFlames");
+			putValue(SHORT_DESCRIPTION, "About FFlames");
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JDialog dialog = new AboutDialog();
+			dialog.setVisible(true);
+		}
+		
 	}
 }
