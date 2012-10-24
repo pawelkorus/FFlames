@@ -1,6 +1,7 @@
 package fflames;
 
 import fflames.forms.MyFractals;
+import fflames.model.ApplicationState;
 import fflames.model.TransformTableModel;
 
 public final class Application implements Runnable {
@@ -11,11 +12,12 @@ public final class Application implements Runnable {
 
 	@Override
 	public void run() {
+		ApplicationState state = new ApplicationState();
 		_transformsModel = new TransformTableModel();
 		
-		_mainWindow = new MyFractals();
+		_mainWindow = new MyFractals(state);
 		
-		MainWindowController _mainWindowController = new MainWindowController(_transformsModel, _mainWindow);
+		MainWindowController _mainWindowController = new MainWindowController(state, _transformsModel, _mainWindow);
 		_mainWindowController.showMainWindow();
 	}
 

@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 /**
  * @author pawel
- *
  */
 public class AffineTransformModel implements Serializable {
 	private static final long serialVersionUID = 1L;

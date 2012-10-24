@@ -16,7 +16,9 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 import fflames.MainWindowController;
+import fflames.forms.AffineTransformEditor.PropertyChangeListener;
 import fflames.interfaces.IVariation;
+import fflames.model.ApplicationState;
 import fflames.model.RecentOpenedModel;
 import fflames.model.TransformTableModel;
 import java.awt.GridLayout;
@@ -28,6 +30,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
 
 /**
  * 
@@ -35,10 +38,14 @@ import java.awt.event.ActionEvent;
  */
 public class MyFractals extends javax.swing.JFrame {
 	private static final long serialVersionUID = -7603616574289128827L;
+	private ApplicationState _state = null;
 
 	/** Creates new form MyFractals */
-	public MyFractals() {
+	public MyFractals(ApplicationState state) {
 		super();
+		
+		_state = state;
+		_state.addPropertyChangeListener(new ApplicationStateListener());
 		
 		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -95,7 +102,7 @@ public class MyFractals extends javax.swing.JFrame {
 		imageFileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Pliki png", "png"));
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setTitle("MyFractals");
+		setTitle(_state.getApplicationName());
 		setMinimumSize(new java.awt.Dimension(800, 600));
 		setName("mainFrame"); // NOI18N
 
@@ -594,6 +601,19 @@ public class MyFractals extends javax.swing.JFrame {
 		public void actionPerformed(ActionEvent e) {
 			JDialog dialog = new AboutDialog();
 			dialog.setVisible(true);
+		}
+		
+	}
+	
+	private class ApplicationStateListener implements java.beans.PropertyChangeListener {
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			switch(evt.getPropertyName()) {
+			case ApplicationState.LOADED_FRACTAL_FILE_PATH:
+				setTitle(_state.getApplicationName() + " - " + _state.getLoadedFractalFilePath());
+				break;
+			}
 		}
 		
 	}

@@ -21,17 +21,20 @@ import fflames.forms.MyFractals;
 import fflames.interfaces.IColour;
 import fflames.interfaces.IVariation;
 import fflames.model.AffineTransformModel;
+import fflames.model.ApplicationState;
 import fflames.model.ColorsFactory;
 import fflames.model.RecentOpenedModel;
 import fflames.model.Transform;
 import fflames.model.TransformTableModel;
 
 public final class MainWindowController {
-	TransformTableModel _transformsModel;
-	RecentOpenedModel _recentOpenedModel;
-	MyFractals _view;
+	private TransformTableModel _transformsModel;
+	private RecentOpenedModel _recentOpenedModel;
+	private MyFractals _view;
+	private ApplicationState _state = null;
 	
-	MainWindowController(TransformTableModel transformsModel, MyFractals view) {
+	MainWindowController(ApplicationState state, TransformTableModel transformsModel, MyFractals view) {
+		_state = state;
     	_transformsModel = transformsModel;
     	_recentOpenedModel = new RecentOpenedModel(Settings.getInstance().getRecentOpenedPaths(), 10);
     	
@@ -59,6 +62,7 @@ public final class MainWindowController {
 		ImportXMLFractalFile importer = new ImportXMLFractalFile();
 		try {
 			importer.load(transforms, filePath);
+			_state.setParam(ApplicationState.LOADED_FRACTAL_FILE_PATH, filePath);
 			_recentOpenedModel.add(filePath);
 		} catch (ImportXMLFractalFileException exception) {
 			transforms.clear();
@@ -71,6 +75,12 @@ public final class MainWindowController {
 		}
 		
 		_transformsModel.setTransforms(transforms);
+	}
+	
+	public void saveFractalFile() {
+		if(_state.isFractalFileLoaded()) {
+			saveFractalFile(_state.getLoadedFractalFilePath());
+		}
 	}
 	
 	public void saveFractalFile(String filePath) {
