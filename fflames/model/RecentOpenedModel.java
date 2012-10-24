@@ -32,7 +32,7 @@ public class RecentOpenedModel extends AbstractListModel<String> {
 		fireIntervalAdded(this, 0, 0);
 		if(_maxSize > 0 && _node.size() > _maxSize) {
 			_node.removeLast();
-			fireIntervalRemoved(this, _maxSize + 1, _maxSize + 1);
+			fireIntervalRemoved(this, _maxSize, _maxSize);
 		}
 	}
 }

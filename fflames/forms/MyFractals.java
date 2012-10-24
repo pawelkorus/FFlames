@@ -15,6 +15,7 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
+import fflames.MainWindowActions;
 import fflames.MainWindowController;
 import fflames.forms.AffineTransformEditor.PropertyChangeListener;
 import fflames.interfaces.IVariation;
@@ -39,6 +40,7 @@ import java.beans.PropertyChangeEvent;
 public class MyFractals extends javax.swing.JFrame {
 	private static final long serialVersionUID = -7603616574289128827L;
 	private ApplicationState _state = null;
+	private MainWindowActions _actions = null;
 
 	/** Creates new form MyFractals */
 	public MyFractals(ApplicationState state) {
@@ -46,6 +48,8 @@ public class MyFractals extends javax.swing.JFrame {
 		
 		_state = state;
 		_state.addPropertyChangeListener(new ApplicationStateListener());
+		
+		_actions = new MainWindowActions(this);
 		
 		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -56,7 +60,7 @@ public class MyFractals extends javax.swing.JFrame {
 		JSeparator separator = new JSeparator();
 		mnFile.add(separator);
 		
-		mnFile.add(_openAction);
+		mnFile.add(_actions.createOpenAction(""));
 		
 		mnOpenRecent = new JMenu("Open recent");
 		mnFile.add(mnOpenRecent);
@@ -64,19 +68,19 @@ public class MyFractals extends javax.swing.JFrame {
 		JSeparator separator_1 = new JSeparator();
 		mnFile.add(separator_1);
 		
-		mnFile.add(_saveAction);
+		mnFile.add(_actions.createSaveAction());
 		
-		mnFile.add(_saveImageAction);
+		mnFile.add(_actions.createSaveImageAction());
 		
 		JSeparator separator_2 = new JSeparator();
 		mnFile.add(separator_2);
 		
-		mnFile.add(_exitAction);
+		mnFile.add(_actions.createExitAction());
 		
 		mnAbout = new JMenu("About");
 		menuBar.add(mnAbout);
 		
-		mnAbout.add(_showAboutAction);
+		mnAbout.add(_actions.createShowAboutAction());
 
 		initComponents();
 	}
@@ -220,7 +224,7 @@ public class MyFractals extends javax.swing.JFrame {
 		_affineTranformTab.setMinimumSize(new Dimension(200, 200));
 		jTP.addTab("Affine transform", null, _affineTranformTab, null);
 		_affineTranformTab.setLayout(new GridLayout(0, 1, 0, 0));
-
+		
 		_affineTransformEditor = new AffineTransformEditor();
 		GridBagLayout gbl__affineTransformEditor = (GridBagLayout) _affineTransformEditor.getLayout();
 		gbl__affineTransformEditor.columnWidths = new int[] { 0, 31, 0, 26, 0, 0 };
@@ -280,9 +284,10 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc_listaFunkcjiScrollPane.gridx = 2;
 		gbc_listaFunkcjiScrollPane.gridy = 0;
 		getContentPane().add(listaFunkcjiScrollPane, gbc_listaFunkcjiScrollPane);
+		
 		dodajButton = new javax.swing.JButton();
-
 		dodajButton.setText("Dodaj");
+		dodajButton.setAction(_actions.createAddTransformAction());
 		GridBagConstraints gbc_dodajButton = new GridBagConstraints();
 		gbc_dodajButton.anchor = GridBagConstraints.NORTH;
 		gbc_dodajButton.fill = GridBagConstraints.HORIZONTAL;
@@ -301,9 +306,10 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc_rysunekJPanel.gridx = 1;
 		gbc_rysunekJPanel.gridy = 1;
 		getContentPane().add(rysunekJPanel, gbc_rysunekJPanel);
+		
 		usunButton = new javax.swing.JButton();
-
 		usunButton.setText("Usun");
+		usunButton.setAction(_actions.createRemoveTransformAction());
 		GridBagConstraints gbc_usunButton = new GridBagConstraints();
 		gbc_usunButton.anchor = GridBagConstraints.NORTH;
 		gbc_usunButton.fill = GridBagConstraints.HORIZONTAL;
@@ -314,7 +320,7 @@ public class MyFractals extends javax.swing.JFrame {
 		
 		loadFractalFileFromXmlJButton = new javax.swing.JButton();
 		loadFractalFileFromXmlJButton.setText("Load fractal from XML file");
-		loadFractalFileFromXmlJButton.setAction(_openAction);
+		loadFractalFileFromXmlJButton.setAction(_actions.createOpenAction(""));
 		GridBagConstraints gbc_loadFractalFileFromXmlJButton = new GridBagConstraints();
 		gbc_loadFractalFileFromXmlJButton.anchor = GridBagConstraints.NORTH;
 		gbc_loadFractalFileFromXmlJButton.fill = GridBagConstraints.HORIZONTAL;
@@ -325,7 +331,7 @@ public class MyFractals extends javax.swing.JFrame {
 		
 		saveFractalToXmlJButton = new javax.swing.JButton();
 		saveFractalToXmlJButton.setText("Save fractal as Xml file");
-		saveFractalToXmlJButton.setAction(_saveAction);
+		saveFractalToXmlJButton.setAction(_actions.createSaveAction());
 		GridBagConstraints gbc_saveFractalToXmlJButton = new GridBagConstraints();
 		gbc_saveFractalToXmlJButton.anchor = GridBagConstraints.NORTH;
 		gbc_saveFractalToXmlJButton.fill = GridBagConstraints.HORIZONTAL;
@@ -336,6 +342,7 @@ public class MyFractals extends javax.swing.JFrame {
 		
 		rysujButton = new javax.swing.JButton();
 		rysujButton.setText("Rysuj");
+		rysujButton.setAction(_actions.createDrawAction());
 		GridBagConstraints gbc_rysujButton = new GridBagConstraints();
 		gbc_rysujButton.anchor = GridBagConstraints.NORTH;
 		gbc_rysujButton.fill = GridBagConstraints.HORIZONTAL;
@@ -346,7 +353,7 @@ public class MyFractals extends javax.swing.JFrame {
 		
 		saveImageButton = new javax.swing.JButton();
 		saveImageButton.setText("Save image");
-		saveImageButton.setAction(_saveImageAction);
+		saveImageButton.setAction(_actions.createSaveImageAction());
 		GridBagConstraints gbc_saveImageButton = new GridBagConstraints();
 		gbc_saveImageButton.anchor = GridBagConstraints.NORTH;
 		gbc_saveImageButton.fill = GridBagConstraints.HORIZONTAL;
@@ -390,12 +397,6 @@ public class MyFractals extends javax.swing.JFrame {
 	private JMenu mnFile;
 	private JMenu mnAbout;
 	private JMenu mnOpenRecent;
-	private MainWindowController _controller;
-	private OpenAction _openAction = new OpenAction();
-	private SaveAction _saveAction = new SaveAction();
-	private SaveImageAction _saveImageAction = new SaveImageAction();
-	private ExitAction _exitAction = new ExitAction();
-	private ShowAboutAction _showAboutAction = new ShowAboutAction();
 
 	// End of variables declaration//GEN-END:variables
 
@@ -415,10 +416,6 @@ public class MyFractals extends javax.swing.JFrame {
 		return wariationsJPanel.getVariations();
 	}
 
-	public int getSelectedTransform() {
-		return _transformsList.getSelectedRow();
-	}
-
 	public Integer getIterationsNumber() {
 		return Integer.parseInt(iloscIteracjiJTextField.getText());
 	}
@@ -429,18 +426,6 @@ public class MyFractals extends javax.swing.JFrame {
 
 	public Integer getImageHeight() {
 		return Integer.parseInt(hieghtJTextField.getText());
-	}
-
-	public void addFunctionActionListener(ActionListener listener) {
-		dodajButton.addActionListener(listener);
-	}
-
-	public void addRemoveActionListener(ActionListener listener) {
-		usunButton.addActionListener(listener);
-	}
-
-	public void addDrawActionListener(ActionListener listener) {
-		rysujButton.addActionListener(listener);
 	}
 	
 	public PreviewJPanel getRysunekJPanel() {
@@ -465,14 +450,14 @@ public class MyFractals extends javax.swing.JFrame {
 
 	public void setRecentOpened(final RecentOpenedModel model) {
 		for(int i = 0; i < model.getSize(); i++) {
-			mnOpenRecent.add(new OpenAction(model.getElementAt(i)));
+			mnOpenRecent.add(_actions.createOpenAction(model.getElementAt(i)));
 		}
 		model.addListDataListener(new ListDataListener() {
 
 			@Override
 			public void intervalAdded(ListDataEvent e) {
 				for(int i = e.getIndex0(); i <= e.getIndex1(); i++) {
-					mnOpenRecent.add(new JMenuItem(new OpenAction(model.getElementAt(i))), i);
+					mnOpenRecent.add(new JMenuItem(_actions.createOpenAction(model.getElementAt(i))), i);
 				}
 			}
 
@@ -490,119 +475,8 @@ public class MyFractals extends javax.swing.JFrame {
 		});
 	}
 	
-	public void setController(MainWindowController controller) {
-		_controller = controller;
-	}
-	
-	private class SaveImageAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
-
-		public SaveImageAction() {
-			putValue(NAME, "Save Image");
-			putValue(SHORT_DESCRIPTION, "Save fractal to file");
-		}
-		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			JFileChooser fileChooser = new JFileChooser();
-	    	fileChooser.setApproveButtonText("Save");
-			fileChooser.setCurrentDirectory(null);
-			fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PNG files", "png"));
-			int returnValue = fileChooser.showSaveDialog(MyFractals.this);
-			if(returnValue == JFileChooser.APPROVE_OPTION) {
-				_controller.saveImageFile(fileChooser.getSelectedFile());
-			} else {
-				return;
-			}
-		}	
-	}
-	
-	private class SaveAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
-
-		public SaveAction() {
-			putValue(NAME, "Save");
-			putValue(SHORT_DESCRIPTION, "Save fractal to file");
-		}
-		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			JFileChooser fileChooser = new JFileChooser();
-	    	fileChooser.setApproveButtonText("Save");
-			fileChooser.setCurrentDirectory(null);
-			fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("XML files", "xml"));
-			int returnValue = fileChooser.showSaveDialog(MyFractals.this);
-			if(returnValue == JFileChooser.APPROVE_OPTION) {
-				_controller.saveFractalFile(fileChooser.getSelectedFile().getAbsolutePath());
-			} else {
-				return;
-			}
-		}	
-	}
-	
-	private class OpenAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
-
-		public OpenAction() {
-			putValue(NAME, "Open");
-			putValue(SHORT_DESCRIPTION, "Open fractal file");
-			putValue(ACTION_COMMAND_KEY, "");
-		}
-		
-		public OpenAction(String name) {
-			putValue(NAME, name);
-			putValue(SHORT_DESCRIPTION, "Open fractal from file");
-			putValue(ACTION_COMMAND_KEY, name);
-		}
-		
-		public void actionPerformed(ActionEvent e) {
-			String command = e.getActionCommand();
-			if(command.isEmpty()) {
-				JFileChooser fileChooser = new JFileChooser();
-		    	fileChooser.setApproveButtonText("Open");
-				fileChooser.setCurrentDirectory(null);
-				fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("XML files", "xml"));
-				int returnValue = fileChooser.showOpenDialog(MyFractals.this);
-				if(returnValue == JFileChooser.APPROVE_OPTION) {
-					command = fileChooser.getSelectedFile().getAbsolutePath();
-				} else {
-					return;
-				}
-			}
-			
-			_controller.loadFractalFile(command);
-		}
-	}
-
-	private class ExitAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
-
-		public ExitAction() {
-			putValue(NAME, "Exit");
-			putValue(SHORT_DESCRIPTION, "Exit");
-		}
-		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			MyFractals.this.dispose();
-		}
-		
-	}
-
-	private class ShowAboutAction extends AbstractAction {
-		private static final long serialVersionUID = 1L;
-
-		public ShowAboutAction() {
-			putValue(NAME, "About FFlames");
-			putValue(SHORT_DESCRIPTION, "About FFlames");
-		}
-		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			JDialog dialog = new AboutDialog();
-			dialog.setVisible(true);
-		}
-		
+	public MainWindowActions getActions() {
+		return _actions;
 	}
 	
 	private class ApplicationStateListener implements java.beans.PropertyChangeListener {

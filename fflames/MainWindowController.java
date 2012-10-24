@@ -40,11 +40,7 @@ public final class MainWindowController {
     	
     	_view = view;
     	_view.setRecentOpened(_recentOpenedModel);
-    	_view.setController(this);
-		
-		_view.addFunctionActionListener(new AddFunctionListener());
-		_view.addRemoveActionListener(new RemoveFunctionListener());
-		_view.addDrawActionListener(new DrawImageListener());
+    	_view.getActions().addController(this);
 		
 		_view.getColoringEditor().addListSelectionListener(new ColoringMethodChangeListener());
 		
@@ -103,9 +99,39 @@ public final class MainWindowController {
 		}
 	}
 	
+	public void drawFractal() {
+		if(_transformsModel.getRowCount() > 0) {
+			Integer numberOfIterations = _view.getIterationsNumber();
+			
+			ColorsFactory colorsFactory = new ColorsFactory();
+			IColour coloringMethod = colorsFactory.getColoring(_view.getColoringEditor().getSelectedIndex(), _view.getColoringEditor().getSelectedColors()); 
+			
+			FractalGenerator fractalGenerator = new FractalGenerator(_transformsModel.getTransforms(), coloringMethod, _view.getImageWidth(), _view.getImageHeight());
+			fractalGenerator.setNumberOfIterations(numberOfIterations);
+			fractalGenerator.execute();
+			
+			_view.getRysunekJPanel().resetPoints();
+			_view.getRysunekJPanel().setImage(fractalGenerator.getOutput());
+		}
+	}
+	
+	public void addTransform() {
+		AffineTransformModel affineTransformModel = _view.getAffineTransformEditor().getModel();
+		Vector<IVariation> variations = _view.getVariations();
+		Double propability = _view.getFunctionPropability();
+		_transformsModel.add(new Transform(affineTransformModel.getTransform(), variations, propability));
+	}
+	
+	public void removeTransform() {
+		int selectedIndex = _view.getTranformsList().getSelectedRow();
+		_transformsModel.remove(selectedIndex);
+	}
+	
 	class ColoringMethodChangeListener implements ListSelectionListener {
-		@Override
-		public void valueChanged(ListSelectionEvent e) {
+		/**
+		 * @todo check if the selected index is greater than 0
+		 */
+		@Override public void valueChanged(ListSelectionEvent e) {
 			if(e.getValueIsAdjusting()) {
 				int selectedIndex = _view.getColoringEditor().getSelectedIndex();
 				ColorsFactory factory = new ColorsFactory();
@@ -121,60 +147,22 @@ public final class MainWindowController {
 		}
 	}
 	
-	class DrawImageListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if(_transformsModel.getRowCount() > 0) {
-				Integer numberOfIterations = _view.getIterationsNumber();
-				
-				ColorsFactory colorsFactory = new ColorsFactory();
-				IColour coloringMethod = colorsFactory.getColoring(_view.getColoringEditor().getSelectedIndex(), _view.getColoringEditor().getSelectedColors()); 
-				
-				FractalGenerator fractalGenerator = new FractalGenerator(_transformsModel.getTransforms(), coloringMethod, _view.getImageWidth(), _view.getImageHeight());
-				fractalGenerator.setNumberOfIterations(numberOfIterations);
-				fractalGenerator.execute();
-				
-				_view.getRysunekJPanel().resetPoints();
-				_view.getRysunekJPanel().setImage(fractalGenerator.getOutput());
-			}
-		}
-		
-	}
-
-	class AddFunctionListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			AffineTransformModel affineTransformModel = _view.getAffineTransformEditor().getModel();
-			Vector<IVariation> variations = _view.getVariations();
-			Double propability = _view.getFunctionPropability();
-			_transformsModel.add(new Transform(affineTransformModel.getTransform(), variations, propability));
-		}
-		
-	}
-	
-	class RemoveFunctionListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			int selectedIndex = _view.getSelectedTransform();
-			_transformsModel.remove(selectedIndex);
-		}
-		
-	}
-	
 	class TransformListSelectionListener implements ListSelectionListener
 	{
 
+		/**
+		 * @todo check if the selected index is greated than 0
+		 */
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			int selectedTransform = _view.getSelectedTransform();
-			_view.setFunctionPropability((Double) _transformsModel.getValueAt(selectedTransform, 0));
-			AffineTransform transform = (AffineTransform) _transformsModel.getAffineTransformAt(selectedTransform);
-			AffineTransformEditor affineTransformEditor = _view.getAffineTransformEditor();
-			affineTransformEditor.getModel().setTransform(transform);
-			_view.getVariationsEditor().setVariations(_transformsModel.getVariationsAt(selectedTransform));
+			if(e.getValueIsAdjusting()) {
+				int selectedTransform = _view.getTranformsList().getSelectedRow();
+				_view.setFunctionPropability((Double) _transformsModel.getValueAt(selectedTransform, 0));
+				AffineTransform transform = (AffineTransform) _transformsModel.getAffineTransformAt(selectedTransform);
+				AffineTransformEditor affineTransformEditor = _view.getAffineTransformEditor();
+				affineTransformEditor.getModel().setTransform(transform);
+				_view.getVariationsEditor().setVariations(_transformsModel.getVariationsAt(selectedTransform));
+			}
 		}
 		
 	}
