@@ -1,7 +1,5 @@
 package fflames.model;
 
-import java.util.Iterator;
-
 import javax.swing.AbstractListModel;
 
 import prefs.SettingArray;

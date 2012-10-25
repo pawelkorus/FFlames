@@ -1,6 +1,4 @@
 package fflames;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -22,7 +20,6 @@ import fflames.interfaces.IColour;
 import fflames.interfaces.IVariation;
 import fflames.model.AffineTransformModel;
 import fflames.model.ApplicationState;
-import fflames.model.ColoringListModel;
 import fflames.model.ColorsFactory;
 import fflames.model.RecentOpenedModel;
 import fflames.model.Transform;

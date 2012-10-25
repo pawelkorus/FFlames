@@ -7,21 +7,15 @@
 package fflames.forms;
 
 import java.lang.Double;
-import java.util.Enumeration;
 import java.util.Vector;
 import javax.swing.event.*;
 import javax.swing.*;
-
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 import fflames.MainWindowActions;
-import fflames.MainWindowController;
-import fflames.forms.AffineTransformEditor.PropertyChangeListener;
 import fflames.interfaces.IVariation;
 import fflames.model.ApplicationState;
 import fflames.model.RecentOpenedModel;
-import fflames.model.TransformTableModel;
 import java.awt.GridLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -30,7 +24,6 @@ import java.awt.Dimension;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 
 /**
@@ -96,16 +89,7 @@ public class MyFractals extends javax.swing.JFrame {
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
-		fileChooser = new javax.swing.JFileChooser();
-		imageFileChooser = new javax.swing.JFileChooser();
 		wybraneFunkcjeLabel = new javax.swing.JLabel();
-
-		fileChooser.setApproveButtonText("Otw�rz");
-		fileChooser.setCurrentDirectory(null);
-		fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Pliki XML", "xml"));
-
-		imageFileChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
-		imageFileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Pliki png", "png"));
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle(_state.getApplicationName());
@@ -370,11 +354,9 @@ public class MyFractals extends javax.swing.JFrame {
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private fflames.forms.ColouringEditor coloringJPanel;
 	private javax.swing.JButton dodajButton;
-	private javax.swing.JFileChooser fileChooser;
 	private javax.swing.JTextField hieghtJTextField;
 	private javax.swing.JLabel iloscIteracjiJLabel;
 	private javax.swing.JTextField iloscIteracjiJTextField;
-	private javax.swing.JFileChooser imageFileChooser;
 	private javax.swing.JTabbedPane jTP;
 	private JTable _transformsList;
 	private javax.swing.JScrollPane listaFunkcjiScrollPane;
