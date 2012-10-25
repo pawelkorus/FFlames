@@ -26,6 +26,10 @@ public class RecentOpenedModel extends AbstractListModel<String> {
 	}
 	
 	public void add(String path) {
+		int elements = _node.size();
+		for(int i = 0; i < elements; i++) {
+			if(_node.getElementAt(i) == path) return;
+		}
 		_node.addElementAt(0, path);
 		fireIntervalAdded(this, 0, 0);
 		if(_maxSize > 0 && _node.size() > _maxSize) {
