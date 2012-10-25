@@ -22,23 +22,30 @@ import fflames.interfaces.IColour;
 import fflames.interfaces.IVariation;
 import fflames.model.AffineTransformModel;
 import fflames.model.ApplicationState;
+import fflames.model.ColoringListModel;
 import fflames.model.ColorsFactory;
 import fflames.model.RecentOpenedModel;
 import fflames.model.Transform;
 import fflames.model.TransformTableModel;
+import fflames.model.VariationsTableModel;
 
 public final class MainWindowController {
 	private TransformTableModel _transformsModel;
 	private RecentOpenedModel _recentOpenedModel;
 	private MyFractals _view;
 	private ApplicationState _state = null;
+	private AffineTransformModel _affineTransformModel = null;
+	private VariationsTableModel _variationsTableModel = null;
 	
 	MainWindowController(ApplicationState state, TransformTableModel transformsModel, MyFractals view) {
 		_state = state;
+		_view = view;
+		
     	_transformsModel = transformsModel;
+    	_affineTransformModel = _view.getAffineTransformEditor().getModel();
+    	_variationsTableModel = _view.getVariationsEditor().getModel();
     	_recentOpenedModel = new RecentOpenedModel(Settings.getInstance().getRecentOpenedPaths(), 10);
     	
-    	_view = view;
     	_view.setRecentOpened(_recentOpenedModel);
     	_view.getActions().addController(this);
 		
@@ -125,6 +132,13 @@ public final class MainWindowController {
 	public void removeTransform() {
 		int selectedIndex = _view.getTranformsList().getSelectedRow();
 		_transformsModel.remove(selectedIndex);
+	}
+	
+	public void newFractal() {
+		_transformsModel.reset();
+		_affineTransformModel.reset();
+		_variationsTableModel.reset();
+		_state.setParam(ApplicationState.LOADED_FRACTAL_FILE_PATH, "");
 	}
 	
 	class ColoringMethodChangeListener implements ListSelectionListener {

@@ -59,6 +59,26 @@ public class MainWindowActions {
 		return new RemoveTransformAction();
 	}
 	
+	public NewFractalAction createNewFractalAction() {
+		return new NewFractalAction();
+	}
+	
+	private class NewFractalAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+
+		public NewFractalAction() {
+			putValue(NAME, "New");
+			putValue(SHORT_DESCRIPTION, "Create new fractal project");
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			for(MainWindowController controller : _controllers) {
+				controller.newFractal();
+			}
+		}	
+	}
+	
 	private class SaveImageAction extends AbstractAction {
 		private static final long serialVersionUID = 1L;
 

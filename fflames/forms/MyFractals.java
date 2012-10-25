@@ -57,6 +57,8 @@ public class MyFractals extends javax.swing.JFrame {
 		mnFile = new JMenu("File");
 		menuBar.add(mnFile);
 		
+		mnFile.add(_actions.createNewFractalAction());
+		
 		JSeparator separator = new JSeparator();
 		mnFile.add(separator);
 		
@@ -485,7 +487,11 @@ public class MyFractals extends javax.swing.JFrame {
 		public void propertyChange(PropertyChangeEvent evt) {
 			switch(evt.getPropertyName()) {
 			case ApplicationState.LOADED_FRACTAL_FILE_PATH:
-				setTitle(_state.getApplicationName() + " - " + _state.getLoadedFractalFilePath());
+				if(_state.getLoadedFractalFilePath().isEmpty()) {
+					setTitle(_state.getApplicationName());
+				} else {
+					setTitle(_state.getApplicationName() + " - " + _state.getLoadedFractalFilePath());
+				}
 				break;
 			}
 		}
