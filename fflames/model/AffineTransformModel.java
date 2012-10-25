@@ -6,9 +6,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 
-/**
- * @author pawel
- */
 public class AffineTransformModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -26,7 +23,7 @@ public class AffineTransformModel implements Serializable {
 	
 	public AffineTransformModel() {
 		_pcs = new PropertyChangeSupport(this);
-		_transform = new AffineTransform();
+		reset();
 	}
 	
 	public double getScaleX() {
@@ -118,6 +115,10 @@ public class AffineTransformModel implements Serializable {
 			_transform = transform;
 			_pcs.firePropertyChange(new PropertyChangeEvent(this, TRANSFORM, oldValue, transform));
 		}
+	}
+	
+	public void reset() {
+		setTransform(new AffineTransform());
 	}
 
 	public void addPropertyChangeListener(PropertyChangeListener listener) {

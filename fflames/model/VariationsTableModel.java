@@ -167,4 +167,9 @@ public class VariationsTableModel extends AbstractTableModel {
 			}
 		}
 	}
+	
+	public void reset() {
+		clearParameters();
+		fireTableDataChanged();
+	}
 }
