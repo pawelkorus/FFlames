@@ -21,14 +21,13 @@ import javax.swing.BoxLayout;
  * @author victories
  */
 public class VariationsEditor extends javax.swing.JPanel {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2305910609219372143L;
+	private VariationsTableModel _model;
 
 	/** Creates new form VariationsEditor */
 	public VariationsEditor() {
+		_model = new VariationsTableModel();
+		
 		initComponents();
 
 		ListSelectionModel lsm = wariationsJTable.getSelectionModel();
@@ -48,7 +47,7 @@ public class VariationsEditor extends javax.swing.JPanel {
 		wariationsTableJScrollPane = new javax.swing.JScrollPane();
 		wariationsJTable = new javax.swing.JTable();
 
-		wariationsJTable.setModel(new VariationsTableModel());
+		wariationsJTable.setModel(_model);
 		wariationsTableJScrollPane.setViewportView(wariationsJTable);
 		add(wariationsTableJScrollPane);
 	}// </editor-fold>//GEN-END:initComponents
@@ -94,6 +93,10 @@ public class VariationsEditor extends javax.swing.JPanel {
 						VariationsFactory.getWariationNumber(variation.getWariationName()), 0);
 			}
 		}
+	}
+	
+	public VariationsTableModel getModel() {
+		return _model;
 	}
 
 	private javax.swing.JTable wariationsJTable;
