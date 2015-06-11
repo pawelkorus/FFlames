@@ -1,0 +1,11 @@
+apply plugin: 'java'
+
+jar {
+	manifest {
+		attributes 'Main-Class': 'fflames.Application'
+	}
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.4'
+}
