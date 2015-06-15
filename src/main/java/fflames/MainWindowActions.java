@@ -11,15 +11,15 @@ public class MainWindowActions extends FormActions {
 		super(parent);
 	}
 	
-	public SaveImageAction createSaveImageAction() {
+	public AbstractAction createSaveImageAction() {
 		return new SaveImageAction();
 	}
 	
-	public SaveAction createSaveAction() {
+	public AbstractAction createSaveAction() {
 		return new SaveAction();
 	}
 	
-	public OpenAction createOpenAction(String name) {
+	public AbstractAction createOpenAction(String name) {
 		if(name.isEmpty()) {
 			return new OpenAction();
 		} else {
@@ -27,27 +27,27 @@ public class MainWindowActions extends FormActions {
 		}
 	}
 	
-	public ExitAction createExitAction() {
+	public AbstractAction createExitAction() {
 		return new ExitAction();
 	}
 	
-	public ShowAboutAction createShowAboutAction() {
+	public AbstractAction createShowAboutAction() {
 		return new ShowAboutAction();
 	}
 	
-	public DrawAction createDrawAction() {
+	public AbstractAction createDrawAction() {
 		return new DrawAction();
 	}
 	
-	public AddTransformAction createAddTransformAction() {
+	public AbstractAction createAddTransformAction() {
 		return new AddTransformAction();
 	}
 	
-	public RemoveTransformAction createRemoveTransformAction() {
+	public AbstractAction createRemoveTransformAction() {
 		return new RemoveTransformAction();
 	}
 	
-	public NewFractalAction createNewFractalAction() {
+	public AbstractAction createNewFractalAction() {
 		return new NewFractalAction();
 	}
 	
@@ -108,6 +108,7 @@ public class MainWindowActions extends FormActions {
 			putValue(ACTION_COMMAND_KEY, name);
 		}
 		
+                @Override
 		public void actionPerformed(ActionEvent e) {
 			fireActionEvent(new LoadProject(_source, e.getActionCommand()));
 		}
