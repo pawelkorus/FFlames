@@ -61,6 +61,15 @@ public class RGBColoring extends AbstractColouring {
 		}
 	}
 	
+	@Override
+	public void writeColour(WritableRaster raster, int interaction, int x, int y) {
+		if(!skip()) {	
+			raster.setSample(x, y, 0, (byte)(_lastColor[0] * (float)255));
+			raster.setSample(x, y, 1, (byte)(_lastColor[1] * (float)255));
+			raster.setSample(x, y, 2, (byte)(_lastColor[2] * (float)255));
+		}
+	}
+	
     private Vector<Color> _colors;
     private float[] _lastColor;
 }

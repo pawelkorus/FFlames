@@ -31,4 +31,9 @@ public class BlackWhite extends AbstractColouring {
 			raster.setSample(x, y, 0, 1);
 		}
 	}
+
+	@Override
+	public void writeColour(WritableRaster raster, int interaction, int x, int y) {
+		writeColour(raster, interaction, x, y, 0);
+	}
 }

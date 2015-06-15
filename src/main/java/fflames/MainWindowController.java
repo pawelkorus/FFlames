@@ -1,4 +1,6 @@
 package fflames;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -7,44 +9,52 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import prefs.Settings;
 
+import fflames.colouring.ColorsFactory;
+import fflames.events.LoadProject;
 import fflames.exceptions.ImportXMLFractalFileException;
+import fflames.forms.AboutDialog;
 import fflames.forms.AffineTransformEditor;
 import fflames.forms.MyFractals;
 import fflames.interfaces.IColour;
+import fflames.interfaces.IMainWindowController;
 import fflames.interfaces.IVariation;
 import fflames.model.AffineTransformModel;
+import fflames.model.AlgorithmConfigurationModel;
 import fflames.model.ApplicationState;
-import fflames.model.ColorsFactory;
 import fflames.model.RecentOpenedModel;
 import fflames.model.Transform;
 import fflames.model.TransformTableModel;
 import fflames.model.VariationsTableModel;
 
-public final class MainWindowController {
+public final class MainWindowController implements IMainWindowController, ActionListener {
 	private TransformTableModel _transformsModel;
 	private RecentOpenedModel _recentOpenedModel;
 	private MyFractals _view;
 	private ApplicationState _state = null;
 	private AffineTransformModel _affineTransformModel = null;
 	private VariationsTableModel _variationsTableModel = null;
+	private AlgorithmConfigurationModel _algorithmConfigurationModel;
 	
-	MainWindowController(ApplicationState state, TransformTableModel transformsModel, MyFractals view) {
+	MainWindowController(ApplicationState state, AlgorithmConfigurationModel algorithmConfigurationModel, TransformTableModel transformsModel, MyFractals view) {
 		_state = state;
 		_view = view;
 		
+		_algorithmConfigurationModel = algorithmConfigurationModel;
     	_transformsModel = transformsModel;
     	_affineTransformModel = _view.getAffineTransformEditor().getModel();
     	_variationsTableModel = _view.getVariationsEditor().getModel();
     	_recentOpenedModel = new RecentOpenedModel(Settings.getInstance().getRecentOpenedPaths(), 10);
     	
     	_view.setRecentOpened(_recentOpenedModel);
-    	_view.getActions().addController(this);
+    	_view.getActions().addActionListener(this);
 		
 		_view.getColoringEditor().addListSelectionListener(new ColoringMethodChangeListener());
 		
@@ -56,6 +66,10 @@ public final class MainWindowController {
 		_view.setVisible(true);
 	}
 	
+	/* (non-Javadoc)
+	 * @see fflames.IMainWindowController#loadFractalFile(java.lang.String)
+	 */
+	@Override
 	public void loadFractalFile(String filePath) {
 		ArrayList<Transform> transforms = new ArrayList<Transform>();
 		
@@ -77,12 +91,20 @@ public final class MainWindowController {
 		_transformsModel.setTransforms(transforms);
 	}
 	
+	/* (non-Javadoc)
+	 * @see fflames.IMainWindowController#saveFractalFile()
+	 */
+	@Override
 	public void saveFractalFile() {
 		if(_state.isFractalFileLoaded()) {
 			saveFractalFile(_state.getLoadedFractalFilePath());
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see fflames.IMainWindowController#saveFractalFile(java.lang.String)
+	 */
+	@Override
 	public void saveFractalFile(String filePath) {
 		ExportXMLFileFractal exporter = new ExportXMLFileFractal(_transformsModel.getTransforms());
 		
@@ -94,6 +116,10 @@ public final class MainWindowController {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see fflames.IMainWindowController#saveImageFile(java.io.File)
+	 */
+	@Override
 	public void saveImageFile(File file) {
 		try {
 			ImageIO.write((RenderedImage) _view.getRysunekJPanel().getImage(), "png", file);
@@ -103,15 +129,19 @@ public final class MainWindowController {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see fflames.IMainWindowController#drawFractal()
+	 */
+	@Override
 	public void drawFractal() {
 		if(_transformsModel.getRowCount() > 0) {
-			Integer numberOfIterations = _view.getIterationsNumber();
-			
 			ColorsFactory colorsFactory = new ColorsFactory();
 			IColour coloringMethod = colorsFactory.getColoring(_view.getColoringEditor().getSelectedIndex(), _view.getColoringEditor().getSelectedColors()); 
 			
-			FractalGenerator fractalGenerator = new FractalGenerator(_transformsModel.getTransforms(), coloringMethod, _view.getImageWidth(), _view.getImageHeight());
-			fractalGenerator.setNumberOfIterations(numberOfIterations);
+			FractalGenerator fractalGenerator = new FractalGenerator(_transformsModel.getTransforms(), coloringMethod, _algorithmConfigurationModel.getImageWidth(), _algorithmConfigurationModel.getImageHeight());
+			fractalGenerator.setNumberOfIterations(_algorithmConfigurationModel.getIterationsNumber());
+			fractalGenerator.setNumberOfRotations(_algorithmConfigurationModel.getRotationsNumber());
+			fractalGenerator.setSamples(_algorithmConfigurationModel.getSuperSampling());
 			fractalGenerator.execute();
 			
 			_view.getRysunekJPanel().resetPoints();
@@ -119,6 +149,10 @@ public final class MainWindowController {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see fflames.IMainWindowController#addTransform()
+	 */
+	@Override
 	public void addTransform() {
 		AffineTransformModel affineTransformModel = _view.getAffineTransformEditor().getModel();
 		Vector<IVariation> variations = _view.getVariations();
@@ -126,25 +160,29 @@ public final class MainWindowController {
 		_transformsModel.add(new Transform(affineTransformModel.getTransform(), variations, propability));
 	}
 	
+	/* (non-Javadoc)
+	 * @see fflames.IMainWindowController#removeTransform()
+	 */
+	@Override
 	public void removeTransform() {
 		int selectedIndex = _view.getTranformsList().getSelectedRow();
 		_transformsModel.remove(selectedIndex);
 	}
 	
+	/* (non-Javadoc)
+	 * @see fflames.IMainWindowController#newFractal()
+	 */
+	@Override
 	public void newFractal() {
-		_transformsModel.reset();
-		_affineTransformModel.reset();
-		_variationsTableModel.reset();
-		_state.setParam(ApplicationState.LOADED_FRACTAL_FILE_PATH, "");
+		reset();
 	}
 	
 	class ColoringMethodChangeListener implements ListSelectionListener {
-		/**
-		 * @todo check if the selected index is greater than 0
-		 */
 		@Override public void valueChanged(ListSelectionEvent e) {
 			if(e.getValueIsAdjusting()) {
 				int selectedIndex = _view.getColoringEditor().getSelectedIndex();
+				if(selectedIndex < 0) return;
+				
 				ColorsFactory factory = new ColorsFactory();
 				int buttonsNumber = factory.getColoring(selectedIndex, null).getParametersQuantity();
 				if(buttonsNumber == 1) {
@@ -158,16 +196,13 @@ public final class MainWindowController {
 		}
 	}
 	
-	class TransformListSelectionListener implements ListSelectionListener
-	{
-
-		/**
-		 * @todo check if the selected index is greated than 0
-		 */
+	class TransformListSelectionListener implements ListSelectionListener {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			if(e.getValueIsAdjusting()) {
 				int selectedTransform = _view.getTranformsList().getSelectedRow();
+				if(selectedTransform < 0) return;
+				
 				_view.setFunctionPropability((Double) _transformsModel.getValueAt(selectedTransform, 0));
 				AffineTransform transform = (AffineTransform) _transformsModel.getAffineTransformAt(selectedTransform);
 				AffineTransformEditor affineTransformEditor = _view.getAffineTransformEditor();
@@ -175,6 +210,76 @@ public final class MainWindowController {
 				_view.getVariationsEditor().setVariations(_transformsModel.getVariationsAt(selectedTransform));
 			}
 		}
+	}
+	
+	private void reset() {
+		_transformsModel.reset();
+		_view.getTranformsList().clearSelection();
 		
+		_affineTransformModel.reset();
+		
+		_variationsTableModel.reset();
+		
+		_state.setParam(ApplicationState.LOADED_FRACTAL_FILE_PATH, "");
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		int id = e.getID();
+		
+		if(fflames.events.Action.Actions.NewProject.equals(id)) {
+			newFractal();
+		} else if(fflames.events.Action.Actions.AddTransform.equals(id)) {
+			addTransform();
+		} else if(fflames.events.Action.Actions.RemoveTransform.equals(id)) {
+			removeTransform();
+		} else if(fflames.events.Action.Actions.LoadProject.equals(id)) {
+			LoadProject evt = (LoadProject) e;
+			String filePath = evt.getFilePath();
+			
+			if(filePath.isEmpty()) {
+				JFileChooser fileChooser = new JFileChooser();
+		    	fileChooser.setApproveButtonText("Open");
+				fileChooser.setCurrentDirectory(null);
+				fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("XML files", "xml"));
+				int returnValue = fileChooser.showOpenDialog(_view);
+				if(returnValue == JFileChooser.APPROVE_OPTION) {
+					filePath = fileChooser.getSelectedFile().getAbsolutePath();
+				} else {
+					return;
+				}
+			}
+				
+			loadFractalFile(filePath);
+		} else if(fflames.events.Action.Actions.SaveProject.equals(id)) {
+			JFileChooser fileChooser = new JFileChooser();
+	    	fileChooser.setApproveButtonText("Save");
+			fileChooser.setCurrentDirectory(null);
+			fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("XML files", "xml"));
+			int returnValue = fileChooser.showSaveDialog(_view);
+			if(returnValue == JFileChooser.APPROVE_OPTION) {
+				saveFractalFile(fileChooser.getSelectedFile().getAbsolutePath());
+			} else {
+				return;
+			}
+		} else if(fflames.events.Action.Actions.SaveGeneratedImage.equals(id)) {
+			JFileChooser fileChooser = new JFileChooser();
+	    	fileChooser.setApproveButtonText("Save");
+			fileChooser.setCurrentDirectory(null);
+			fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PNG files", "png"));
+			int returnValue = fileChooser.showSaveDialog(_view);
+			if(returnValue == JFileChooser.APPROVE_OPTION) {
+				saveImageFile(fileChooser.getSelectedFile());
+			} else {
+				return;
+			}
+		} else if(fflames.events.Action.Actions.ExitApplication.equals(id)) {
+			_view.dispose();
+		} else if(fflames.events.Action.Actions.Draw.equals(id)) {
+			drawFractal();
+		} else if(fflames.events.Action.Actions.ShowAbout.equals(id)) {
+			JDialog dialog = new AboutDialog();
+			dialog.setVisible(true);
+		}
 	}
 }

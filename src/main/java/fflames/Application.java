@@ -1,6 +1,7 @@
 package fflames;
 
 import fflames.forms.MyFractals;
+import fflames.model.AlgorithmConfigurationModel;
 import fflames.model.ApplicationState;
 import fflames.model.TransformTableModel;
 
@@ -13,12 +14,17 @@ public final class Application implements Runnable {
 	@Override
 	public void run() {
 		ApplicationState state = new ApplicationState();
-		_transformsModel = new TransformTableModel();
+		TransformTableModel transformsModel = new TransformTableModel();
+		AlgorithmConfigurationModel algorithmConfigurationModel = new AlgorithmConfigurationModel();
 		
 		_mainWindow = new MyFractals(state);
 		
-		MainWindowController _mainWindowController = new MainWindowController(state, _transformsModel, _mainWindow);
-		_mainWindowController.showMainWindow();
+		AlgorithmConfigurationEditorController algorithmConfigurationEditorController = new AlgorithmConfigurationEditorController(algorithmConfigurationModel);
+		_mainWindow.getAlgorithmConfigurationEditor().setModel(algorithmConfigurationModel);
+		_mainWindow.getAlgorithmConfigurationEditor().getActions().addPropertyChangeListener(algorithmConfigurationEditorController);
+		
+		MainWindowController mainWindowController = new MainWindowController(state, algorithmConfigurationModel, transformsModel, _mainWindow);
+		mainWindowController.showMainWindow();
 	}
 
 	/**
@@ -28,8 +34,5 @@ public final class Application implements Runnable {
 		java.awt.EventQueue.invokeLater(new Application());
 	}
 	
-	private TransformTableModel _transformsModel;
 	private MyFractals _mainWindow;
-	@SuppressWarnings("unused")
-	private MainWindowController _mainWindowController;
 }

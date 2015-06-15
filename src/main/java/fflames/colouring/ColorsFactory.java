@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package fflames.model;
+package fflames.colouring;
 
 import fflames.colouring.*;
 import fflames.interfaces.IColour;

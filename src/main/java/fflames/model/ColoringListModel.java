@@ -12,6 +12,7 @@ package fflames.model;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
+import fflames.colouring.ColorsFactory;
 import fflames.interfaces.IColour;
 
 import java.util.Vector;

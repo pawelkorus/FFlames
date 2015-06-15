@@ -5,6 +5,7 @@ import java.awt.image.WritableRaster;
 import java.util.Vector;
 
 abstract public class DensityBasedRGBColoring extends DensityBasedColoring {
+	float[] _previousColorComponents = new float[0];	
 	
 	public DensityBasedRGBColoring(Vector<Color> colors) {
 		_colors = colors;
@@ -35,7 +36,12 @@ abstract public class DensityBasedRGBColoring extends DensityBasedColoring {
 	}
 	
 	protected float[] getColorComponents(int index) {
-		return _colors.get(index).getRGBColorComponents(null);
+		_previousColorComponents = _colors.get(index).getRGBColorComponents(null);
+		return _previousColorComponents;
+	}
+	
+	protected float[] getPreviousColorComponents() {
+		return _previousColorComponents;
 	}
 	
 	private Vector<Color> _colors;

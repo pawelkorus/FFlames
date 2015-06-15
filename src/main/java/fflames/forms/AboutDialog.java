@@ -71,25 +71,25 @@ public class AboutDialog extends JDialog implements ActionListener {
 		gbc_lblAuthor.gridy = 2;
 		panel.add(lblAuthor, gbc_lblAuthor);
 		
-		JLabel lblPaweKorusPawelkorusymailcom = new JLabel("Paweł Korus pawelkorus@ymail.com");
-		lblPaweKorusPawelkorusymailcom.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_lblPaweKorusPawelkorusymailcom = new GridBagConstraints();
-		gbc_lblPaweKorusPawelkorusymailcom.insets = new Insets(0, 0, 5, 0);
-		gbc_lblPaweKorusPawelkorusymailcom.anchor = GridBagConstraints.WEST;
-		gbc_lblPaweKorusPawelkorusymailcom.gridx = 1;
-		gbc_lblPaweKorusPawelkorusymailcom.gridy = 2;
-		panel.add(lblPaweKorusPawelkorusymailcom, gbc_lblPaweKorusPawelkorusymailcom);
+		JLabel lblAuthorName = new JLabel("Paweł Korus pawelkorus@ymail.com");
+		lblAuthorName.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_lblAuthorName = new GridBagConstraints();
+		gbc_lblAuthorName.insets = new Insets(0, 0, 5, 0);
+		gbc_lblAuthorName.anchor = GridBagConstraints.WEST;
+		gbc_lblAuthorName.gridx = 1;
+		gbc_lblAuthorName.gridy = 2;
+		panel.add(lblAuthorName, gbc_lblAuthorName);
 		
-		JLabel lblProgramForGenerating = new JLabel("Program for generating fractal flames");
-		GridBagConstraints gbc_lblProgramForGenerating = new GridBagConstraints();
-		gbc_lblProgramForGenerating.insets = new Insets(0, 0, 5, 0);
-		gbc_lblProgramForGenerating.fill = GridBagConstraints.VERTICAL;
-		gbc_lblProgramForGenerating.weighty = 3.0;
-		gbc_lblProgramForGenerating.anchor = GridBagConstraints.WEST;
-		gbc_lblProgramForGenerating.gridwidth = 2;
-		gbc_lblProgramForGenerating.gridx = 0;
-		gbc_lblProgramForGenerating.gridy = 3;
-		panel.add(lblProgramForGenerating, gbc_lblProgramForGenerating);
+		JLabel lblProgramInfo = new JLabel("Program for generating fractal flames");
+		GridBagConstraints gbc_lblProgramInfo = new GridBagConstraints();
+		gbc_lblProgramInfo.insets = new Insets(0, 0, 5, 0);
+		gbc_lblProgramInfo.fill = GridBagConstraints.VERTICAL;
+		gbc_lblProgramInfo.weighty = 3.0;
+		gbc_lblProgramInfo.anchor = GridBagConstraints.WEST;
+		gbc_lblProgramInfo.gridwidth = 2;
+		gbc_lblProgramInfo.gridx = 0;
+		gbc_lblProgramInfo.gridy = 3;
+		panel.add(lblProgramInfo, gbc_lblProgramInfo);
 		
 		JButton btnNewButton = new JButton("Close");
 		btnNewButton.addActionListener(this);

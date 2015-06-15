@@ -1,9 +1,12 @@
 package fflames;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.awt.image.ImageObserver;
 import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -12,29 +15,26 @@ import java.util.Random;
 import java.util.Vector;
 
 import fflames.interfaces.IColour;
+import fflames.interfaces.ISuperSampling;
+import fflames.model.RotationalSymmetryTransform;
 import fflames.model.Transform;
+import fflames.model.TransformProxy;
 
-public class FractalGenerator {
-	
-	@Deprecated
-	public FractalGenerator(ArrayList<Transform> transforms, IColour _coloringMethod, BufferedImage _output) {
-		super();
-		_transforms = transforms;
-		this._coloringMethod = _coloringMethod;
-		this._randomNumberGenerator = new Random();
-		
-		_numberOfIterations = 100000;
-	}
+public class FractalGenerator { 
 	
 	public FractalGenerator(ArrayList<Transform> transforms, IColour _coloringMethod, int width, int height) {
 		super();
 		_width = width;
 		_height = height;
 		_transforms = transforms;
+		_samples = 1;
 		this._coloringMethod = _coloringMethod;
 		this._randomNumberGenerator = new Random();
 		
 		_numberOfIterations = 100000;
+		_numberOfRotations = 0;
+		
+		_algorithmTransforms = new ArrayList<Transform>();
 	}
 	
 	public void execute() {
@@ -45,40 +45,95 @@ public class FractalGenerator {
 		
 		ColorModel colorModel = _coloringMethod.getColorModel();
 		
-		_output = new BufferedImage(colorModel, colorModel.createCompatibleWritableRaster(_width, _height), false, new Hashtable<String, Object>());
-		WritableRaster raster = _output.getRaster();
+		ISuperSampling superSampling = new NoSuperSampling(_width, _height);
+		if(_samples > 1) {
+			superSampling = new SuperSampling(_width, _height, _samples);
+		}
+		
+		int width = superSampling.getRequiredWidth();
+		int height = superSampling.getRequiredHeight();
+		
+		BufferedImage output = new BufferedImage(colorModel, colorModel.createCompatibleWritableRaster(superSampling.getRequiredWidth(), superSampling.getRequiredHeight()), false, new Hashtable<String, Object>());
+		WritableRaster raster = output.getRaster();
 		
 		_coloringMethod.initialize(raster);
 		
+		prepareAlgorithmTransforms();
+		
 		Vector<Double> bounds = calculateBounds();
-		Double minx = bounds.elementAt(0);
-		Double maxx = bounds.elementAt(1);
-		Double miny = bounds.elementAt(2);
-		Double maxy = bounds.elementAt(3);
+		Double minx = (double) Math.round(bounds.elementAt(0));
+		Double maxx = (double) Math.round(bounds.elementAt(1));
+		Double miny = (double) Math.round(bounds.elementAt(2));
+		Double maxy = (double) Math.round(bounds.elementAt(3));
 		
 		while(i <= _numberOfIterations) {
 			index = selectFunctionIndex();
 			calculateNextPoint(point, index);			
-			Double valX = new Double((point.getX() - minx)/(maxx - minx) * _width);
-			Double valY = new Double((point.getY() - miny)/(maxy - miny) * _height);
+			Double valX = new Double((point.getX() - minx)/(maxx - minx) * width);
+			Double valY = new Double((point.getY() - miny)/(maxy - miny) * height);
 			imagePoint.setLocation(valX.intValue(), valY.intValue());
 			
-			if(imagePoint.x < _width && imagePoint.x >= 0 && imagePoint.y >= 0 && imagePoint.y < _height) {
-				_coloringMethod.writeColour(raster, i, imagePoint.x, imagePoint.y, index);
+			if(imagePoint.x < width && imagePoint.x >= 0 && imagePoint.y >= 0 && imagePoint.y < height) {
+				if(index < _transforms.size()) { 
+					_coloringMethod.writeColour(raster, i, imagePoint.x, imagePoint.y, index);
+				} else {
+					_coloringMethod.writeColour(raster, i, imagePoint.x, imagePoint.y);
+				}
 			}
 			
 			i++;
 		}
 		
 		_coloringMethod.finalize(raster);
+		_output = superSampling.processImage(output);
 	}
 	
+	
+	/**
+	 * Prepares algorithm transforms from the algorithm
+	 * parameters and existing transforms.
+	 */
+	protected void prepareAlgorithmTransforms() {
+		_algorithmTransforms.clear();
+		int rotationsNumber = getRotationsNumber();
+		
+		if(rotationsNumber > 0) {
+			Double transformPropability = 1.0/(rotationsNumber + 1);
+			for(Transform transform : _transforms) {
+				_algorithmTransforms.add(new TransformProxy(transform, transform.getPropability()*transformPropability));
+			}
+			
+			Double rotationAngle = 2*Math.PI/(rotationsNumber + 1);
+			for(int i = 1; i <= rotationsNumber; i++) {
+				_algorithmTransforms.add(new RotationalSymmetryTransform(i * rotationAngle, transformPropability));
+			}
+		} else {
+			_algorithmTransforms.addAll(_transforms);
+		}
+	}
+
 	public int getNumberOfIterations() {
 		return _numberOfIterations;
 	}
 	
-	public void setNumberOfIterations(int _numberOfIterations) {
-		this._numberOfIterations = _numberOfIterations;
+	public void setNumberOfIterations(int numberOfIterations) {
+		_numberOfIterations = numberOfIterations;
+	}
+	
+	public void setNumberOfRotations(int numberOfRotations) {
+		_numberOfRotations = numberOfRotations;
+	}
+	
+	public int getRotationsNumber() {
+		return _numberOfRotations;
+	}
+	
+	public void setSamples(int number) {
+		_samples = number;
+	}
+	
+	public int getSample() {
+		return _samples;
 	}
 	
 	public BufferedImage getOutput() {
@@ -86,7 +141,7 @@ public class FractalGenerator {
 	}
 	
 	private Vector<Double> calculateBounds() {
-		int sampleSize = 20000;
+		int sampleSize = 200000;
 		int index = 0;
 		
 		Vector<Point2D.Double> points = new Vector<Point2D.Double>();
@@ -99,7 +154,7 @@ public class FractalGenerator {
 			index = selectFunctionIndex();
 			calculateNextPoint(point, index);
 			if(i >= 20) {
-				meanx += point.getX();
+				meanx +=  point.getX();
 				meany += point.getY();
 				points.add((Point2D.Double)point.clone());
 			}
@@ -126,23 +181,23 @@ public class FractalGenerator {
 	}
 	
 	private void calculateNextPoint(Point2D.Double point, int index) {
-		
-		_transforms.get(index).oblicz(point);
+		_algorithmTransforms.get(index).oblicz(point);
 	}
 	
 	private int selectFunctionIndex() {
 		double random = _randomNumberGenerator.nextDouble();
 		double currentPr = 0.0;
-		for(int i = 0; i < _transforms.size() - 1; i++) {
-			currentPr += _transforms.get(i).getPropability();
+		for(int i = 0; i < _algorithmTransforms.size() - 1; i++) {
+			currentPr += _algorithmTransforms.get(i).getPropability();
 			if(random <= currentPr) return i;
 		}
-		return _transforms.size() - 1;
+		return _algorithmTransforms.size() - 1;
 	}
 	
 	ArrayList<Transform> _transforms;
+	ArrayList<Transform> _algorithmTransforms;
 	IColour _coloringMethod;
 	BufferedImage _output;
-	int _numberOfIterations, _width, _height;
+	int _numberOfIterations, _width, _height, _numberOfRotations, _samples;
 	Random _randomNumberGenerator;
 }

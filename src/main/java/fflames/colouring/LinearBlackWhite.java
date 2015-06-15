@@ -45,4 +45,9 @@ public class LinearBlackWhite extends DensityBasedColoring {
 			}
 		}
 	}
+
+	@Override
+	public void writeColour(WritableRaster raster, int interaction, int x, int y) {
+		writeColour(raster, interaction, x, y, 0);
+	}
 }

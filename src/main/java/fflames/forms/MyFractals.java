@@ -21,9 +21,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Dimension;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 
 /**
@@ -106,106 +103,15 @@ public class MyFractals extends javax.swing.JFrame {
 		jTP = new javax.swing.JTabbedPane();
 		jTP.setPreferredSize(new Dimension(200, 200));
 		jTP.setMinimumSize(new Dimension(200, 200));
-		opcjeJPanel = new javax.swing.JPanel();
-		opcjeJPanel.setPreferredSize(new Dimension(200, 200));
-		opcjeJPanel.setMinimumSize(new Dimension(200, 200));
-		iloscIteracjiJLabel = new javax.swing.JLabel();
-		iloscIteracjiJTextField = new javax.swing.JTextField();
-		wielkoscObrJLabel = new javax.swing.JLabel();
-		widthJTextField = new javax.swing.JTextField();
-		xJLabel = new javax.swing.JLabel();
-		hieghtJTextField = new javax.swing.JTextField();
-		symetrieJLabel = new javax.swing.JLabel();
-		rotationsQuantityJTF = new javax.swing.JTextField();
+		
 		wariationsJPanel = new fflames.forms.VariationsEditor();
 		wariationsJPanel.setMinimumSize(new Dimension(200, 200));
 		coloringJPanel = new fflames.forms.ColouringEditor();
 		coloringJPanel.setMinimumSize(new Dimension(200, 200));
 
-		iloscIteracjiJLabel.setText("Ilosc iteracji:");
-
-		iloscIteracjiJTextField.setText("100000");
-
-		wielkoscObrJLabel.setText("Wielko�� obrazka:");
-
-		widthJTextField.setText("640");
-
-		xJLabel.setText("x");
-
-		hieghtJTextField.setText("480");
-
-		symetrieJLabel.setText("Ilo�� obrot�w:");
-
-		rotationsQuantityJTF.setText("0");
-
-		javax.swing.GroupLayout opcjeJPanelLayout = new javax.swing.GroupLayout(opcjeJPanel);
-		opcjeJPanelLayout.setHorizontalGroup(opcjeJPanelLayout.createParallelGroup(Alignment.LEADING).addGroup(
-				opcjeJPanelLayout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								opcjeJPanelLayout
-										.createParallelGroup(Alignment.LEADING)
-										.addGroup(
-												opcjeJPanelLayout
-														.createSequentialGroup()
-														.addComponent(iloscIteracjiJLabel)
-														.addPreferredGap(ComponentPlacement.UNRELATED)
-														.addComponent(iloscIteracjiJTextField,
-																GroupLayout.PREFERRED_SIZE, 91,
-																GroupLayout.PREFERRED_SIZE))
-										.addGroup(
-												opcjeJPanelLayout
-														.createSequentialGroup()
-														.addComponent(wielkoscObrJLabel)
-														.addGap(15)
-														.addComponent(widthJTextField, GroupLayout.PREFERRED_SIZE, 45,
-																GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(xJLabel)
-														.addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(hieghtJTextField, GroupLayout.PREFERRED_SIZE, 44,
-																GroupLayout.PREFERRED_SIZE))
-										.addGroup(
-												opcjeJPanelLayout
-														.createSequentialGroup()
-														.addComponent(symetrieJLabel)
-														.addPreferredGap(ComponentPlacement.UNRELATED)
-														.addComponent(rotationsQuantityJTF, GroupLayout.PREFERRED_SIZE,
-																51, GroupLayout.PREFERRED_SIZE)))
-						.addContainerGap(261, Short.MAX_VALUE)));
-		opcjeJPanelLayout.setVerticalGroup(opcjeJPanelLayout.createParallelGroup(Alignment.LEADING).addGroup(
-				opcjeJPanelLayout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								opcjeJPanelLayout
-										.createParallelGroup(Alignment.BASELINE)
-										.addComponent(iloscIteracjiJLabel)
-										.addComponent(iloscIteracjiJTextField, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								opcjeJPanelLayout
-										.createParallelGroup(Alignment.BASELINE)
-										.addComponent(wielkoscObrJLabel)
-										.addComponent(hieghtJTextField, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(xJLabel)
-										.addComponent(widthJTextField, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								opcjeJPanelLayout
-										.createParallelGroup(Alignment.BASELINE)
-										.addComponent(symetrieJLabel)
-										.addComponent(rotationsQuantityJTF, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(57)));
-		opcjeJPanelLayout.linkSize(SwingConstants.HORIZONTAL, new Component[] { widthJTextField, hieghtJTextField });
-		opcjeJPanel.setLayout(opcjeJPanelLayout);
-
-		jTP.addTab("Opcje", opcjeJPanel);
-
+		_algorithmConfigurationEditor = new AlgorithmConfigurationEditor();
+		jTP.addTab("Options", null, _algorithmConfigurationEditor, null);
+		
 		_affineTranformTab = new JPanel();
 		_affineTranformTab.setMinimumSize(new Dimension(200, 200));
 		jTP.addTab("Affine transform", null, _affineTranformTab, null);
@@ -251,6 +157,7 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc_jTP.gridx = 0;
 		gbc_jTP.gridy = 0;
 		getContentPane().add(jTP, gbc_jTP);
+		
 		listaFunkcjiScrollPane = new javax.swing.JScrollPane();
 		listaFunkcjiScrollPane.setMinimumSize(new Dimension(200, 200));
 		listaFunkcjiScrollPane.setMaximumSize(new Dimension(200, 200));
@@ -354,25 +261,16 @@ public class MyFractals extends javax.swing.JFrame {
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private fflames.forms.ColouringEditor coloringJPanel;
 	private javax.swing.JButton dodajButton;
-	private javax.swing.JTextField hieghtJTextField;
-	private javax.swing.JLabel iloscIteracjiJLabel;
-	private javax.swing.JTextField iloscIteracjiJTextField;
 	private javax.swing.JTabbedPane jTP;
 	private JTable _transformsList;
 	private javax.swing.JScrollPane listaFunkcjiScrollPane;
-	private javax.swing.JPanel opcjeJPanel;
 	private javax.swing.JButton loadFractalFileFromXmlJButton;
-	private javax.swing.JTextField rotationsQuantityJTF;
 	private javax.swing.JButton rysujButton;
 	private fflames.forms.PreviewJPanel rysunekJPanel;
 	private javax.swing.JButton saveImageButton;
-	private javax.swing.JLabel symetrieJLabel;
 	private javax.swing.JButton usunButton;
 	private fflames.forms.VariationsEditor wariationsJPanel;
-	private javax.swing.JTextField widthJTextField;
-	private javax.swing.JLabel wielkoscObrJLabel;
 	private javax.swing.JLabel wybraneFunkcjeLabel;
-	private javax.swing.JLabel xJLabel;
 	private javax.swing.JButton saveFractalToXmlJButton;
 	private JPanel _affineTranformTab;
 	private JTextField _tfPropability;
@@ -381,6 +279,7 @@ public class MyFractals extends javax.swing.JFrame {
 	private JMenu mnFile;
 	private JMenu mnAbout;
 	private JMenu mnOpenRecent;
+	private AlgorithmConfigurationEditor _algorithmConfigurationEditor;
 
 	// End of variables declaration//GEN-END:variables
 
@@ -401,15 +300,28 @@ public class MyFractals extends javax.swing.JFrame {
 	}
 
 	public Integer getIterationsNumber() {
-		return Integer.parseInt(iloscIteracjiJTextField.getText());
+		/** 
+		 * @todo
+		 * return Integer.parseInt(iloscIteracjiJTextField.getText());
+		 */
+		return 0;
 	}
 
 	public Integer getImageWidth() {
-		return Integer.parseInt(widthJTextField.getText());
+		/** 
+		 * @todo
+		 * return Integer.parseInt(widthJTextField.getText());
+		 */
+		return 0;
 	}
 
 	public Integer getImageHeight() {
-		return Integer.parseInt(hieghtJTextField.getText());
+		/**
+		 * @todo
+		 * return Integer.parseInt(hieghtJTextField.getText());
+		 */
+		
+		return 0;
 	}
 	
 	public PreviewJPanel getRysunekJPanel() {
@@ -432,6 +344,10 @@ public class MyFractals extends javax.swing.JFrame {
 		return wariationsJPanel;
 	}
 
+	public AlgorithmConfigurationEditor getAlgorithmConfigurationEditor() {
+		return _algorithmConfigurationEditor;
+	}
+	
 	public void setRecentOpened(final RecentOpenedModel model) {
 		for(int i = 0; i < model.getSize(); i++) {
 			mnOpenRecent.add(_actions.createOpenAction(model.getElementAt(i)));

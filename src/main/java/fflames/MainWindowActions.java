@@ -1,26 +1,14 @@
 package fflames;
 
-import java.awt.Component;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 
-import fflames.forms.AboutDialog;
+import fflames.events.LoadProject;
 
-public class MainWindowActions {
-	private Component _parent;
-	private ArrayList<MainWindowController> _controllers = new ArrayList<MainWindowController>();
-	
-	public MainWindowActions(Component parent) {
-		_parent = parent;
-	}
-	
-	public void addController(MainWindowController controller) {
-		_controllers.add(controller);
+public class MainWindowActions extends FormActions {
+	public MainWindowActions(Object parent) {
+		super(parent);
 	}
 	
 	public SaveImageAction createSaveImageAction() {
@@ -73,9 +61,7 @@ public class MainWindowActions {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			for(MainWindowController controller : _controllers) {
-				controller.newFractal();
-			}
+			fireActionEvent(fflames.events.Action.Actions.NewProject);
 		}	
 	}
 	
@@ -89,18 +75,7 @@ public class MainWindowActions {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JFileChooser fileChooser = new JFileChooser();
-	    	fileChooser.setApproveButtonText("Save");
-			fileChooser.setCurrentDirectory(null);
-			fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PNG files", "png"));
-			int returnValue = fileChooser.showSaveDialog(_parent);
-			if(returnValue == JFileChooser.APPROVE_OPTION) {
-				for(MainWindowController controller : _controllers) {
-					controller.saveImageFile(fileChooser.getSelectedFile());
-				}
-			} else {
-				return;
-			}
+			fireActionEvent(fflames.events.Action.Actions.SaveProject);
 		}	
 	}
 	
@@ -114,18 +89,7 @@ public class MainWindowActions {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JFileChooser fileChooser = new JFileChooser();
-	    	fileChooser.setApproveButtonText("Save");
-			fileChooser.setCurrentDirectory(null);
-			fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("XML files", "xml"));
-			int returnValue = fileChooser.showSaveDialog(_parent);
-			if(returnValue == JFileChooser.APPROVE_OPTION) {
-				for(MainWindowController controller : _controllers) {
-					controller.saveFractalFile(fileChooser.getSelectedFile().getAbsolutePath());
-				}
-			} else {
-				return;
-			}
+			fireActionEvent(fflames.events.Action.Actions.SaveProject);
 		}	
 	}
 	
@@ -145,31 +109,10 @@ public class MainWindowActions {
 		}
 		
 		public void actionPerformed(ActionEvent e) {
-			String command = e.getActionCommand();
-			if(command.isEmpty()) {
-				JFileChooser fileChooser = new JFileChooser();
-		    	fileChooser.setApproveButtonText("Open");
-				fileChooser.setCurrentDirectory(null);
-				fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("XML files", "xml"));
-				int returnValue = fileChooser.showOpenDialog(_parent);
-				if(returnValue == JFileChooser.APPROVE_OPTION) {
-					command = fileChooser.getSelectedFile().getAbsolutePath();
-				} else {
-					return;
-				}
-			}
-			
-			for(MainWindowController controller : _controllers) {
-				controller.loadFractalFile(command);
-			}
+			fireActionEvent(new LoadProject(_source, e.getActionCommand()));
 		}
 	}
 
-	/**
-	 * @todo wrong casting
-	 * @author pawel
-	 *
-	 */
 	private class ExitAction extends AbstractAction {
 		private static final long serialVersionUID = 1L;
 
@@ -180,7 +123,7 @@ public class MainWindowActions {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			((Window) _parent).dispose();
+			fireActionEvent(fflames.events.Action.Actions.ExitApplication);
 		}
 		
 	}
@@ -195,8 +138,7 @@ public class MainWindowActions {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JDialog dialog = new AboutDialog();
-			dialog.setVisible(true);
+			fireActionEvent(fflames.events.Action.Actions.ShowAbout);
 		}
 	}
 	
@@ -210,9 +152,7 @@ public class MainWindowActions {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			for(MainWindowController controller : _controllers) {
-				controller.addTransform();
-			}
+			fireActionEvent(fflames.events.Action.Actions.AddTransform);
 		}
 	}
 	
@@ -226,9 +166,7 @@ public class MainWindowActions {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			for(MainWindowController controller : _controllers) {
-				controller.removeTransform();
-			}
+			fireActionEvent(fflames.events.Action.Actions.RemoveTransform);
 		}
 	}
 	
@@ -242,10 +180,10 @@ public class MainWindowActions {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			for(MainWindowController controller : _controllers) {
-				controller.drawFractal();
-			}
+			fireActionEvent(fflames.events.Action.Actions.Draw);
 		}
 		
 	}
+	
+	private static final long serialVersionUID = 1L;
 }

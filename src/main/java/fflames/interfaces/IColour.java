@@ -23,5 +23,6 @@ public interface IColour {
     public void finalize(WritableRaster raster);    
     
     public ColorModel getColorModel();
+    public void writeColour(WritableRaster raster, int interaction, int x, int y);
     public void writeColour(WritableRaster raster, int interaction, int x, int y, int index);
 }

@@ -24,6 +24,16 @@ public class Transform {
     private Vector<IVariation> wariations;
     private Double propability;
 
+    
+    /**
+     * Creates empty transform with propability 0.0
+     */
+    public Transform() {
+    	affineTr = new AffineTransform();
+    	wariations = new Vector<IVariation>();
+    	propability = new Double(0.0);
+    }
+    
     /**
      * Creates a new instance of Transform
      * @param _affineTr transformacja afiniczna
@@ -63,14 +73,14 @@ public class Transform {
         /* Spawdzenie czy wariacja jest zależna od współczynników transformacji
         afinicznej. Jeśli tak to przekazanie wspóczynników transformacji */
         if(wariations.firstElement().isDependent()) {
-                Vector<Double> temp = new Vector<Double>();
-                double[] parameters = new double[6];
-                affineTr.getMatrix(parameters);
-                for(double par:parameters) temp.add(par);
-                temp.addAll(wariations.firstElement().getParameters().subList(2, 
-                        wariations.firstElement().getParameters().size()));
-                wariations.firstElement().setParameters(temp);
-            }
+            Vector<Double> temp = new Vector<Double>();
+            double[] parameters = new double[6];
+            affineTr.getMatrix(parameters);
+            for(double par:parameters) temp.add(par);
+            temp.addAll(wariations.firstElement().getParameters().subList(2, 
+                    wariations.firstElement().getParameters().size()));
+            wariations.firstElement().setParameters(temp);
+        }
         propability = new Double(pr);
     }
     
@@ -112,6 +122,10 @@ public class Transform {
 
     public Double getPropability() {
         return propability;
+    }
+    
+    public void setPropability(Double value) {
+    	propability = value;
     }
     
     public void writeXML(java.io.OutputStreamWriter out) {

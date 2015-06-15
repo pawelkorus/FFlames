@@ -12,6 +12,7 @@ package fflames.model;
 import javax.swing.table.*;
 
 import fflames.interfaces.IVariation;
+import fflames.variation.VariationsFactory;
 
 import java.util.ArrayList;
 import java.util.Vector;
