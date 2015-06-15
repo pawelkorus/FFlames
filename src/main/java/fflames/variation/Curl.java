@@ -42,7 +42,7 @@ public class Curl extends AbstractWariation {
         return point;
     }
    
-    public String getWariationName() {
+    public String getName() {
         return "Curl";
     }
     
@@ -51,6 +51,6 @@ public class Curl extends AbstractWariation {
     
     @Override
     public String toString() {
-        return getWariationName() + getParameters().toString();
+        return getName() + getParameters().toString();
     }
 }

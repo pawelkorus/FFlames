@@ -25,7 +25,7 @@ public class Exponential extends AbstractWariation {
     
     @Override
     public String toString() {
-        return getWariationName() + getParameters().toString();
+        return getName() + getParameters().toString();
     }
     
     public Point2D oblicz(Point2D point) {
@@ -35,5 +35,5 @@ public class Exponential extends AbstractWariation {
         return point;
     }
     
-    public String getWariationName() { return "Exponential"; }
+    public String getName() { return "Exponential"; }
 }

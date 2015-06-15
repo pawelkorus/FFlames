@@ -32,12 +32,12 @@ public class Swirl extends AbstractWariation {
         return point;
     }
 
-    public String getWariationName() {
+    public String getName() {
         return "Swirl";
     }
 
     @Override
     public String toString() {
-        return getWariationName() + getParameters().toString();
+        return getName() + getParameters().toString();
     }
 }

@@ -37,7 +37,7 @@ public class NullVariation extends AbstractWariation {
 	}
 
 	@Override
-	public String getWariationName() {
+	public String getName() {
 		return "Null";
 	}
 

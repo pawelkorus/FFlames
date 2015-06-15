@@ -52,7 +52,7 @@ public class RadialBlur extends AbstractWariation {
         return point;
     }
    
-    public String getWariationName() {
+    public String getName() {
         return "RadialBlur";
     }
     
@@ -61,6 +61,6 @@ public class RadialBlur extends AbstractWariation {
     
     @Override
     public String toString() {
-        return getWariationName() + getParameters().toString();
+        return getName() + getParameters().toString();
     }
 }

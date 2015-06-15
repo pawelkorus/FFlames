@@ -25,7 +25,7 @@ public class Fan extends AbstractWariation {
     
     @Override
     public String toString() {
-        return getWariationName() + getParameters().toString();
+        return getName() + getParameters().toString();
     }
     
     public Point2D oblicz(Point2D point) {
@@ -46,7 +46,7 @@ public class Fan extends AbstractWariation {
         return point;
     }
     
-    public String getWariationName() { return "Fan"; }
+    public String getName() { return "Fan"; }
     
     @Override
     public boolean isDependent() {

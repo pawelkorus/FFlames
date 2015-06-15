@@ -43,7 +43,7 @@ public class Rings2 extends AbstractWariation {
         return point;
     }
         
-    public String getWariationName() {
+    public String getName() {
         return "Rings2";
     }
     
@@ -52,6 +52,6 @@ public class Rings2 extends AbstractWariation {
     
     @Override
     public String toString() {
-        return getWariationName() + getParameters().toString();
+        return getName() + getParameters().toString();
     }
 }

@@ -25,7 +25,7 @@ public class Popcorn extends AbstractWariation {
     
     @Override
     public String toString() {
-        return getWariationName() + getParameters().firstElement().toString();
+        return getName() + getParameters().firstElement().toString();
     }
     
     public Point2D oblicz(Point2D point) {
@@ -35,7 +35,7 @@ public class Popcorn extends AbstractWariation {
         return point;
     }
     
-    public String getWariationName() { return "Popcorn"; }
+    public String getName() { return "Popcorn"; }
     
     @Override
     public boolean isDependent() {

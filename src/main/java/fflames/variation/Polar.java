@@ -30,12 +30,12 @@ public class Polar extends AbstractWariation {
         return point;
     }
 
-    public String getWariationName() {
+    public String getName() {
         return "Polar";
     }
 
     @Override
     public String toString() {
-        return getWariationName() + getParameters().toString();
+        return getName() + getParameters().toString();
     }
 }

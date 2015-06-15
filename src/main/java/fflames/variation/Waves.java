@@ -31,7 +31,7 @@ public class Waves extends AbstractWariation {
     
     @Override
     public String toString() {
-        return getWariationName() + getParameters().firstElement().toString();
+        return getName() + getParameters().firstElement().toString();
     }
     
     public Point2D oblicz(Point2D point) {
@@ -44,7 +44,7 @@ public class Waves extends AbstractWariation {
         return point;
     }
     
-    public String getWariationName() { return "Waves"; }
+    public String getName() { return "Waves"; }
     
     @Override
     public boolean isDependent() {

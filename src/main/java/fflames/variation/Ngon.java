@@ -48,7 +48,7 @@ public class Ngon extends AbstractWariation {
         return point;
     }
    
-    public String getWariationName() {
+    public String getName() {
         return "Ngon";
     }
     
@@ -57,6 +57,6 @@ public class Ngon extends AbstractWariation {
     
     @Override
     public String toString() {
-        return getWariationName() + getParameters().toString();
+        return getName() + getParameters().toString();
     }
 }

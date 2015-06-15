@@ -25,7 +25,7 @@ public class Gaussian extends AbstractWariation {
     
     @Override
     public String toString() {
-        return getWariationName() + getParameters().toString();
+        return getName() + getParameters().toString();
     }
     
     public Point2D oblicz(Point2D point) {
@@ -39,5 +39,5 @@ public class Gaussian extends AbstractWariation {
         return point;
     }
     
-    public String getWariationName() { return "Gaussian"; }
+    public String getName() { return "Gaussian"; }
 }

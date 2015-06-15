@@ -49,7 +49,7 @@ public class Fan2 extends AbstractWariation {
         return point;
     }
    
-    public String getWariationName() {
+    public String getName() {
         return "Fan2";
     }
     
@@ -58,6 +58,6 @@ public class Fan2 extends AbstractWariation {
     
     @Override
     public String toString() {
-        return getWariationName() + getParameters().toString();
+        return getName() + getParameters().toString();
     }
 }

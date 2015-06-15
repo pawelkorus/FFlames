@@ -25,7 +25,7 @@ public class Fisheye extends AbstractWariation {
     
     @Override
     public String toString() {
-        return getWariationName() + getParameters().toString();
+        return getName() + getParameters().toString();
     }
     
     public Point2D oblicz(Point2D point) {
@@ -37,5 +37,5 @@ public class Fisheye extends AbstractWariation {
         return point;
     }
     
-    public String getWariationName() { return "Fisheye"; }
+    public String getName() { return "Fisheye"; }
 }

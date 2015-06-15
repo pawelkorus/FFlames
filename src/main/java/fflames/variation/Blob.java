@@ -41,7 +41,7 @@ public class Blob extends AbstractWariation {
         return point;
     }
    
-    public String getWariationName() {
+    public String getName() {
         return "Blob";
     }
     
@@ -50,6 +50,6 @@ public class Blob extends AbstractWariation {
     
     @Override
     public String toString() {
-        return getWariationName() + getParameters().toString();
+        return getName() + getParameters().toString();
     }
 }

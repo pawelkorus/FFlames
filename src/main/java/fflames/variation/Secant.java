@@ -25,7 +25,7 @@ public class Secant extends AbstractWariation {
     
     @Override
     public String toString() {
-        return getWariationName() + getParameters().toString();
+        return getName() + getParameters().toString();
     }
     
     public Point2D oblicz(Point2D point) {
@@ -34,5 +34,5 @@ public class Secant extends AbstractWariation {
         return point;
     }
     
-    public String getWariationName() { return "Secant"; }
+    public String getName() { return "Secant"; }
 }

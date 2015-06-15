@@ -24,7 +24,7 @@ public class Sinusoidal extends AbstractWariation {
     
     @Override
     public String toString() { 
-        return getWariationName() + getParameters().toString(); 
+        return getName() + getParameters().toString(); 
     }
     
     public Point2D oblicz(Point2D punkt) {
@@ -32,5 +32,5 @@ public class Sinusoidal extends AbstractWariation {
         return punkt;
     }
     
-    public String getWariationName() { return "Sinusoidal"; }
+    public String getName() { return "Sinusoidal"; }
 }

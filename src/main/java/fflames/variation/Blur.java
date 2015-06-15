@@ -25,7 +25,7 @@ public class Blur extends AbstractWariation {
     
     @Override
     public String toString() {
-        return getWariationName() + getParameters().toString();
+        return getName() + getParameters().toString();
     }
     
     public Point2D oblicz(Point2D point) {
@@ -36,5 +36,5 @@ public class Blur extends AbstractWariation {
         return point;
     }
     
-    public String getWariationName() { return "Blur"; }
+    public String getName() { return "Blur"; }
 }

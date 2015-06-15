@@ -61,7 +61,7 @@ public interface IVariation {
      * Returns the name of the variation
      * @return String
      */
-    public String getWariationName();
+    public String getName();
     
     
     /**

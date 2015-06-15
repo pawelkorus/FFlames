@@ -136,7 +136,7 @@ public class Transform {
                         out.write("<Par>" + par.get(j) + "</Par>\r\n");
                     }
                 }
-                name = wariations.get(i).getWariationName();
+                name = wariations.get(i).getName();
                 out.write("<Name>" + name + "</Name>\r\n");
                 out.write("</Wariation>\r\n");
             }

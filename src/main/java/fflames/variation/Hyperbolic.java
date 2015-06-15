@@ -25,7 +25,7 @@ public class Hyperbolic extends AbstractWariation {
     
     @Override
     public String toString() {
-        return getWariationName() + getParameters().toString();
+        return getName() + getParameters().toString();
     }
     
     public Point2D oblicz(Point2D point) {
@@ -37,5 +37,5 @@ public class Hyperbolic extends AbstractWariation {
         return point;
     }
     
-    public String getWariationName() { return "Hyperbolic"; }
+    public String getName() { return "Hyperbolic"; }
 }
