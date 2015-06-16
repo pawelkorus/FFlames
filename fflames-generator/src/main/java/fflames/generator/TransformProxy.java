@@ -17,8 +17,8 @@ public class TransformProxy extends Transform {
 	}
 	
 	@Override
-	public Point2D oblicz(Point2D point) {
-		return _sourceTransform.oblicz(point);
+	public Point2D transform(Point2D point) {
+		return _sourceTransform.transform(point);
 	}
 
 	@Override

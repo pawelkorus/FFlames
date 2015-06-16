@@ -175,7 +175,7 @@ public class FractalGenerator {
 	}
 	
 	private void calculateNextPoint(Point2D.Double point, int index) {
-		_algorithmTransforms.get(index).oblicz(point);
+		_algorithmTransforms.get(index).transform(point);
 	}
 	
 	private int selectFunctionIndex() {
