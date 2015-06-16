@@ -1,5 +1,6 @@
-package fflames.generator;
+package fflames.generator.supersampling;
 
+import fflames.generator.ISuperSampling;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.util.Hashtable;

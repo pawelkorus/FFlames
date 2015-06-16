@@ -1,5 +1,6 @@
-package fflames.generator;
+package fflames.generator.supersampling;
 
+import fflames.generator.ISuperSampling;
 import java.awt.image.BufferedImage;
 
 

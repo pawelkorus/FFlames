@@ -1,5 +1,7 @@
 package fflames.generator;
 
+import fflames.generator.supersampling.NoSuperSampling;
+import fflames.generator.supersampling.SuperSampling;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
