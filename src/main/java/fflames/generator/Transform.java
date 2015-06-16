@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package fflames.model;
+package fflames.generator;
 
 import java.io.IOException;
 import java.util.Vector;

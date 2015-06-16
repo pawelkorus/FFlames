@@ -1,5 +1,6 @@
-package fflames.model;
+package fflames.generator;
 
+import fflames.generator.Transform;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.OutputStreamWriter;

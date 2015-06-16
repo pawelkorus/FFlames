@@ -1,4 +1,4 @@
-package fflames;
+package fflames.generator;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
@@ -12,9 +12,6 @@ import java.util.Random;
 
 import fflames.interfaces.IColour;
 import fflames.interfaces.ISuperSampling;
-import fflames.model.RotationalSymmetryTransform;
-import fflames.model.Transform;
-import fflames.model.TransformProxy;
 
 public class FractalGenerator { 
 	

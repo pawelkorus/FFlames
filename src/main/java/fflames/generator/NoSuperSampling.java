@@ -1,4 +1,4 @@
-package fflames;
+package fflames.generator;
 
 import java.awt.image.BufferedImage;
 

@@ -1,4 +1,5 @@
 package fflames;
+import fflames.generator.FractalGenerator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
@@ -30,7 +31,7 @@ import fflames.model.AffineTransformModel;
 import fflames.model.AlgorithmConfigurationModel;
 import fflames.model.ApplicationState;
 import fflames.model.RecentOpenedModel;
-import fflames.model.Transform;
+import fflames.generator.Transform;
 import fflames.model.TransformTableModel;
 import fflames.model.VariationsTableModel;
 

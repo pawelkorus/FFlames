@@ -1,5 +1,6 @@
-package fflames.model;
+package fflames.generator;
 
+import fflames.generator.Transform;
 import fflames.variation.VariationsFactory;
 
 public class RotationalSymmetryTransform extends Transform {

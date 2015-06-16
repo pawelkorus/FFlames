@@ -16,7 +16,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import fflames.interfaces.*;
-import fflames.model.Transform;
+import fflames.generator.Transform;
 import fflames.variation.VariationsFactory;
 import fflames.exceptions.ImportXMLFractalFileException;
 
