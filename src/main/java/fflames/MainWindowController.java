@@ -6,8 +6,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.JDialog;
@@ -26,12 +24,10 @@ import fflames.forms.AffineTransformEditor;
 import fflames.forms.MyFractals;
 import fflames.interfaces.IColour;
 import fflames.interfaces.IMainWindowController;
-import fflames.interfaces.IVariation;
 import fflames.model.AffineTransformModel;
 import fflames.model.AlgorithmConfigurationModel;
 import fflames.model.ApplicationState;
 import fflames.model.RecentOpenedModel;
-import fflames.generator.Transform;
 import fflames.model.TransformTableModel;
 import fflames.model.VariationsTableModel;
 
@@ -72,24 +68,18 @@ public final class MainWindowController implements IMainWindowController, Action
 	 */
 	@Override
 	public void loadFractalFile(String filePath) {
-		ArrayList<Transform> transforms = new ArrayList<Transform>();
-		
 		ImportXMLFractalFile importer = new ImportXMLFractalFile();
 		try {
-			importer.load(transforms, filePath);
+			importer.load(_transformsModel, filePath);
 			_state.setParam(ApplicationState.LOADED_FRACTAL_FILE_PATH, filePath);
 			_recentOpenedModel.add(filePath);
 		} catch (ImportXMLFractalFileException exception) {
-			transforms.clear();
 			JOptionPane.showMessageDialog(_view, "Error occured when parsing choosen file", "Import error", JOptionPane.ERROR_MESSAGE);
 			exception.printStackTrace();
 		} catch (IOException exception) {
-			transforms.clear();
 			JOptionPane.showMessageDialog(_view, "Error when reading from choosen file", "Import error", JOptionPane.ERROR_MESSAGE);
 			exception.printStackTrace();
 		}
-		
-		_transformsModel.setTransforms(transforms);
 	}
 	
 	/* (non-Javadoc)
@@ -156,9 +146,8 @@ public final class MainWindowController implements IMainWindowController, Action
 	@Override
 	public void addTransform() {
 		AffineTransformModel affineTransformModel = _view.getAffineTransformEditor().getModel();
-		Vector<IVariation> variations = _view.getVariations();
 		Double propability = _view.getFunctionPropability();
-		_transformsModel.add(new Transform(affineTransformModel.getTransform(), variations, propability));
+		_transformsModel.addNew(affineTransformModel.getTransform(), _view.getVariations(), propability);
 	}
 	
 	/* (non-Javadoc)

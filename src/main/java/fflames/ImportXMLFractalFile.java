@@ -19,27 +19,28 @@ import fflames.interfaces.*;
 import fflames.generator.Transform;
 import fflames.variation.VariationsFactory;
 import fflames.exceptions.ImportXMLFractalFileException;
+import fflames.model.TransformTableModel;
 
 public class ImportXMLFractalFile {
 	public ImportXMLFractalFile() {
 		super();
 	}
 
-	public void load(ArrayList<Transform> transforms, String path) throws IOException, ImportXMLFractalFileException {
+	public void load(TransformTableModel transformsModel, String path) throws IOException, ImportXMLFractalFileException {
 		File file = new File(path);
-		load(transforms, file);
+		load(transformsModel, file);
 	}
 	
-	public void load(ArrayList<Transform> transforms, File file) throws IOException, ImportXMLFractalFileException {
+	public void load(TransformTableModel transformsModel, File file) throws IOException, ImportXMLFractalFileException {
 		FileReader r = new FileReader(file);
-		load(transforms, r);
+		load(transformsModel, r);
 	}
 	
-	public void load(ArrayList<Transform> transforms, InputStreamReader input) throws IOException, ImportXMLFractalFileException {
+	public void load(TransformTableModel transformsModel, InputStreamReader input) throws IOException, ImportXMLFractalFileException {
 		try {
 			XMLReader xr = XMLReaderFactory.createXMLReader();
 			
-			XMLHandler handler = new XMLHandler(transforms);
+			XMLHandler handler = new XMLHandler(transformsModel.getTransforms());
 			xr.setContentHandler(handler);
 			xr.setErrorHandler(handler);
 

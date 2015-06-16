@@ -1,5 +1,6 @@
 package fflames.model;
 
+import fflames.generator.Transform;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -79,6 +80,11 @@ public class TransformTableModel extends AbstractTableModel {
 		_transforms.add(transform);
 		fireTableRowsInserted(getRowCount() - 1, getRowCount());
 	}
+	
+	public void addNew(AffineTransform _affineTr, Vector<IVariation> _wariations, Double pr) {
+		Transform newTransform = new Transform(_affineTr, _wariations, pr);
+		_transforms.add(newTransform);
+	}
 
 	public void remove(int row) {
 		try {
@@ -86,7 +92,6 @@ public class TransformTableModel extends AbstractTableModel {
 			fireTableRowsDeleted(row, row);
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
-			return;
 		}
 	}
 
