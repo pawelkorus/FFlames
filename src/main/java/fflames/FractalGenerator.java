@@ -1,18 +1,14 @@
 package fflames;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
-import java.awt.image.ImageObserver;
 import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Random;
-import java.util.Vector;
 
 import fflames.interfaces.IColour;
 import fflames.interfaces.ISuperSampling;
@@ -53,24 +49,24 @@ public class FractalGenerator {
 		int width = superSampling.getRequiredWidth();
 		int height = superSampling.getRequiredHeight();
 		
-		BufferedImage output = new BufferedImage(colorModel, colorModel.createCompatibleWritableRaster(superSampling.getRequiredWidth(), superSampling.getRequiredHeight()), false, new Hashtable<String, Object>());
+		BufferedImage output = new BufferedImage(colorModel, colorModel.createCompatibleWritableRaster(superSampling.getRequiredWidth(), superSampling.getRequiredHeight()), false, new Hashtable<>());
 		WritableRaster raster = output.getRaster();
 		
 		_coloringMethod.initialize(raster);
 		
 		prepareAlgorithmTransforms();
 		
-		Vector<Double> bounds = calculateBounds();
-		Double minx = (double) Math.round(bounds.elementAt(0));
-		Double maxx = (double) Math.round(bounds.elementAt(1));
-		Double miny = (double) Math.round(bounds.elementAt(2));
-		Double maxy = (double) Math.round(bounds.elementAt(3));
+		ArrayList<Double> bounds = calculateBounds();
+		Double minx = (double) Math.round(bounds.get(0));
+		Double maxx = (double) Math.round(bounds.get(1));
+		Double miny = (double) Math.round(bounds.get(2));
+		Double maxy = (double) Math.round(bounds.get(3));
 		
 		while(i <= _numberOfIterations) {
 			index = selectFunctionIndex();
 			calculateNextPoint(point, index);			
-			Double valX = new Double((point.getX() - minx)/(maxx - minx) * width);
-			Double valY = new Double((point.getY() - miny)/(maxy - miny) * height);
+			Double valX = (point.getX() - minx)/(maxx - minx) * width;
+			Double valY = (point.getY() - miny)/(maxy - miny) * height;
 			imagePoint.setLocation(valX.intValue(), valY.intValue());
 			
 			if(imagePoint.x < width && imagePoint.x >= 0 && imagePoint.y >= 0 && imagePoint.y < height) {
@@ -99,9 +95,10 @@ public class FractalGenerator {
 		
 		if(rotationsNumber > 0) {
 			Double transformPropability = 1.0/(rotationsNumber + 1);
-			for(Transform transform : _transforms) {
-				_algorithmTransforms.add(new TransformProxy(transform, transform.getPropability()*transformPropability));
-			}
+			
+			_transforms.stream().forEach((transform) -> {
+			    _algorithmTransforms.add(new TransformProxy(transform, transform.getPropability()*transformPropability));
+			});
 			
 			Double rotationAngle = 2*Math.PI/(rotationsNumber + 1);
 			for(int i = 1; i <= rotationsNumber; i++) {
@@ -140,18 +137,17 @@ public class FractalGenerator {
 		return _output;
 	}
 	
-	private Vector<Double> calculateBounds() {
+	private ArrayList<Double> calculateBounds() {
 		int sampleSize = 200000;
-		int index = 0;
 		
-		Vector<Point2D.Double> points = new Vector<Point2D.Double>();
+		ArrayList<Point2D.Double> points = new ArrayList<>();
 		Point2D.Double point = new Point2D.Double(_randomNumberGenerator.nextDouble(), _randomNumberGenerator.nextDouble());
-		Double meanx = new Double(0);
-		Double meany = new Double(0);
-		Double stdDevx = new Double(0);
-		Double stdDevy = new Double(0);
+		Double meanx = (double) 0;
+		Double meany = (double) 0;
+		Double stdDevx = (double) 0;
+		Double stdDevy = (double) 0;
 		for(int i = 0; i < sampleSize; i++) {
-			index = selectFunctionIndex();
+			int index = selectFunctionIndex();
 			calculateNextPoint(point, index);
 			if(i >= 20) {
 				meanx +=  point.getX();
@@ -172,7 +168,8 @@ public class FractalGenerator {
 		stdDevx = Math.sqrt(stdDevx/(sampleSize - 1));  
 		stdDevy = Math.sqrt(stdDevy/(sampleSize - 1));
 		
-		Vector<Double> result = new Vector<Double>();
+		ArrayList<Double> result;
+		result = new ArrayList<>();
 		result.add(meanx - 3*stdDevx);
 		result.add(meanx + 3*stdDevx);
 		result.add(meany - 3*stdDevy);
