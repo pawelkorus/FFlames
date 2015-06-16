@@ -6,7 +6,6 @@ import java.awt.geom.Point2D;
 import java.io.OutputStreamWriter;
 import java.util.Vector;
 
-import fflames.interfaces.IVariation;
 
 public class TransformProxy extends Transform {
 	private Transform _sourceTransform;

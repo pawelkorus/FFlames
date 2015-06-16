@@ -16,13 +16,13 @@ import javax.swing.event.ListSelectionListener;
 
 import prefs.Settings;
 
-import fflames.colouring.ColorsFactory;
+import fflames.generator.colouring.ColorsFactory;
 import fflames.events.LoadProject;
 import fflames.exceptions.ImportXMLFractalFileException;
 import fflames.forms.AboutDialog;
 import fflames.forms.AffineTransformEditor;
 import fflames.forms.MyFractals;
-import fflames.interfaces.IColour;
+import fflames.generator.IColour;
 import fflames.interfaces.IMainWindowController;
 import fflames.model.AffineTransformModel;
 import fflames.model.AlgorithmConfigurationModel;

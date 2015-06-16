@@ -7,7 +7,7 @@ import java.util.Vector;
 
 import javax.swing.table.AbstractTableModel;
 
-import fflames.interfaces.IVariation;
+import fflames.generator.IVariation;
 
 public class TransformTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = -4510264602645148388L;

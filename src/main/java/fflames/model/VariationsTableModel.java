@@ -11,8 +11,8 @@ package fflames.model;
 
 import javax.swing.table.*;
 
-import fflames.interfaces.IVariation;
-import fflames.variation.VariationsFactory;
+import fflames.generator.IVariation;
+import fflames.generator.variation.VariationsFactory;
 
 import java.util.ArrayList;
 import java.util.Vector;

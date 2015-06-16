@@ -10,7 +10,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Random;
 
-import fflames.interfaces.IColour;
 import fflames.interfaces.ISuperSampling;
 
 public class FractalGenerator { 

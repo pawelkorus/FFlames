@@ -11,9 +11,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 
-import fflames.interfaces.IVariation;
+import fflames.generator.IVariation;
 import fflames.model.VariationsTableModel;
-import fflames.variation.VariationsFactory;
+import fflames.generator.variation.VariationsFactory;
 
 import javax.swing.BoxLayout;
 

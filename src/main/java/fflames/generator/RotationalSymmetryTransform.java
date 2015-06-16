@@ -1,7 +1,7 @@
 package fflames.generator;
 
 import fflames.generator.Transform;
-import fflames.variation.VariationsFactory;
+import fflames.generator.variation.VariationsFactory;
 
 public class RotationalSymmetryTransform extends Transform {
 

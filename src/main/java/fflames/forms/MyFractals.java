@@ -13,7 +13,7 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 
 import fflames.MainWindowActions;
-import fflames.interfaces.IVariation;
+import fflames.generator.IVariation;
 import fflames.model.ApplicationState;
 import fflames.model.RecentOpenedModel;
 import java.awt.GridLayout;

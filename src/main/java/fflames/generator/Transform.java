@@ -14,7 +14,6 @@ import java.util.Vector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
-import fflames.interfaces.IVariation;
 /**
  *
  * @author victories
