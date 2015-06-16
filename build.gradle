@@ -19,18 +19,6 @@ task mergedJavadoc(type: Javadoc, description: 'Creates Javadoc from all the pro
     }
 }
 
-/*apply plugin: 'java'
-
-if (!hasProperty('mainClass')) {
-    ext.mainClass = 'fflames.gui.Application'
-}
-
-jar {
-	manifest {
-		attributes 'Main-Class': 'fflames.gui.Application'
-	}
-}*/
-
 task wrapper(type: Wrapper) {
 	gradleVersion = '2.4'
 }
