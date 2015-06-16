@@ -1,12 +1,12 @@
 apply plugin: 'java'
 
 if (!hasProperty('mainClass')) {
-    ext.mainClass = 'fflames.Application'
+    ext.mainClass = 'fflames.gui.Application'
 }
 
 jar {
 	manifest {
-		attributes 'Main-Class': 'fflames.Application'
+		attributes 'Main-Class': 'fflames.gui.Application'
 	}
 }
 
