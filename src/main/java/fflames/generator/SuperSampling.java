@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.util.Hashtable;
 
-import fflames.interfaces.ISuperSampling;
 
 public class SuperSampling implements ISuperSampling {
 	public SuperSampling(int targetWidth, int targetHeight, int samples) {

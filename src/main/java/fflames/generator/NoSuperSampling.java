@@ -2,7 +2,6 @@ package fflames.generator;
 
 import java.awt.image.BufferedImage;
 
-import fflames.interfaces.ISuperSampling;
 
 public class NoSuperSampling implements ISuperSampling {
 
