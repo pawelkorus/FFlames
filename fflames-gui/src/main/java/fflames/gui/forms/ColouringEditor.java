@@ -3,11 +3,10 @@
  *
  * Created on March 21, 2008, 2:25 AM
  */
-
 package fflames.gui.forms;
 
 import java.awt.Color;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.swing.event.ListSelectionListener;
 import fflames.gui.model.ColoringListModel;
@@ -22,16 +21,19 @@ import javax.swing.ListSelectionModel;
 import java.awt.BorderLayout;
 
 /**
- * 
+ *
  * @author victories
  */
 public class ColouringEditor extends javax.swing.JPanel {
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -1766888684765540914L;
 
-	/** Creates new form ColouringEditor */
+	/**
+	 * Creates new form ColouringEditor
+	 */
 	public ColouringEditor() {
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
@@ -94,8 +96,8 @@ public class ColouringEditor extends javax.swing.JPanel {
 		validate();
 	}
 
-	public Vector<Color> getSelectedColors() {
-		Vector<Color> colors = new Vector<Color>();
+	public ArrayList<Color> getSelectedColors() {
+		ArrayList<Color> colors = new ArrayList<>();
 		for (int i = 0; i < _buttonsPanel.getComponentCount(); i++) {
 			JButton btn = (JButton) _buttonsPanel.getComponent(i);
 			colors.add(btn.getBackground());

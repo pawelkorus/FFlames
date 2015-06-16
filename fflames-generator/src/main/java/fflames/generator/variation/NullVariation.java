@@ -1,23 +1,25 @@
 package fflames.generator.variation;
 
 import java.awt.geom.Point2D;
-import java.util.Vector;
+import java.util.ArrayList;
 
+/**
+ * Null variation
+ */
 public class NullVariation extends AbstractWariation {
 
 	@Override
 	public Double getCoefficient() {
-		return Double.valueOf(0);
+		return (double) 0;
 	}
 
 	@Override
 	public void setCoefficient(Double _coefficient) {
-		return;
 	}
 
 	@Override
-	public Point2D oblicz(Point2D point) {
-		point.setLocation(Double.valueOf(0), Double.valueOf(0));
+	public Point2D calculate(Point2D point) {
+		point.setLocation(0, 0);
 		return point;
 	}
 
@@ -27,13 +29,12 @@ public class NullVariation extends AbstractWariation {
 	}
 
 	@Override
-	public void setParameters(Vector<Double> parameters) {
-		return;
+	public void setParameters(ArrayList<Double> parameters) {
 	}
 
 	@Override
-	public Vector<Double> getParameters() {
-		return new Vector<Double>();
+	public ArrayList<Double> getParameters() {
+		return new ArrayList<>();
 	}
 
 	@Override
@@ -45,7 +46,8 @@ public class NullVariation extends AbstractWariation {
 	public boolean isDependent() {
 		return false;
 	}
-	
+
+	@Override
 	public boolean isValid() {
 		return false;
 	}

@@ -6,12 +6,12 @@ import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.WritableRaster;
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class LinearRGBColoring extends DensityBasedRGBColoring {
 	float[] _lastColorComponents = new float[0];
 	
-	public LinearRGBColoring(Vector<Color> colors) {
+	public LinearRGBColoring(ArrayList<Color> colors) {
 		super(colors);
 	}
 

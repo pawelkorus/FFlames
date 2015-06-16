@@ -1,55 +1,58 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package fflames.generator.variation;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import fflames.generator.IVariation;
 
-/** Klasa abstrakcyjna dla wariacji
+/**
+ * Variation abstract class.
  *
- * @author Victories
+ * Provides basic implementation of IVariation interface. Default implemention
+ * has 0 additional parameters.
+ *
  */
 public abstract class AbstractWariation implements IVariation {
-    /**
-     * 
-     */
-    protected Vector<Double> param = null;
-    protected Double coefficient;
-    
-    public Double getCoefficient() {
-        return coefficient;
-    }
 
-    public void setCoefficient(Double _coefficient) {
-        coefficient = new Double(_coefficient);
-    }
+	protected ArrayList<Double> param = null;
+	protected Double coefficient;
 
-    public int getParametersQuantity() {
-        return 0;
-    }
+	@Override
+	public Double getCoefficient() {
+		return coefficient;
+	}
 
-    public void setParameters(Vector<Double> parameters) { 
-        param = new Vector<Double>(parameters);
-    }
+	@Override
+	public void setCoefficient(Double _coefficient) {
+		coefficient = _coefficient;
+	}
 
-    public Vector<Double> getParameters() {
-        Vector<Double> temp = new Vector<Double>();
-        temp.add(coefficient);
-        if(param != null) {
-            temp.addAll(param);
-        }
-        return temp;
-    }
-    
-    public boolean isDependent() {
-        return false;
-    }
-    
-    public boolean isValid() {
-    	return true;
-    }
+	@Override
+	public int getParametersQuantity() {
+		return 0;
+	}
+
+	@Override
+	public void setParameters(ArrayList<Double> parameters) {
+		param = new ArrayList<>(parameters);
+	}
+
+	@Override
+	public ArrayList<Double> getParameters() {
+		ArrayList<Double> temp = new ArrayList<>();
+		temp.add(coefficient);
+		if (param != null) {
+			temp.addAll(param);
+		}
+		return temp;
+	}
+
+	@Override
+	public boolean isDependent() {
+		return false;
+	}
+
+	@Override
+	public boolean isValid() {
+		return true;
+	}
 }

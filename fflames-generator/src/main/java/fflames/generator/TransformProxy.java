@@ -1,14 +1,13 @@
 package fflames.generator;
 
-import fflames.generator.Transform;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.OutputStreamWriter;
-import java.util.Vector;
+import java.util.ArrayList;
 
 
 public class TransformProxy extends Transform {
-	private Transform _sourceTransform;
+	private final Transform _sourceTransform;
 	private Double _propability;
 	
 	public TransformProxy(Transform sourceTransform, Double pr) {
@@ -32,8 +31,8 @@ public class TransformProxy extends Transform {
 	}
 
 	@Override
-	public Vector<IVariation> getWariations() {
-		return _sourceTransform.getWariations();
+	public ArrayList<IVariation> getVariations() {
+		return _sourceTransform.getVariations();
 	}
 
 	@Override

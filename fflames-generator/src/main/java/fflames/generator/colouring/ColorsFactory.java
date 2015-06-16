@@ -1,26 +1,18 @@
-/*
- * ColorsFactory.java
- *
- * Created on April 1, 2008, 11:54 PM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
 package fflames.generator.colouring;
 
+import java.util.ArrayList;
+
+import java.awt.Color;
+
 import fflames.generator.IColour;
-/**
- *
- * @author victories
- */
+
 public class ColorsFactory {
     
     /** Creates a new instance of ColorsFactory */
     public ColorsFactory() {
     }
     
-    public IColour getColoring(int index, java.util.Vector<java.awt.Color> parameters) {
+    public IColour getColoring(int index, ArrayList<Color> parameters) {
         switch(index) {
             case 0: return new BlackWhite();
             case 1: return new LinearBlackWhite();

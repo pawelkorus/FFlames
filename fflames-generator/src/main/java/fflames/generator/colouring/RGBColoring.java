@@ -16,14 +16,14 @@ import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.WritableRaster;
 import java.util.Random;
-import java.util.Vector;
+import java.util.ArrayList;
 /**
  *
  * @author victories
  */
 public class RGBColoring extends AbstractColouring {
 	
-	public RGBColoring(Vector<Color> colors) {
+	public RGBColoring(ArrayList<Color> colors) {
         _colors = colors;
     }
 	
@@ -70,6 +70,6 @@ public class RGBColoring extends AbstractColouring {
 		}
 	}
 	
-    private Vector<Color> _colors;
+    private ArrayList<Color> _colors;
     private float[] _lastColor;
 }

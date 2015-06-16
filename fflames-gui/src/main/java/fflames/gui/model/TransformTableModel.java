@@ -10,6 +10,7 @@ import javax.swing.table.AbstractTableModel;
 import fflames.generator.IVariation;
 
 public class TransformTableModel extends AbstractTableModel {
+
 	private static final long serialVersionUID = -4510264602645148388L;
 
 	@Override
@@ -26,14 +27,14 @@ public class TransformTableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		// Transform transform = _transforms.get(rowIndex);
 		switch (columnIndex) {
-		case 0:
-			return getPropabilityAt(rowIndex);
-		case 1:
-			return getAffineTransformAt(rowIndex);
-		case 2:
-			return getVariationsAt(rowIndex);
-		default:
-			return null;
+			case 0:
+				return getPropabilityAt(rowIndex);
+			case 1:
+				return getAffineTransformAt(rowIndex);
+			case 2:
+				return getVariationsAt(rowIndex);
+			default:
+				return null;
 		}
 	}
 
@@ -46,10 +47,10 @@ public class TransformTableModel extends AbstractTableModel {
 		return _transforms;
 	}
 
-	public Vector<IVariation> getVariationsAt(int index) {
+	public ArrayList<IVariation> getVariationsAt(int index) {
 		try {
 			Transform transform = _transforms.get(index);
-			return transform.getWariations();
+			return transform.getVariations();
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
 			return null;
@@ -80,9 +81,9 @@ public class TransformTableModel extends AbstractTableModel {
 		_transforms.add(transform);
 		fireTableRowsInserted(getRowCount() - 1, getRowCount());
 	}
-	
-	public void addNew(AffineTransform _affineTr, Vector<IVariation> _wariations, Double pr) {
-		Transform newTransform = new Transform(_affineTr, _wariations, pr);
+
+	public void addNew(AffineTransform _affineTr, ArrayList<IVariation> _variations, Double pr) {
+		Transform newTransform = new Transform(_affineTr, _variations, pr);
 		_transforms.add(newTransform);
 	}
 
@@ -96,8 +97,9 @@ public class TransformTableModel extends AbstractTableModel {
 	}
 
 	public void remove(int[] rows) {
-		if (rows.length == 0)
+		if (rows.length == 0) {
 			return;
+		}
 
 		int row = rows[0];
 		for (int i = 0; i < rows.length; i++) {
@@ -110,7 +112,7 @@ public class TransformTableModel extends AbstractTableModel {
 		_transforms.clear();
 		fireTableRowsDeleted(0, size - 1);
 	}
-	
+
 	private ArrayList<Transform> _transforms = new ArrayList<Transform>();
-	private String[] _columnNames = { "Propability", "Affine transform", "Variations" };
+	private String[] _columnNames = {"Propability", "Affine transform", "Variations"};
 }

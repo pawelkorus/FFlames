@@ -2,11 +2,11 @@ package fflames.generator.colouring;
 
 import java.awt.Color;
 import java.awt.image.WritableRaster;
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class LogRGBColoring extends LinearRGBColoring {
 
-	public LogRGBColoring(Vector<Color> colors) {
+	public LogRGBColoring(ArrayList<Color> colors) {
 		super(colors);
 	}
 

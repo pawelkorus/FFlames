@@ -2,12 +2,12 @@ package fflames.generator.colouring;
 
 import java.awt.Color;
 import java.awt.image.WritableRaster;
-import java.util.Vector;
+import java.util.ArrayList;
 
 abstract public class DensityBasedRGBColoring extends DensityBasedColoring {
 	float[] _previousColorComponents = new float[0];	
 	
-	public DensityBasedRGBColoring(Vector<Color> colors) {
+	public DensityBasedRGBColoring(ArrayList<Color> colors) {
 		_colors = colors;
 	}
 	
@@ -44,5 +44,5 @@ abstract public class DensityBasedRGBColoring extends DensityBasedColoring {
 		return _previousColorComponents;
 	}
 	
-	private Vector<Color> _colors;
+	private ArrayList<Color> _colors;
 }

@@ -1,7 +1,7 @@
 package fflames.generator;
 
 import java.io.IOException;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
@@ -12,7 +12,7 @@ public class Transform {
 	 */
 	public Transform() {
 		_affineTransform = new AffineTransform();
-		_variations = new Vector<>();
+		_variations = new ArrayList<>();
 		_probability = (double) 0.0;
 	}
 
@@ -23,27 +23,27 @@ public class Transform {
 	 * @param _wariations list of assigned variations
 	 * @param pr probability that this transform will be chosen
 	 */
-	public Transform(AffineTransform _affineTr, Vector<IVariation> _wariations, Double pr) {
+	public Transform(AffineTransform _affineTr, ArrayList<IVariation> _wariations, Double pr) {
 		_affineTransform = new AffineTransform(_affineTr);
-		_variations = new Vector<>(_wariations);
+		_variations = new ArrayList<>(_wariations);
 
 		// checking if there are variations that depend on affine transform
 		// coefficients
-		for (int i = 0; i < _variations.size(); i++) {
-			if (_variations.get(i).isDependent()) {
-				Vector<Double> temp = new Vector<>();
-				double[] parameters = new double[6];
-				_affineTransform.getMatrix(parameters);
-				for (double par : parameters) {
-					temp.add(par);
-				}
-				if (_variations.get(i).getParametersQuantity() > 0) {
-					temp.addAll(_variations.get(i).getParameters().subList(2,
-							_variations.get(i).getParameters().size()));
-				}
-				_variations.get(i).setParameters(temp);
+		_variations
+				.stream()
+				.filter((_variation) -> (_variation.isDependent()))
+				.forEach((IVariation _variation) -> {
+			ArrayList<Double> temp = new ArrayList<>();
+			double[] parameters = new double[6];
+			_affineTransform.getMatrix(parameters);
+			for (double par : parameters) {
+				temp.add(par);
 			}
-		}
+			if (_variation.getParametersQuantity() > 0) {
+				temp.addAll(_variation.getParameters().subList(2, _variation.getParameters().size()));
+			}
+			_variation.setParameters(temp);
+		});
 		_probability = (double) pr;
 	}
 
@@ -54,9 +54,9 @@ public class Transform {
 	public Point2D transform(Point2D point) {
 		_affineTransform.transform(point, point);
 		Point2D temp = new Point2D.Double(0.0, 0.0);
-		for (int i = 0; i < _variations.size(); i++) {
-			temp.setLocation(pointSum(temp, _variations.get(i).oblicz(point)));
-		}
+		_variations.stream().forEach((_variation) -> {
+			temp.setLocation(pointSum(temp, _variation.calculate(point)));
+		});
 		return temp;
 	}
 
@@ -73,14 +73,13 @@ public class Transform {
 	public AffineTransform getAffineTr() {
 		return _affineTransform;
 	}
-
+	
 	/**
 	 * Returns variations associated with this transform
 	 *
-	 * @return vector containing associated variations
-	 * @deprecated
+	 * @return list containing associated variations
 	 */
-	public Vector<IVariation> getWariations() {
+	public ArrayList<IVariation> getVariations() {
 		return _variations;
 	}
 
@@ -96,7 +95,7 @@ public class Transform {
 		double[] temp = new double[6];
 		_affineTransform.getMatrix(temp);
 		String name = null;
-		Vector<Double> par = null;
+		ArrayList<Double> par = null;
 		try {
 			out.write("<Propability>" + _probability.toString() + "</Propability>\r\n");
 			out.write("<AffineTransform>\r\n");
@@ -109,7 +108,7 @@ public class Transform {
 			for (int i = 0; i < _variations.size(); i++) {
 				out.write("<Wariation>\r\n");
 				par = _variations.get(i).getParameters();
-				out.write("<Coefficient>" + par.firstElement() + "</Coefficient>\r\n");
+				out.write("<Coefficient>" + par.get(0) + "</Coefficient>\r\n");
 				if (par.size() > 1) {
 					for (int j = 1; j < par.size(); j++) {
 						out.write("<Par>" + par.get(j) + "</Par>\r\n");
@@ -131,6 +130,6 @@ public class Transform {
 	}
 	
 	private final AffineTransform _affineTransform;
-	private final Vector<IVariation> _variations;
+	private final ArrayList<IVariation> _variations;
 	private Double _probability;
 }

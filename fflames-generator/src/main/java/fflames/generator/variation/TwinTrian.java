@@ -1,41 +1,39 @@
-/*
- * TwinTrian.java
- *
- * Created on March 11, 2008, 6:44 PM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
 package fflames.generator.variation;
 
 import java.awt.geom.Point2D;
-/** Wariacja typu TwinTrian
- *
- * @author victories
+
+/**
+ * TwinTrian variation
  */
 public class TwinTrian extends AbstractWariation {
-       
-    /** Creates a new instance of TwinTrian
-     * @param _coefficient wsp�czynnik wariacji
-     */
-    public TwinTrian(Double _coefficient) {
-        coefficient = new Double(_coefficient);
-    }
-    
-    @Override
-    public String toString() {
-        return getName() + getParameters().toString();
-    }
-    
-    public Point2D oblicz(Point2D point) {
-        double x = point.getX(); double y = point.getY();
-        double r = Math.sqrt(x*x+y*y);
-        double sin = coefficient*Math.random()*r;
-        double t = Math.log10(sin*sin) + Math.cos(coefficient*Math.random()*r);
-        point.setLocation(x*t*coefficient, coefficient*x*(t - Math.PI*sin));
-        return point;
-    }
-    
-    public String getName() { return "TwinTrian"; }
+
+	/**
+	 * Creates a new instance of TwinTrian
+	 *
+	 * @param _coefficient coefficient value
+	 */
+	public TwinTrian(Double _coefficient) {
+		coefficient = new Double(_coefficient);
+	}
+
+	@Override
+	public String toString() {
+		return getName() + getParameters().toString();
+	}
+
+	@Override
+	public Point2D calculate(Point2D point) {
+		double x = point.getX();
+		double y = point.getY();
+		double r = Math.sqrt(x * x + y * y);
+		double sin = coefficient * Math.random() * r;
+		double t = Math.log10(sin * sin) + Math.cos(coefficient * Math.random() * r);
+		point.setLocation(x * t * coefficient, coefficient * x * (t - Math.PI * sin));
+		return point;
+	}
+
+	@Override
+	public String getName() {
+		return "TwinTrian";
+	}
 }

@@ -3,11 +3,10 @@
  *
  * Created on March 5, 2008, 9:43 PM
  */
-
 package fflames.gui.forms;
 
 import java.lang.Double;
-import java.util.Vector;
+import java.util.ArrayList;
 import javax.swing.event.*;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -24,54 +23,57 @@ import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 
 /**
- * 
+ *
  * @author victories
  */
 public class MyFractals extends javax.swing.JFrame {
+
 	private static final long serialVersionUID = -7603616574289128827L;
 	private ApplicationState _state = null;
 	private MainWindowActions _actions = null;
 
-	/** Creates new form MyFractals */
+	/**
+	 * Creates new form MyFractals
+	 */
 	public MyFractals(ApplicationState state) {
 		super();
-		
+
 		_state = state;
 		_state.addPropertyChangeListener(new ApplicationStateListener());
-		
+
 		_actions = new MainWindowActions(this);
-		
+
 		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		
+
 		mnFile = new JMenu("File");
 		menuBar.add(mnFile);
-		
+
 		mnFile.add(_actions.createNewFractalAction());
-		
+
 		JSeparator separator = new JSeparator();
 		mnFile.add(separator);
-		
+
 		mnFile.add(_actions.createOpenAction(""));
-		
+
 		mnOpenRecent = new JMenu("Open recent");
 		mnFile.add(mnOpenRecent);
-		
+
 		JSeparator separator_1 = new JSeparator();
 		mnFile.add(separator_1);
-		
+
 		mnFile.add(_actions.createSaveAction());
-		
+
 		mnFile.add(_actions.createSaveImageAction());
-		
+
 		JSeparator separator_2 = new JSeparator();
 		mnFile.add(separator_2);
-		
+
 		mnFile.add(_actions.createExitAction());
-		
+
 		mnAbout = new JMenu("About");
 		menuBar.add(mnAbout);
-		
+
 		mnAbout.add(_actions.createShowAboutAction());
 
 		initComponents();
@@ -95,15 +97,15 @@ public class MyFractals extends javax.swing.JFrame {
 
 		wybraneFunkcjeLabel.setText("Wybrane funkcje:");
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] { 214, 341, 423, 0 };
-		gridBagLayout.rowHeights = new int[] { 200, 25, 25, 42, 25, 25, 48, 25, 77, 201, 0 };
-		gridBagLayout.columnWeights = new double[] { 1.0, 1.0, 1.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gridBagLayout.columnWidths = new int[]{214, 341, 423, 0};
+		gridBagLayout.rowHeights = new int[]{200, 25, 25, 42, 25, 25, 48, 25, 77, 201, 0};
+		gridBagLayout.columnWeights = new double[]{1.0, 1.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
 		jTP = new javax.swing.JTabbedPane();
 		jTP.setPreferredSize(new Dimension(200, 200));
 		jTP.setMinimumSize(new Dimension(200, 200));
-		
+
 		wariationsJPanel = new fflames.gui.forms.VariationsEditor();
 		wariationsJPanel.setMinimumSize(new Dimension(200, 200));
 		coloringJPanel = new fflames.gui.forms.ColouringEditor();
@@ -111,16 +113,16 @@ public class MyFractals extends javax.swing.JFrame {
 
 		_algorithmConfigurationEditor = new AlgorithmConfigurationEditor();
 		jTP.addTab("Options", null, _algorithmConfigurationEditor, null);
-		
+
 		_affineTranformTab = new JPanel();
 		_affineTranformTab.setMinimumSize(new Dimension(200, 200));
 		jTP.addTab("Affine transform", null, _affineTranformTab, null);
 		_affineTranformTab.setLayout(new GridLayout(0, 1, 0, 0));
-		
+
 		_affineTransformEditor = new AffineTransformEditor();
 		GridBagLayout gbl__affineTransformEditor = (GridBagLayout) _affineTransformEditor.getLayout();
-		gbl__affineTransformEditor.columnWidths = new int[] { 0, 31, 0, 26, 0, 0 };
-		gbl__affineTransformEditor.columnWeights = new double[] { 0.0, 1.0, 0.0, 1.0, 0.0, 0.0 };
+		gbl__affineTransformEditor.columnWidths = new int[]{0, 31, 0, 26, 0, 0};
+		gbl__affineTransformEditor.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 0.0};
 		_affineTranformTab.add(_affineTransformEditor);
 
 		JLabel lblPropability = new JLabel("Propability:");
@@ -157,7 +159,7 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc_jTP.gridx = 0;
 		gbc_jTP.gridy = 0;
 		getContentPane().add(jTP, gbc_jTP);
-		
+
 		listaFunkcjiScrollPane = new javax.swing.JScrollPane();
 		listaFunkcjiScrollPane.setMinimumSize(new Dimension(200, 200));
 		listaFunkcjiScrollPane.setMaximumSize(new Dimension(200, 200));
@@ -177,7 +179,7 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc_listaFunkcjiScrollPane.gridx = 2;
 		gbc_listaFunkcjiScrollPane.gridy = 0;
 		getContentPane().add(listaFunkcjiScrollPane, gbc_listaFunkcjiScrollPane);
-		
+
 		dodajButton = new javax.swing.JButton();
 		dodajButton.setText("Dodaj");
 		dodajButton.setAction(_actions.createAddTransformAction());
@@ -199,7 +201,7 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc_rysunekJPanel.gridx = 1;
 		gbc_rysunekJPanel.gridy = 1;
 		getContentPane().add(rysunekJPanel, gbc_rysunekJPanel);
-		
+
 		usunButton = new javax.swing.JButton();
 		usunButton.setText("Usun");
 		usunButton.setAction(_actions.createRemoveTransformAction());
@@ -210,7 +212,7 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc_usunButton.gridx = 0;
 		gbc_usunButton.gridy = 2;
 		getContentPane().add(usunButton, gbc_usunButton);
-		
+
 		loadFractalFileFromXmlJButton = new javax.swing.JButton();
 		loadFractalFileFromXmlJButton.setText("Load fractal from XML file");
 		loadFractalFileFromXmlJButton.setAction(_actions.createOpenAction(""));
@@ -221,7 +223,7 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc_loadFractalFileFromXmlJButton.gridx = 0;
 		gbc_loadFractalFileFromXmlJButton.gridy = 4;
 		getContentPane().add(loadFractalFileFromXmlJButton, gbc_loadFractalFileFromXmlJButton);
-		
+
 		saveFractalToXmlJButton = new javax.swing.JButton();
 		saveFractalToXmlJButton.setText("Save fractal as Xml file");
 		saveFractalToXmlJButton.setAction(_actions.createSaveAction());
@@ -232,7 +234,7 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc_saveFractalToXmlJButton.gridx = 0;
 		gbc_saveFractalToXmlJButton.gridy = 5;
 		getContentPane().add(saveFractalToXmlJButton, gbc_saveFractalToXmlJButton);
-		
+
 		rysujButton = new javax.swing.JButton();
 		rysujButton.setText("Rysuj");
 		rysujButton.setAction(_actions.createDrawAction());
@@ -243,7 +245,7 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc_rysujButton.gridx = 0;
 		gbc_rysujButton.gridy = 7;
 		getContentPane().add(rysujButton, gbc_rysujButton);
-		
+
 		saveImageButton = new javax.swing.JButton();
 		saveImageButton.setText("Save image");
 		saveImageButton.setAction(_actions.createSaveImageAction());
@@ -282,7 +284,6 @@ public class MyFractals extends javax.swing.JFrame {
 	private AlgorithmConfigurationEditor _algorithmConfigurationEditor;
 
 	// End of variables declaration//GEN-END:variables
-
 	public void setImage(BufferedImage image) {
 		rysunekJPanel.setImage(image);
 	}
@@ -295,35 +296,32 @@ public class MyFractals extends javax.swing.JFrame {
 		_tfPropability.setText(v.toString());
 	}
 
-	public Vector<IVariation> getVariations() {
+	public ArrayList<IVariation> getVariations() {
 		return wariationsJPanel.getVariations();
 	}
 
 	public Integer getIterationsNumber() {
-		/** 
-		 * @todo
-		 * return Integer.parseInt(iloscIteracjiJTextField.getText());
+		/**
+		 * @todo return Integer.parseInt(iloscIteracjiJTextField.getText());
 		 */
 		return 0;
 	}
 
 	public Integer getImageWidth() {
-		/** 
-		 * @todo
-		 * return Integer.parseInt(widthJTextField.getText());
+		/**
+		 * @todo return Integer.parseInt(widthJTextField.getText());
 		 */
 		return 0;
 	}
 
 	public Integer getImageHeight() {
 		/**
-		 * @todo
-		 * return Integer.parseInt(hieghtJTextField.getText());
+		 * @todo return Integer.parseInt(hieghtJTextField.getText());
 		 */
-		
+
 		return 0;
 	}
-	
+
 	public PreviewJPanel getRysunekJPanel() {
 		return rysunekJPanel;
 	}
@@ -331,7 +329,7 @@ public class MyFractals extends javax.swing.JFrame {
 	public JTable getTranformsList() {
 		return _transformsList;
 	}
-	
+
 	public AffineTransformEditor getAffineTransformEditor() {
 		return _affineTransformEditor;
 	}
@@ -347,23 +345,23 @@ public class MyFractals extends javax.swing.JFrame {
 	public AlgorithmConfigurationEditor getAlgorithmConfigurationEditor() {
 		return _algorithmConfigurationEditor;
 	}
-	
+
 	public void setRecentOpened(final RecentOpenedModel model) {
-		for(int i = 0; i < model.getSize(); i++) {
+		for (int i = 0; i < model.getSize(); i++) {
 			mnOpenRecent.add(_actions.createOpenAction(model.getElementAt(i)));
 		}
 		model.addListDataListener(new ListDataListener() {
 
 			@Override
 			public void intervalAdded(ListDataEvent e) {
-				for(int i = e.getIndex0(); i <= e.getIndex1(); i++) {
+				for (int i = e.getIndex0(); i <= e.getIndex1(); i++) {
 					mnOpenRecent.add(new JMenuItem(_actions.createOpenAction(model.getElementAt(i))), i);
 				}
 			}
 
 			@Override
 			public void intervalRemoved(ListDataEvent e) {
-				for(int i = e.getIndex0(); i <= e.getIndex1(); i++) {
+				for (int i = e.getIndex0(); i <= e.getIndex1(); i++) {
 					mnOpenRecent.remove(e.getIndex0());
 				}
 			}
@@ -371,28 +369,28 @@ public class MyFractals extends javax.swing.JFrame {
 			@Override
 			public void contentsChanged(ListDataEvent e) {
 			}
-			
+
 		});
 	}
-	
+
 	public MainWindowActions getActions() {
 		return _actions;
 	}
-	
+
 	private class ApplicationStateListener implements java.beans.PropertyChangeListener {
 
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			switch(evt.getPropertyName()) {
-			case ApplicationState.LOADED_FRACTAL_FILE_PATH:
-				if(_state.getLoadedFractalFilePath().isEmpty()) {
-					setTitle(_state.getApplicationName());
-				} else {
-					setTitle(_state.getApplicationName() + " - " + _state.getLoadedFractalFilePath());
-				}
-				break;
+			switch (evt.getPropertyName()) {
+				case ApplicationState.LOADED_FRACTAL_FILE_PATH:
+					if (_state.getLoadedFractalFilePath().isEmpty()) {
+						setTitle(_state.getApplicationName());
+					} else {
+						setTitle(_state.getApplicationName() + " - " + _state.getLoadedFractalFilePath());
+					}
+					break;
 			}
 		}
-		
+
 	}
 }
