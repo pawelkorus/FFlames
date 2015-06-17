@@ -3,7 +3,7 @@ package fflames.gui.model;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
-import fflames.generator.coloring.ColorsFactory;
+import fflames.generator.coloring.ColoringFactory;
 import fflames.generator.IColor;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class ColoringListModel implements ListModel<String> {
 
 	private Vector<ListDataListener> listeners;
 	private String[] lista = {"Black & White", "Linear Black & White", "Log Black & White", "Simple RGB", "Linear RGB", "Log RGB"};
-	private ColorsFactory colorsFactory = new ColorsFactory();
+	private ColoringFactory colorsFactory = new ColoringFactory();
 
 	/**
 	 * Creates a new instance of ColoringListModel

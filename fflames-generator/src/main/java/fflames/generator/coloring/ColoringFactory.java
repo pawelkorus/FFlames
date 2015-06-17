@@ -6,10 +6,10 @@ import java.awt.Color;
 
 import fflames.generator.IColor;
 
-public class ColorsFactory {
+public class ColoringFactory {
     
     /** Creates a new instance of ColorsFactory */
-    public ColorsFactory() {
+    public ColoringFactory() {
     }
     
     public IColor getColoring(int index, ArrayList<Color> parameters) {

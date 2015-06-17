@@ -16,7 +16,7 @@ import javax.swing.event.ListSelectionListener;
 
 import prefs.Settings;
 
-import fflames.generator.coloring.ColorsFactory;
+import fflames.generator.coloring.ColoringFactory;
 import fflames.gui.events.LoadProject;
 import fflames.gui.exceptions.ImportXMLFractalFileException;
 import fflames.gui.forms.AboutDialog;
@@ -126,7 +126,7 @@ public final class MainWindowController implements IMainWindowController, Action
 	@Override
 	public void drawFractal() {
 		if(_transformsModel.getRowCount() > 0) {
-			ColorsFactory colorsFactory = new ColorsFactory();
+			ColoringFactory colorsFactory = new ColoringFactory();
 			IColor coloringMethod = colorsFactory.getColoring(_view.getColoringEditor().getSelectedIndex(), _view.getColoringEditor().getSelectedColors()); 
 			
 			FractalGenerator fractalGenerator = new FractalGenerator(_transformsModel.getTransforms(), coloringMethod, _algorithmConfigurationModel.getImageWidth(), _algorithmConfigurationModel.getImageHeight());
@@ -173,7 +173,7 @@ public final class MainWindowController implements IMainWindowController, Action
 				int selectedIndex = _view.getColoringEditor().getSelectedIndex();
 				if(selectedIndex < 0) return;
 				
-				ColorsFactory factory = new ColorsFactory();
+				ColoringFactory factory = new ColoringFactory();
 				int buttonsNumber = factory.getColoring(selectedIndex, null).getParametersQuantity();
 				if(buttonsNumber == 1) {
 					_view.getColoringEditor().setNumberOfColorSlots(1);	
