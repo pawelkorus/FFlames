@@ -10,10 +10,10 @@ public class Spherical extends AbstractWariation {
 	/**
 	 * Creates a new instance of Spherical
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Spherical(Double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class Spherical extends AbstractWariation {
 		double y = point.getY();
 		// Zmiana wprowadzona za wiki electicsheep
 		double r = 1 / (x * x + y * y + 0.000001);
-		point.setLocation(x * r * coefficient, y * r * coefficient);
+		point.setLocation(x * r * _coefficient, y * r * _coefficient);
 		return point;
 	}
 }

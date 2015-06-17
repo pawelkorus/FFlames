@@ -10,10 +10,10 @@ public class Gaussian extends AbstractWariation {
 	/**
 	 * Creates a new instance of Gaussian
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Gaussian(Double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public class Gaussian extends AbstractWariation {
 			sumpsi += Math.random();
 		}
 		sumpsi -= 2.0;
-		sumpsi *= coefficient;
+		sumpsi *= _coefficient;
 		double angle = Math.random() * 2 * Math.PI;
 		double sina = Math.sin(angle);
 		double cosa = Math.cos(angle);

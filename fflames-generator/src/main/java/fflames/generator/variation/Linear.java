@@ -10,15 +10,15 @@ public class Linear extends AbstractWariation {
 	/**
 	 * Creates a new instance of Linear
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Linear(Double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 
 	@Override
 	public Point2D calculate(Point2D point) {
-		point.setLocation(point.getX() * coefficient, point.getY() * coefficient);
+		point.setLocation(point.getX() * _coefficient, point.getY() * _coefficient);
 		return point;
 	}
 }

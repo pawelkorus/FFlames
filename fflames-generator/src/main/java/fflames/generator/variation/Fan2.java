@@ -10,19 +10,19 @@ public class Fan2 extends AbstractWariation {
 	/**
 	 * Creates a new instance of Fan2
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Fan2(Double _coefficient) {
-		coefficient = _coefficient;
+		this._coefficient = _coefficient;
 	}
 
 	@Override
 	public Point2D calculate(Point2D point) {
 		double x = point.getX();
 		double y = point.getY();
-		double r = Math.sqrt(x * x + y * y) * coefficient;
-		double p1 = Math.PI * (param.get(0) * param.get(0) + 0.000001);
-		double p2 = param.get(1);
+		double r = Math.sqrt(x * x + y * y) * _coefficient;
+		double p1 = Math.PI * (_parameters.get(0) * _parameters.get(0) + 0.000001);
+		double p2 = _parameters.get(1);
 		double theta = Math.atan2(x, y);
 		double t = theta + p2 - p1 * Math.floor(theta + p2 / p1);
 		if (t > p1 / 2.0) {

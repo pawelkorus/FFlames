@@ -1,29 +1,29 @@
 package fflames.generator.variation;
 
+import java.util.List;
 import java.util.ArrayList;
 
 import fflames.generator.IVariation;
 
 /**
- * Variation abstract class.
- *
- * Provides basic implementation of IVariation interface. Default 
- * implementation has 0 additional parameters.
+ * Variation abstract class. Provides basic implementation of IVariation 
+ * interface. Default implementation has 0 additional parameters and its
+ * coefficient is set to 0 .
  *
  */
 public abstract class AbstractWariation implements IVariation {
 
-	protected ArrayList<Double> param = null;
-	protected Double coefficient;
+	protected ArrayList<Double> _parameters = new ArrayList<>();
+	protected Double _coefficient = 0.0;
 
 	@Override
 	public Double getCoefficient() {
-		return coefficient;
+		return _coefficient;
 	}
 
 	@Override
 	public void setCoefficient(Double _coefficient) {
-		coefficient = _coefficient;
+		this._coefficient = _coefficient;
 	}
 
 	@Override
@@ -32,18 +32,13 @@ public abstract class AbstractWariation implements IVariation {
 	}
 
 	@Override
-	public void setParameters(ArrayList<Double> parameters) {
-		param = new ArrayList<>(parameters);
+	public void setParameters(List<Double> parameters) {
+		_parameters = new ArrayList<>(parameters);
 	}
 
 	@Override
-	public ArrayList<Double> getParameters() {
-		ArrayList<Double> temp = new ArrayList<>();
-		temp.add(coefficient);
-		if (param != null) {
-			temp.addAll(param);
-		}
-		return temp;
+	public List<Double> getParameters() {
+		return _parameters;
 	}
 
 	@Override
@@ -69,6 +64,6 @@ public abstract class AbstractWariation implements IVariation {
 	
 	@Override
 	public String toString() {
-		return getName() + getParameters().toString();
+		return getName() + " " + getCoefficient() + " " + getParameters().toString();
 	}
 }

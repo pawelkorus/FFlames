@@ -10,10 +10,10 @@ public class Handkerchief extends AbstractWariation {
 	/**
 	 * Creates a new instance of Handkerchief
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Handkerchief(Double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 
 	@Override
@@ -22,8 +22,8 @@ public class Handkerchief extends AbstractWariation {
 		double y = point.getY();
 		double r = Math.sqrt(x * x + y * y);
 		double theta = Math.atan2(x, y);
-		point.setLocation(r * Math.sin(theta + r) * coefficient,
-				r * Math.cos(theta - r) * coefficient);
+		point.setLocation(r * Math.sin(theta + r) * _coefficient,
+				r * Math.cos(theta - r) * _coefficient);
 		return point;
 	}
 }

@@ -10,10 +10,10 @@ public class Polar extends AbstractWariation {
 	/**
 	 * Creates a new instance of Polar
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Polar(Double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 
 	@Override
@@ -21,8 +21,8 @@ public class Polar extends AbstractWariation {
 		double x = point.getX();
 		double y = point.getY();
 		double r = Math.sqrt(x * x + y * y);
-		point.setLocation(Math.atan2(x, y) / Math.PI * coefficient,
-				r - 1.0 * coefficient);
+		point.setLocation(Math.atan2(x, y) / Math.PI * _coefficient,
+				r - 1.0 * _coefficient);
 		return point;
 	}
 }

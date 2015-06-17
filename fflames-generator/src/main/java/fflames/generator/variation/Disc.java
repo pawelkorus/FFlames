@@ -10,10 +10,10 @@ public class Disc extends AbstractWariation {
 	/**
 	 * Creates a new instance of Disc
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Disc(Double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 
 	@Override
@@ -23,8 +23,8 @@ public class Disc extends AbstractWariation {
 		//Zmiany za wiki electricsheep
 		double r = Math.PI * Math.sqrt(x * x + y * y);
 		double theta = Math.atan2(Math.PI * x, Math.PI * y) / Math.PI;
-		point.setLocation(Math.sin(r) * theta * coefficient,
-				Math.cos(r) * theta * coefficient);
+		point.setLocation(Math.sin(r) * theta * _coefficient,
+				Math.cos(r) * theta * _coefficient);
 		return point;
 	}
 }

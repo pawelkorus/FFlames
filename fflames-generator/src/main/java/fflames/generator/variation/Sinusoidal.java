@@ -10,15 +10,15 @@ public class Sinusoidal extends AbstractWariation {
 	/**
 	 * Creates a new instance of Sinusoidal
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Sinusoidal(double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 
 	@Override
 	public Point2D calculate(Point2D punkt) {
-		punkt.setLocation(Math.sin(punkt.getX()) * coefficient, Math.sin(punkt.getY()) * coefficient);
+		punkt.setLocation(Math.sin(punkt.getX()) * _coefficient, Math.sin(punkt.getY()) * _coefficient);
 		return punkt;
 	}
 }

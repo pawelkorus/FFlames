@@ -10,10 +10,10 @@ public class Power extends AbstractWariation {
 	/**
 	 * Creates a new instance of Power
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Power(Double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public class Power extends AbstractWariation {
 		double r = Math.sqrt(x * x + y * y);
 		double t = Math.atan2(x, y);
 		double pot = Math.pow(r, Math.sin(t));
-		point.setLocation(pot * Math.cos(t) * coefficient, pot * Math.sin(t) * coefficient);
+		point.setLocation(pot * Math.cos(t) * _coefficient, pot * Math.sin(t) * _coefficient);
 		return point;
 	}
 }

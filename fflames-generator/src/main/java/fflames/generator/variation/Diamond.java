@@ -10,10 +10,10 @@ public class Diamond extends AbstractWariation {
 	/**
 	 * Creates a new instance of Diamond
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Diamond(Double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 
 	@Override
@@ -22,8 +22,8 @@ public class Diamond extends AbstractWariation {
 		double y = point.getY();
 		double r = Math.sqrt(x * x + y * y);
 		double t = Math.atan2(x, y);
-		point.setLocation(Math.sin(t) * Math.cos(r) * coefficient,
-				Math.cos(t) * Math.sin(r) * coefficient);
+		point.setLocation(Math.sin(t) * Math.cos(r) * _coefficient,
+				Math.cos(t) * Math.sin(r) * _coefficient);
 		return point;
 	}
 }

@@ -10,10 +10,10 @@ public class Fan extends AbstractWariation {
 	/**
 	 * Creates a new instance of Fan
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Fan(Double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 
 	@Override
@@ -22,16 +22,16 @@ public class Fan extends AbstractWariation {
 		double y = point.getY();
 		double r = Math.sqrt(x * x + y * y);
 		double theta = Math.atan(x / y);
-		double c = param.get(4) * param.get(4);
-		double f = param.get(5);
+		double c = _parameters.get(4) * _parameters.get(4);
+		double f = _parameters.get(5);
 		double t = Math.PI * c;
 
 		if (Math.IEEEremainder(theta + f, t) > t / 2.0) {
-			point.setLocation(r * Math.cos(theta - t / 2.0) * coefficient,
-					r * Math.sin(theta - t / 2.0) * coefficient);
+			point.setLocation(r * Math.cos(theta - t / 2.0) * _coefficient,
+					r * Math.sin(theta - t / 2.0) * _coefficient);
 		} else {
-			point.setLocation(r * Math.cos(theta + t / 2.0) * coefficient,
-					r * Math.sin(theta + t / 2.0) * coefficient);
+			point.setLocation(r * Math.cos(theta + t / 2.0) * _coefficient,
+					r * Math.sin(theta + t / 2.0) * _coefficient);
 		}
 
 		return point;

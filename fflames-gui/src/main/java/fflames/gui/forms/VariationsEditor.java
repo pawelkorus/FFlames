@@ -89,13 +89,23 @@ public class VariationsEditor extends javax.swing.JPanel {
 
 		for (IVariation variation : variations) {
 
-			wariationsJTable.getModel().setValueAt(variation.getCoefficient().toString(),
-					VariationsFactory.getVariationIndex(variation.getName()), 1);
+			wariationsJTable.getModel().setValueAt(
+					variation.getName(), 
+					VariationsFactory.getVariationIndex(variation.getName()), 
+					0
+			);
+			
+			wariationsJTable.getModel().setValueAt(
+					variation.getCoefficient().toString(),
+					VariationsFactory.getVariationIndex(variation.getName()), 
+					1
+			);
 
-			if (variation.getParametersQuantity() > 0) {
-				wariationsJTable.getModel().setValueAt(variation.getParameters(),
-						VariationsFactory.getVariationIndex(variation.getName()), 0);
-			}
+			wariationsJTable.getModel().setValueAt(
+				variation.getParameters(),
+				VariationsFactory.getVariationIndex(variation.getName()),
+				2
+			);
 		}
 	}
 

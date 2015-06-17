@@ -10,10 +10,10 @@ public class Bent extends AbstractWariation {
 	/**
 	 * Creates a new instance of Bent
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Bent(Double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class Bent extends AbstractWariation {
 		if (y < 0) {
 			y /= 2.0;
 		}
-		point.setLocation(x * coefficient, y * coefficient);
+		point.setLocation(x * _coefficient, y * _coefficient);
 		return point;
 	}
 }

@@ -10,10 +10,10 @@ public class Rings extends AbstractWariation {
 	/**
 	 * Creates a new instance of Rings
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Rings(Double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 
 	@Override
@@ -22,8 +22,8 @@ public class Rings extends AbstractWariation {
 		double y = point.getY();
 		double r = Math.sqrt(x * x + y * y);
 		double t = Math.atan(x / y);
-		double c = param.get(4) * param.get(4) + 0.000001;
-		double mn = (Math.IEEEremainder(r + c, 2 * c) - c + r * (1 - c)) * coefficient;
+		double c = _parameters.get(4) * _parameters.get(4) + 0.000001;
+		double mn = (Math.IEEEremainder(r + c, 2 * c) - c + r * (1 - c)) * _coefficient;
 		point.setLocation(mn * Math.cos(t), mn * Math.sin(t));
 		return point;
 	}

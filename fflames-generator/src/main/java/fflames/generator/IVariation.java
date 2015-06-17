@@ -1,7 +1,7 @@
 package fflames.generator;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Variation interface. Classes implementing this interface provides
@@ -42,20 +42,16 @@ public interface IVariation {
 	/**
 	 * Set variation parameters
 	 *
-	 * @todo use interface instead of implementation
 	 * @param parameters collection containing parameters
 	 */
-	public void setParameters(ArrayList<Double> parameters);
+	public void setParameters(List<Double> parameters);
 
 	/**
 	 * Returns list of additional parameters.
 	 *
-	 * @todo check if the interpretation of this method is consistent across
-	 * the source code
-	 * @todo use interface instead of implementation
 	 * @return List containing additional parameters
 	 */
-	public ArrayList<Double> getParameters();
+	public List<Double> getParameters();
 
 	/**
 	 * Returns the name of variation

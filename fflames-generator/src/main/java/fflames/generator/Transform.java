@@ -1,6 +1,7 @@
 package fflames.generator;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.ArrayList;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -39,9 +40,7 @@ public class Transform {
 			for (double par : parameters) {
 				temp.add(par);
 			}
-			if (_variation.getParametersQuantity() > 0) {
-				temp.addAll(_variation.getParameters().subList(2, _variation.getParameters().size()));
-			}
+			temp.addAll(_variation.getParameters());
 			_variation.setParameters(temp);
 		});
 		
@@ -95,8 +94,7 @@ public class Transform {
 	public void writeXML(java.io.OutputStreamWriter out) {
 		double[] temp = new double[6];
 		_affineTransform.getMatrix(temp);
-		String name = null;
-		ArrayList<Double> par = null;
+		
 		try {
 			out.write("<Propability>" + _probability.toString() + "</Propability>\r\n");
 			out.write("<AffineTransform>\r\n");
@@ -106,17 +104,18 @@ public class Transform {
 			out.write("</AffineTransform>\r\n");
 
 			out.write("<Wariations>\r\n");
-			for (int i = 0; i < _variations.size(); i++) {
+			for (IVariation variation : _variations) {
 				out.write("<Wariation>\r\n");
-				par = _variations.get(i).getParameters();
-				out.write("<Coefficient>" + par.get(0) + "</Coefficient>\r\n");
-				if (par.size() > 1) {
-					for (int j = 1; j < par.size(); j++) {
-						out.write("<Par>" + par.get(j) + "</Par>\r\n");
-					}
+				
+				Double coefficient = variation.getCoefficient();
+				out.write("<Coefficient>" + coefficient + "</Coefficient>\r\n");
+				
+				List<Double> parameters = variation.getParameters();
+				for(Double par : parameters) {
+					out.write("<Par>" + par + "</Par>\r\n");
 				}
-				name = _variations.get(i).getName();
-				out.write("<Name>" + name + "</Name>\r\n");
+				
+				out.write("<Name>" + variation.getName() + "</Name>\r\n");
 				out.write("</Wariation>\r\n");
 			}
 			out.write("</Wariations>\r\n");

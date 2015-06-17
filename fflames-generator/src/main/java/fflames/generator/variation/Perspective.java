@@ -10,18 +10,18 @@ public class Perspective extends AbstractWariation {
 	/**
 	 * Creates a new instance of Perspective
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Perspective(Double _coefficient) {
-		coefficient = _coefficient;
+		this._coefficient = _coefficient;
 	}
 
 	@Override
 	public Point2D calculate(Point2D point) {
 		double x = point.getX();
 		double y = point.getY();
-		double p = param.get(1) / (param.get(1) - y * Math.sin(param.get(0)));
-		point.setLocation(p * x * coefficient, p * y * Math.cos(param.get(0)) * coefficient);
+		double p = _parameters.get(1) / (_parameters.get(1) - y * Math.sin(_parameters.get(0)));
+		point.setLocation(p * x * _coefficient, p * y * Math.cos(_parameters.get(0)) * _coefficient);
 		return point;
 	}
 

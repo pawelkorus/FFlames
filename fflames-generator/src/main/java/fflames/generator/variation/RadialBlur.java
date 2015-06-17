@@ -10,10 +10,10 @@ public class RadialBlur extends AbstractWariation {
 	/**
 	 * Creates a new instance of RadialBlur
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public RadialBlur(Double _coefficient) {
-		coefficient = _coefficient;
+		this._coefficient = _coefficient;
 	}
 
 	/**
@@ -23,11 +23,11 @@ public class RadialBlur extends AbstractWariation {
 	public Point2D calculate(Point2D point) {
 		double x = point.getX();
 		double y = point.getY();
-		double spinvar = Math.sin(param.get(0) * Math.PI / 2.0);
-		double zoomvar = Math.cos(param.get(0) * Math.PI / 2.0);
+		double spinvar = Math.sin(_parameters.get(0) * Math.PI / 2.0);
+		double zoomvar = Math.cos(_parameters.get(0) * Math.PI / 2.0);
 
 		double rndG = Math.random() + Math.random() + Math.random() + Math.random() - 2.0;
-		rndG *= coefficient;
+		rndG *= _coefficient;
 		double ra = Math.sqrt(x * x + y * y);
 		double tmpa = Math.atan2(y, x) + spinvar * rndG;
 		double sa = Math.sin(tmpa);

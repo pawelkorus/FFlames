@@ -18,10 +18,10 @@ public class Hyperbolic extends AbstractWariation {
 	/**
 	 * Creates a new instance of Hyperbolic
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Hyperbolic(Double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 	
 	@Override
@@ -30,8 +30,8 @@ public class Hyperbolic extends AbstractWariation {
 		double y = point.getY();
 		double r = Math.sqrt(x * x + y * y) + 0.000001;
 		double t = Math.atan2(x, y);
-		point.setLocation(Math.sin(t) / r * coefficient,
-				r * Math.cos(t) * coefficient);
+		point.setLocation(Math.sin(t) / r * _coefficient,
+				r * Math.cos(t) * _coefficient);
 		return point;
 	}
 }

@@ -10,10 +10,10 @@ public class Julia extends AbstractWariation {
 	/**
 	 * Creates a new instance of Julia
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Julia(Double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class Julia extends AbstractWariation {
 		if (Math.random() > 0.5) {
 			o = Math.PI;
 		}
-		point.setLocation(r * Math.cos(t / 2 + o) * coefficient, r * Math.sin(t / 2 + o) * coefficient);
+		point.setLocation(r * Math.cos(t / 2 + o) * _coefficient, r * Math.sin(t / 2 + o) * _coefficient);
 		return point;
 	}
 }

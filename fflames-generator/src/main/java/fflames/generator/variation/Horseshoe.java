@@ -14,10 +14,10 @@ public class Horseshoe extends AbstractWariation {
 	/**
 	 * Creates a new instance of Horseshoe
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Horseshoe(Double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 
 	@Override
@@ -26,8 +26,8 @@ public class Horseshoe extends AbstractWariation {
 		double y = point.getY();
 		// Zmiana za wiki electricsheep
 		double r = 1 / (Math.sqrt(x * x + y * y) + 0.000001);
-		point.setLocation(r * (x - y) * (x + y) * coefficient,
-				r * 2 * x * y * coefficient);
+		point.setLocation(r * (x - y) * (x + y) * _coefficient,
+				r * 2 * x * y * _coefficient);
 		return point;
 	}
 }

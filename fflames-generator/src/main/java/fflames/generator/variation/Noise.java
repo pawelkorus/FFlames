@@ -10,10 +10,10 @@ public class Noise extends AbstractWariation {
 	/**
 	 * Creates a new instance of Noise
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Noise(Double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class Noise extends AbstractWariation {
 		double y = point.getY();
 		double u1 = Math.random();
 		double u2 = Math.random();
-		point.setLocation(u1 * x * Math.cos(2 * Math.PI * u2) * coefficient, u1 * y * Math.sin(2 * Math.PI * u2) * coefficient);
+		point.setLocation(u1 * x * Math.cos(2 * Math.PI * u2) * _coefficient, u1 * y * Math.sin(2 * Math.PI * u2) * _coefficient);
 		return point;
 	}
 }

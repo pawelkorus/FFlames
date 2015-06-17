@@ -10,10 +10,10 @@ public class Cross extends AbstractWariation {
 	/**
 	 * Creates a new instance of Cross
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public Cross(Double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 
 	@Override
@@ -21,7 +21,7 @@ public class Cross extends AbstractWariation {
 		double x = point.getX();
 		double y = point.getY();
 		double r = (x * x - y * y);
-		double wsp = coefficient * Math.sqrt(1.0 / (r * r + 0.000001));
+		double wsp = _coefficient * Math.sqrt(1.0 / (r * r + 0.000001));
 		point.setLocation(wsp * x, wsp * y);
 		return point;
 	}

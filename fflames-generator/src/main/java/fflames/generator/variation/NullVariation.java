@@ -1,6 +1,7 @@
 package fflames.generator.variation;
 
 import java.awt.geom.Point2D;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -29,11 +30,11 @@ public class NullVariation extends AbstractWariation {
 	}
 
 	@Override
-	public void setParameters(ArrayList<Double> parameters) {
+	public void setParameters(List<Double> parameters) {
 	}
 
 	@Override
-	public ArrayList<Double> getParameters() {
+	public List<Double> getParameters() {
 		return new ArrayList<>();
 	}
 

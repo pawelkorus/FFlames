@@ -10,10 +10,10 @@ public class TwinTrian extends AbstractWariation {
 	/**
 	 * Creates a new instance of TwinTrian
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public TwinTrian(Double _coefficient) {
-		coefficient = new Double(_coefficient);
+		this._coefficient = new Double(_coefficient);
 	}
 	
 	@Override
@@ -21,9 +21,9 @@ public class TwinTrian extends AbstractWariation {
 		double x = point.getX();
 		double y = point.getY();
 		double r = Math.sqrt(x * x + y * y);
-		double sin = coefficient * Math.random() * r;
-		double t = Math.log10(sin * sin) + Math.cos(coefficient * Math.random() * r);
-		point.setLocation(x * t * coefficient, coefficient * x * (t - Math.PI * sin));
+		double sin = _coefficient * Math.random() * r;
+		double t = Math.log10(sin * sin) + Math.cos(_coefficient * Math.random() * r);
+		point.setLocation(x * t * _coefficient, _coefficient * x * (t - Math.PI * sin));
 		return point;
 	}
 }

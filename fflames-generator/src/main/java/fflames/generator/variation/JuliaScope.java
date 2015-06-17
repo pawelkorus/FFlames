@@ -10,10 +10,10 @@ public class JuliaScope extends AbstractWariation {
 	/**
 	 * Creates a new instance of JuliaScope
 	 *
-	 * @param _coefficient coefficient value
+	 * @param _coefficient _coefficient value
 	 */
 	public JuliaScope(Double _coefficient) {
-		coefficient = _coefficient;
+		this._coefficient = _coefficient;
 	}
 
 	@Override
@@ -23,10 +23,10 @@ public class JuliaScope extends AbstractWariation {
 		double psi = Math.round(Math.random() * 10.0);
 		double rand = Math.random() * 2 - 1.0;
 		double phi = Math.atan2(y, x);
-		double t = (rand * phi + 2.0 * Math.PI * Math.abs(param.get(0)) * psi) / param.get(1);
+		double t = (rand * phi + 2.0 * Math.PI * Math.abs(_parameters.get(0)) * psi) / _parameters.get(1);
 		double r = Math.sqrt(x * x + y * y);
-		point.setLocation(Math.pow(r, param.get(0) / param.get(1)) * Math.cos(t) * coefficient,
-				Math.pow(r, param.get(0) / param.get(1)) * Math.sin(t) * coefficient);
+		point.setLocation(Math.pow(r, _parameters.get(0) / _parameters.get(1)) * Math.cos(t) * _coefficient,
+				Math.pow(r, _parameters.get(0) / _parameters.get(1)) * Math.sin(t) * _coefficient);
 		return point;
 	}
 

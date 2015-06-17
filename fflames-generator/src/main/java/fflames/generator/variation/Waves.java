@@ -15,10 +15,10 @@ public class Waves extends AbstractWariation {
 	/**
 	 * Creates a new instance of Waves
 	 *
-	 * @param _coefficient variation coefficient
+	 * @param _coefficient variation _coefficient
 	 */
 	public Waves(Double _coefficient) {
-		coefficient = (double) _coefficient;
+		this._coefficient = (double) _coefficient;
 	}
 
 	@Override
@@ -27,15 +27,14 @@ public class Waves extends AbstractWariation {
 		double x = point.getX();
 		double y = point.getY();
 		
-		double c = param.get(4);
+		double c = _parameters.get(4);
 		if(c < precision) c = precision;
 		
-		double f = param.get(5);
+		double f = _parameters.get(5);
 		if(f < precision) f = precision;
 		
-		point.setLocation(
-				(x + param.get(2) * Math.sin(y / (c * c))) * coefficient,
-				(y + param.get(3) * Math.sin(x / (f * f))) * coefficient
+		point.setLocation((x + _parameters.get(2) * Math.sin(y / (c * c))) * _coefficient,
+				(y + _parameters.get(3) * Math.sin(x / (f * f))) * _coefficient
 		);
 		
 		return point;
