@@ -15,12 +15,7 @@ public class TwinTrian extends AbstractWariation {
 	public TwinTrian(Double _coefficient) {
 		coefficient = new Double(_coefficient);
 	}
-
-	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
-
+	
 	@Override
 	public Point2D calculate(Point2D point) {
 		double x = point.getX();
@@ -30,10 +25,5 @@ public class TwinTrian extends AbstractWariation {
 		double t = Math.log10(sin * sin) + Math.cos(coefficient * Math.random() * r);
 		point.setLocation(x * t * coefficient, coefficient * x * (t - Math.PI * sin));
 		return point;
-	}
-
-	@Override
-	public String getName() {
-		return "TwinTrian";
 	}
 }

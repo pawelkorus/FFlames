@@ -40,17 +40,7 @@ public class RadialBlur extends AbstractWariation {
 	}
 
 	@Override
-	public String getName() {
-		return "RadialBlur";
-	}
-
-	@Override
 	public int getParametersQuantity() {
 		return 1;
-	}
-
-	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
 	}
 }

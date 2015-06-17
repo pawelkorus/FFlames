@@ -17,18 +17,8 @@ public class Linear extends AbstractWariation {
 	}
 
 	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
-
-	@Override
 	public Point2D calculate(Point2D point) {
 		point.setLocation(point.getX() * coefficient, point.getY() * coefficient);
 		return point;
-	}
-
-	@Override
-	public String getName() {
-		return "Linear";
 	}
 }

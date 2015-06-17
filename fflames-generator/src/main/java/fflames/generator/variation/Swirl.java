@@ -26,14 +26,4 @@ public class Swirl extends AbstractWariation {
 				(x * Math.cos(r) + y * Math.sin(r)) * coefficient);
 		return point;
 	}
-
-	@Override
-	public String getName() {
-		return "Swirl";
-	}
-
-	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
 }

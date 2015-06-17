@@ -8,7 +8,7 @@ import java.awt.geom.Point2D;
 public class Polar extends AbstractWariation {
 
 	/**
-	 * Konstruktor obiektu klasy Polar
+	 * Creates a new instance of Polar
 	 *
 	 * @param _coefficient coefficient value
 	 */
@@ -24,15 +24,5 @@ public class Polar extends AbstractWariation {
 		point.setLocation(Math.atan2(x, y) / Math.PI * coefficient,
 				r - 1.0 * coefficient);
 		return point;
-	}
-
-	@Override
-	public String getName() {
-		return "Polar";
-	}
-
-	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
 	}
 }

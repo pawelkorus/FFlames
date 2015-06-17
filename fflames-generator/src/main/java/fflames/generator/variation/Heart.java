@@ -26,14 +26,4 @@ public class Heart extends AbstractWariation {
 				(-r) * Math.cos(theta * r) * coefficient);
 		return point;
 	}
-
-	@Override
-	public String getName() {
-		return "Heart";
-	}
-
-	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
 }

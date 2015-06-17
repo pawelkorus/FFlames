@@ -29,17 +29,7 @@ public class Rings2 extends AbstractWariation {
 	}
 
 	@Override
-	public String getName() {
-		return "Rings2";
-	}
-
-	@Override
 	public int getParametersQuantity() {
 		return 1;
-	}
-
-	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
 	}
 }

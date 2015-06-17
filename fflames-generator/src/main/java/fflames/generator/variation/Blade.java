@@ -17,10 +17,6 @@ public class Blade extends AbstractWariation {
 	}
 
 	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
-
 	public Point2D calculate(Point2D point) {
 		double x = point.getX();
 		double y = point.getY();
@@ -28,9 +24,5 @@ public class Blade extends AbstractWariation {
 		point.setLocation(coefficient * x * (Math.cos(r) + Math.sin(r)),
 				x * 1.0 / Math.cos(r));
 		return point;
-	}
-
-	public String getName() {
-		return "Blade";
 	}
 }

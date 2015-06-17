@@ -17,11 +17,6 @@ public class Spiral extends AbstractWariation {
 	}
 
 	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
-
-	@Override
 	public Point2D calculate(Point2D point) {
 		double x = point.getX();
 		double y = point.getY();
@@ -30,10 +25,5 @@ public class Spiral extends AbstractWariation {
 		point.setLocation(1 / r * (Math.cos(t) + Math.sin(r)) * coefficient,
 				1 / r * (Math.sin(t) - Math.cos(r)) * coefficient);
 		return point;
-	}
-
-	@Override
-	public String getName() {
-		return "Spiral";
 	}
 }

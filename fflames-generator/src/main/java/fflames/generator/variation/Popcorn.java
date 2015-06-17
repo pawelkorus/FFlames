@@ -17,29 +17,12 @@ public class Popcorn extends AbstractWariation {
 	}
 
 	@Override
-	public String toString() {
-		String parameterValueStr;
-		if (getParameters().size() > 0) {
-			parameterValueStr = getParameters().get(0).toString();
-		} else {
-			parameterValueStr = "Undefined";
-		}
-
-		return getName() + " " + parameterValueStr;
-	}
-
-	@Override
 	public Point2D calculate(Point2D point) {
 		double x = point.getX();
 		double y = point.getY();
 		point.setLocation((x + param.get(4) * Math.sin(Math.tan(3 * y))) * coefficient,
 				(y + param.get(5) * Math.sin(Math.tan(3 * x))) * coefficient);
 		return point;
-	}
-
-	@Override
-	public String getName() {
-		return "Popcorn";
 	}
 
 	@Override

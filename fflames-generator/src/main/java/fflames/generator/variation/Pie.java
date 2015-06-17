@@ -27,17 +27,7 @@ public class Pie extends AbstractWariation {
 	}
 
 	@Override
-	public String getName() {
-		return "Pie";
-	}
-
-	@Override
 	public int getParametersQuantity() {
 		return 3;
-	}
-
-	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
 	}
 }

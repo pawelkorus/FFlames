@@ -17,11 +17,6 @@ public class Noise extends AbstractWariation {
 	}
 
 	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
-
-	@Override
 	public Point2D calculate(Point2D point) {
 		double x = point.getX();
 		double y = point.getY();
@@ -29,10 +24,5 @@ public class Noise extends AbstractWariation {
 		double u2 = Math.random();
 		point.setLocation(u1 * x * Math.cos(2 * Math.PI * u2) * coefficient, u1 * y * Math.sin(2 * Math.PI * u2) * coefficient);
 		return point;
-	}
-
-	@Override
-	public String getName() {
-		return "Noise";
 	}
 }

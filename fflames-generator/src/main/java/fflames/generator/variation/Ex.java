@@ -17,11 +17,6 @@ public class Ex extends AbstractWariation {
 	}
 
 	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
-
-	@Override
 	public Point2D calculate(Point2D point) {
 		double x = point.getX();
 		double y = point.getY();
@@ -30,10 +25,5 @@ public class Ex extends AbstractWariation {
 		point.setLocation(r * Math.pow(Math.sin(t + r), 3) * coefficient,
 				r * Math.pow(Math.cos(t - r), 3) * coefficient);
 		return point;
-	}
-
-	@Override
-	public String getName() {
-		return "Ex";
 	}
 }

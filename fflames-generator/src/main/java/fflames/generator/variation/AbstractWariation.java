@@ -7,8 +7,8 @@ import fflames.generator.IVariation;
 /**
  * Variation abstract class.
  *
- * Provides basic implementation of IVariation interface. Default implemention
- * has 0 additional parameters.
+ * Provides basic implementation of IVariation interface. Default 
+ * implementation has 0 additional parameters.
  *
  */
 public abstract class AbstractWariation implements IVariation {
@@ -54,5 +54,21 @@ public abstract class AbstractWariation implements IVariation {
 	@Override
 	public boolean isValid() {
 		return true;
+	}
+	
+	/**
+	 * Returns the name of variation. Default implementation 
+	 * returns name of the class.
+	 * 
+	 * @return name of variation as string
+	 */
+	@Override
+	public String getName() {
+		return getClass().getSimpleName();
+	}
+	
+	@Override
+	public String toString() {
+		return getName() + getParameters().toString();
 	}
 }

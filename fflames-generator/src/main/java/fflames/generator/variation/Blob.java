@@ -23,17 +23,7 @@ public class Blob extends AbstractWariation {
 	}
 
 	@Override
-	public String getName() {
-		return "Blob";
-	}
-
-	@Override
 	public int getParametersQuantity() {
 		return 3;
-	}
-
-	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
 	}
 }

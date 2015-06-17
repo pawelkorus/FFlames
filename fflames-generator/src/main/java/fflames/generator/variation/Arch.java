@@ -19,13 +19,4 @@ public class Arch extends AbstractWariation {
 				coefficient * Math.sin(ang) * Math.sin(ang) / Math.cos(ang));
 		return point;
 	}
-
-	public String getName() {
-		return "Arch";
-	}
-
-	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
 }

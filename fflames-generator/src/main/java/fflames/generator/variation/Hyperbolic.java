@@ -23,12 +23,7 @@ public class Hyperbolic extends AbstractWariation {
 	public Hyperbolic(Double _coefficient) {
 		coefficient = new Double(_coefficient);
 	}
-
-	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
-
+	
 	@Override
 	public Point2D calculate(Point2D point) {
 		double x = point.getX();
@@ -38,10 +33,5 @@ public class Hyperbolic extends AbstractWariation {
 		point.setLocation(Math.sin(t) / r * coefficient,
 				r * Math.cos(t) * coefficient);
 		return point;
-	}
-
-	@Override
-	public String getName() {
-		return "Hyperbolic";
 	}
 }

@@ -29,17 +29,7 @@ public class JuliaN extends AbstractWariation {
 	}
 
 	@Override
-	public String getName() {
-		return "JuliaN";
-	}
-
-	@Override
 	public int getParametersQuantity() {
 		return 2;
-	}
-
-	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
 	}
 }

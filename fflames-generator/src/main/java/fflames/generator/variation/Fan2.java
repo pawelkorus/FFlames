@@ -36,17 +36,7 @@ public class Fan2 extends AbstractWariation {
 	}
 
 	@Override
-	public String getName() {
-		return "Fan2";
-	}
-
-	@Override
 	public int getParametersQuantity() {
 		return 2;
-	}
-
-	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
 	}
 }

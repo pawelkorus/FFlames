@@ -17,19 +17,9 @@ public class Tangent extends AbstractWariation {
 	}
 
 	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
-
-	@Override
 	public Point2D calculate(Point2D point) {
 		point.setLocation(coefficient * Math.sin(point.getX()) / Math.cos(point.getY()),
 				coefficient * Math.sin(point.getY()) / Math.cos(point.getX()));
 		return point;
-	}
-
-	@Override
-	public String getName() {
-		return "Tangent";
 	}
 }

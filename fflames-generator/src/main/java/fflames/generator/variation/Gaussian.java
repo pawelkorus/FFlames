@@ -17,11 +17,6 @@ public class Gaussian extends AbstractWariation {
 	}
 
 	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
-
-	@Override
 	public Point2D calculate(Point2D point) {
 		double sumpsi = 0.0;
 		for (int i = 0; i < 4; i++) {
@@ -34,10 +29,5 @@ public class Gaussian extends AbstractWariation {
 		double cosa = Math.cos(angle);
 		point.setLocation(sumpsi * cosa, sumpsi * sina);
 		return point;
-	}
-
-	@Override
-	public String getName() {
-		return "Gaussian";
 	}
 }

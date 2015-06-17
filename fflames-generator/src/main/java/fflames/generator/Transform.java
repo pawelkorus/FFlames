@@ -44,6 +44,7 @@ public class Transform {
 			}
 			_variation.setParameters(temp);
 		});
+		
 		_probability = (double) pr;
 	}
 

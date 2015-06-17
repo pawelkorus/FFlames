@@ -30,14 +30,4 @@ public class Horseshoe extends AbstractWariation {
 				r * 2 * x * y * coefficient);
 		return point;
 	}
-
-	@Override
-	public String getName() {
-		return "Horseshoe";
-	}
-
-	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
 }

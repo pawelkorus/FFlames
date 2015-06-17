@@ -17,10 +17,6 @@ public class Bent extends AbstractWariation {
 	}
 
 	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
-
 	public Point2D calculate(Point2D point) {
 		double x = point.getX();
 		double y = point.getY();
@@ -32,9 +28,5 @@ public class Bent extends AbstractWariation {
 		}
 		point.setLocation(x * coefficient, y * coefficient);
 		return point;
-	}
-
-	public String getName() {
-		return "Bent";
 	}
 }

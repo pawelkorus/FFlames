@@ -17,11 +17,6 @@ public class Julia extends AbstractWariation {
 	}
 
 	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
-
-	@Override
 	public Point2D calculate(Point2D point) {
 		double x = point.getX();
 		double y = point.getY();
@@ -36,10 +31,5 @@ public class Julia extends AbstractWariation {
 		}
 		point.setLocation(r * Math.cos(t / 2 + o) * coefficient, r * Math.sin(t / 2 + o) * coefficient);
 		return point;
-	}
-
-	@Override
-	public String getName() {
-		return "Julia";
 	}
 }

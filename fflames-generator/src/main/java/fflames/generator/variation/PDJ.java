@@ -26,17 +26,7 @@ public class PDJ extends AbstractWariation {
 	}
 
 	@Override
-	public String getName() {
-		return "PDJ";
-	}
-
-	@Override
 	public int getParametersQuantity() {
 		return 4;
-	}
-
-	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
 	}
 }

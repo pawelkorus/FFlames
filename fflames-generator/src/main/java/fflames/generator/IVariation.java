@@ -4,75 +4,78 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 /**
- * Variation interface
+ * Variation interface. Classes implementing this interface provides
+ * are used to transform point coordinates.
  */
 public interface IVariation {
 
 	/**
-	 * Funkcja zwracaj�ca wsp�czynnik wariacji
+	 * Returns coefficient value
 	 *
-	 * @return Warto�� double wsp�czynnika
+	 * @return coefficient value
 	 */
 	public Double getCoefficient();
 
 	/**
-	 * Ustawia warto�� wsp�czynnika dla danej wariacji
+	 * Sets variation coefficient
 	 *
-	 * @param _coefficient warto�� nowego wsp�czynnika
+	 * @param _coefficient new coefficient value
 	 */
 	public void setCoefficient(Double _coefficient);
 
 	/**
-	 * Funkcja obliczaj�ca wsp�rz�dne nowego punktu przez przekszta�cenie
-	 * obiektu wej�ciowego przez odpowiedni� wariacje
+	 * Calculates new coordinates for the given point. It doesn't change given 
+	 * object. It returns new instance of Point2D object.
 	 *
-	 * @param point wspo�rz�dne przekszta�canego punktu
-	 * @return Obiekt typu Point2D o nowych wsp�rz�dnych
+	 * @param point source point
+	 * @return new Point2D instance containing calculated coordinates
 	 */
 	public Point2D calculate(Point2D point);
 
 	/**
-	 * Funkcja zwracaj�ca ilo�� dodatkowych parametr�w
+	 * Returns number of additional parameters.
 	 *
-	 * @return warto�� int oznaczaj�ca ilo�� dodatkowych parametr�w
+	 * @return number of additional parameters.
 	 */
 	public int getParametersQuantity();
 
 	/**
 	 * Set variation parameters
 	 *
+	 * @todo use interface instead of implementation
 	 * @param parameters collection containing parameters
 	 */
 	public void setParameters(ArrayList<Double> parameters);
 
 	/**
-	 * Funkcja zwracająca dla danej wariacji ustawione parametry. Na pierwszej
-	 * pozycji znajduje się współczynnik, na dalszych dodatkowe paramtry
+	 * Returns list of additional parameters.
 	 *
-	 * @return Wektro zawierający wartości dodatkowych parametów
+	 * @todo check if the interpretation of this method is consistent across
+	 * the source code
+	 * @todo use interface instead of implementation
+	 * @return List containing additional parameters
 	 */
 	public ArrayList<Double> getParameters();
 
 	/**
-	 * Returns the name of the variation
+	 * Returns the name of variation
 	 *
 	 * @return String
 	 */
 	public String getName();
 
 	/**
-	 * Funkcja ta okre�la czy dana wariacja jest zale�na od wsp�czynnik�w
-	 * transformacji afinicznej.
-	 *
-	 * @return true je�li transformacja jest zale�na od wsp�czynnik�w
-	 * przekszta�cenia afinicznego. W innym wypadku zwraca warto�� false.
+	 * Checks if variation depends on affine transform coefficients.
+	 * 
+	 * @return true if variation depends on affine transform coefficients.
+	 *				Otherwise false.
 	 */
 	public boolean isDependent();
 
 	/**
-	 * Cheks corectenss of the variation
+	 * Checks validity of the variation
 	 *
-	 * @return true if the variation is correct. false otherwise.
+	 * @return true if variation is valid. Otherwise false.
 	 */
 	public boolean isValid();
 }

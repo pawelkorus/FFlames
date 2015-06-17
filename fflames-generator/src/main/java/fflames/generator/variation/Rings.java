@@ -17,11 +17,6 @@ public class Rings extends AbstractWariation {
 	}
 
 	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
-
-	@Override
 	public Point2D calculate(Point2D point) {
 		double x = point.getX();
 		double y = point.getY();
@@ -31,11 +26,6 @@ public class Rings extends AbstractWariation {
 		double mn = (Math.IEEEremainder(r + c, 2 * c) - c + r * (1 - c)) * coefficient;
 		point.setLocation(mn * Math.cos(t), mn * Math.sin(t));
 		return point;
-	}
-
-	@Override
-	public String getName() {
-		return "Rings";
 	}
 
 	@Override

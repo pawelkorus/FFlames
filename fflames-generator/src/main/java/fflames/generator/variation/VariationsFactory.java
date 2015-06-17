@@ -4,7 +4,7 @@ import fflames.generator.IVariation;
 
 public class VariationsFactory {
 
-	static private String[] names = {"Linear", "Sinusoidal", "Spherical",
+	private static final String[] names = {"Linear", "Sinusoidal", "Spherical",
 		"Swirl", "Horseshoe", "Polar",
 		"Handkerchief", "Heart", "Disc",
 		"Spiral", "Hyperbolic", "Diamond",
@@ -20,12 +20,6 @@ public class VariationsFactory {
 		"Curl", "Rectangles", "Arch",
 		"Tangent", "Square", "Rays",
 		"Blade", "Secant", "Cross"};
-
-	/**
-	 * Creates a new instance of VariationsFactory
-	 */
-	public VariationsFactory() {
-	}
 
 	public static IVariation getWariation(String name, Double coefficient) {
 		if (name.compareTo("Linear") == 0) {
@@ -178,11 +172,11 @@ public class VariationsFactory {
 		return new NullVariation();
 	}
 
-	public static IVariation getWariation(int index, Double coefficient) {
+	public static IVariation getVariation(int index, Double coefficient) {
 		return getWariation(names[index], coefficient);
 	}
 
-	public static int getWariationNumber(String name) {
+	public static int getVariationIndex(String name) {
 		for (int i = 0; i < names.length; i++) {
 			if (names[i].compareTo(name) == 0) {
 				return i;
@@ -191,11 +185,13 @@ public class VariationsFactory {
 		return 0;
 	}
 
-	public static String getWariationName(int index) {
+	public static String getVariationName(int index) {
 		return names[index];
 	}
 
-	public static int getWariationQuantity() {
+	public static int getVariationQuantity() {
 		return names.length;
 	}
+	
+	private VariationsFactory() {};
 }

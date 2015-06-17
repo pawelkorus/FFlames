@@ -17,18 +17,8 @@ public class Square extends AbstractWariation {
 	}
 
 	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
-
-	@Override
 	public Point2D calculate(Point2D point) {
 		point.setLocation((Math.random() - 0.5) * coefficient, (Math.random() - 0.5) * coefficient);
 		return point;
-	}
-
-	@Override
-	public String getName() {
-		return "Square";
 	}
 }

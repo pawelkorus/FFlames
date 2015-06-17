@@ -32,7 +32,7 @@ public class VariationsTableModel extends AbstractTableModel {
 	 * Creates a new instance of VariationsTableModel
 	 */
 	public VariationsTableModel() {
-		_rows = VariationsFactory.getWariationQuantity();
+		_rows = VariationsFactory.getVariationQuantity();
 
 		int maxAdditionalParams = 0;
 		_parameters.ensureCapacity(_rows);
@@ -40,7 +40,7 @@ public class VariationsTableModel extends AbstractTableModel {
 		for (int i = 0; i < _rows; i++) {
 			_coefficients.add(Double.valueOf(0));
 
-			IVariation tmp = VariationsFactory.getWariation(i, Double.valueOf(0));
+			IVariation tmp = VariationsFactory.getVariation(i, Double.valueOf(0));
 			int parametersQuantity = tmp.getParametersQuantity();
 
 			ArrayList<Double> parameters = new ArrayList<>(parametersQuantity);
@@ -86,7 +86,7 @@ public class VariationsTableModel extends AbstractTableModel {
 			return null;
 		} else {
 			if (col == 0) {
-				return VariationsFactory.getWariationName(row);
+				return VariationsFactory.getVariationName(row);
 			} else if (col == 1) {
 				return _coefficients.get(row);
 			} else {
@@ -117,7 +117,7 @@ public class VariationsTableModel extends AbstractTableModel {
 	 * @return Variation object
 	 */
 	public IVariation getWariation(int row) {
-		IVariation temp = VariationsFactory.getWariation(row, _coefficients.get(row));
+		IVariation temp = VariationsFactory.getVariation(row, _coefficients.get(row));
 		if (temp.getParametersQuantity() > 0) {
 			ArrayList<Double> parTemp = new ArrayList<>(_parameters.get(row));
 			temp.setParameters(parTemp);

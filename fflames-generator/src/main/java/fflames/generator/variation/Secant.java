@@ -17,19 +17,9 @@ public class Secant extends AbstractWariation {
 	}
 
 	@Override
-	public String toString() {
-		return getName() + getParameters().toString();
-	}
-
-	@Override
 	public Point2D calculate(Point2D point) {
 		double r = Math.sqrt(point.getX() * point.getX() + point.getY() * point.getY());
 		point.setLocation(point.getX(), 1.0 / Math.cos(r * coefficient));
 		return point;
-	}
-
-	@Override
-	public String getName() {
-		return "Secant";
 	}
 }
