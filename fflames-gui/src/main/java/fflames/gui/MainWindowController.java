@@ -22,7 +22,7 @@ import fflames.gui.exceptions.ImportXMLFractalFileException;
 import fflames.gui.forms.AboutDialog;
 import fflames.gui.forms.AffineTransformEditor;
 import fflames.gui.forms.MyFractals;
-import fflames.generator.IColor;
+import fflames.generator.IColoring;
 import fflames.gui.interfaces.IMainWindowController;
 import fflames.gui.model.AffineTransformModel;
 import fflames.gui.model.AlgorithmConfigurationModel;
@@ -127,7 +127,7 @@ public final class MainWindowController implements IMainWindowController, Action
 	public void drawFractal() {
 		if(_transformsModel.getRowCount() > 0) {
 			ColoringFactory colorsFactory = new ColoringFactory();
-			IColor coloringMethod = colorsFactory.getColoring(_view.getColoringEditor().getSelectedIndex(), _view.getColoringEditor().getSelectedColors()); 
+			IColoring coloringMethod = colorsFactory.getColoring(_view.getColoringEditor().getSelectedIndex(), _view.getColoringEditor().getSelectedColors()); 
 			
 			FractalGenerator fractalGenerator = new FractalGenerator(_transformsModel.getTransforms(), coloringMethod, _algorithmConfigurationModel.getImageWidth(), _algorithmConfigurationModel.getImageHeight());
 			fractalGenerator.setNumberOfIterations(_algorithmConfigurationModel.getIterationsNumber());

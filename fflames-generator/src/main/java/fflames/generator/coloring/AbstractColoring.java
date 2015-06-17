@@ -2,9 +2,9 @@ package fflames.generator.coloring;
 
 import java.awt.image.WritableRaster;
 
-import fflames.generator.IColor;
+import fflames.generator.IColoring;
 
-public abstract class AbstractColoring implements IColor {
+public abstract class AbstractColoring implements IColoring {
 	private int _skippedInteractions = 0;
 	private int _skipInteractions = 20;
 

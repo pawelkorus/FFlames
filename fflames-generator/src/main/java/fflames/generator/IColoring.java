@@ -3,7 +3,7 @@ package fflames.generator;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 
-public interface IColor {
+public interface IColoring {
 
 	public int getParametersQuantity();
 

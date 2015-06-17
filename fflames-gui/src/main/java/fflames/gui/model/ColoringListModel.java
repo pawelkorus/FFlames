@@ -4,7 +4,7 @@ import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
 import fflames.generator.coloring.ColoringFactory;
-import fflames.generator.IColor;
+import fflames.generator.IColoring;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -47,7 +47,7 @@ public class ColoringListModel implements ListModel<String> {
 		return lista.length;
 	}
 
-	public IColor getColoring(int index, ArrayList<Color> parameters) {
+	public IColoring getColoring(int index, ArrayList<Color> parameters) {
 		return colorsFactory.getColoring(index, parameters);
 	}
 }

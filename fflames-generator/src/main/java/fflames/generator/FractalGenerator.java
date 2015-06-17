@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class FractalGenerator { 
 	
-	public FractalGenerator(ArrayList<Transform> transforms, IColor _coloringMethod, int width, int height) {
+	public FractalGenerator(ArrayList<Transform> transforms, IColoring _coloringMethod, int width, int height) {
 		super();
 		_width = width;
 		_height = height;
@@ -190,7 +190,7 @@ public class FractalGenerator {
 	
 	ArrayList<Transform> _transforms;
 	ArrayList<Transform> _algorithmTransforms;
-	IColor _coloringMethod;
+	IColoring _coloringMethod;
 	BufferedImage _output;
 	int _numberOfIterations, _width, _height, _numberOfRotations, _samples;
 	Random _randomNumberGenerator;
