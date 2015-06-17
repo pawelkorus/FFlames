@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package fflames.generator.colouring;
+package fflames.generator.coloring;
 
 import java.awt.Color;
 import java.awt.color.ColorSpace;

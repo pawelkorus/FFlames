@@ -3,7 +3,7 @@ package fflames.gui.model;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
-import fflames.generator.colouring.ColorsFactory;
+import fflames.generator.coloring.ColorsFactory;
 import fflames.generator.IColor;
 
 import java.util.ArrayList;

@@ -16,7 +16,7 @@ import javax.swing.event.ListSelectionListener;
 
 import prefs.Settings;
 
-import fflames.generator.colouring.ColorsFactory;
+import fflames.generator.coloring.ColorsFactory;
 import fflames.gui.events.LoadProject;
 import fflames.gui.exceptions.ImportXMLFractalFileException;
 import fflames.gui.forms.AboutDialog;

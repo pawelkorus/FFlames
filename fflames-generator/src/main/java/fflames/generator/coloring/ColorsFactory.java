@@ -1,4 +1,4 @@
-package fflames.generator.colouring;
+package fflames.generator.coloring;
 
 import java.util.ArrayList;
 
