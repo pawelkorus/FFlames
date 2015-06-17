@@ -2,7 +2,7 @@ package fflames.generator.coloring;
 
 import java.awt.image.WritableRaster;
 
-abstract public class DensityBasedColoring extends AbstractColouring {
+abstract public class DensityBasedColoring extends AbstractColoring {
 	
 	@Override
 	public void initialize(WritableRaster raster) {

@@ -16,7 +16,7 @@ import java.awt.image.WritableRaster;
  *
  * @author victories
  */
-public class BlackWhite extends AbstractColouring {
+public class BlackWhite extends AbstractColoring {
 		
 	@Override
 	public ColorModel getColorModel() {

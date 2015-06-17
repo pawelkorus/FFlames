@@ -21,7 +21,7 @@ import java.util.ArrayList;
  *
  * @author victories
  */
-public class RGBColoring extends AbstractColouring {
+public class RGBColoring extends AbstractColoring {
 	
 	public RGBColoring(ArrayList<Color> colors) {
         _colors = colors;

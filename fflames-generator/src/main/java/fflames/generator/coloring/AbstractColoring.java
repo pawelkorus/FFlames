@@ -4,7 +4,7 @@ import java.awt.image.WritableRaster;
 
 import fflames.generator.IColor;
 
-public abstract class AbstractColouring implements IColor {
+public abstract class AbstractColoring implements IColor {
 	private int _skippedInteractions = 0;
 	private int _skipInteractions = 20;
 
