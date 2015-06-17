@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import java.awt.Color;
 
-import fflames.generator.IColour;
+import fflames.generator.IColor;
 
 public class ColorsFactory {
     
@@ -12,7 +12,7 @@ public class ColorsFactory {
     public ColorsFactory() {
     }
     
-    public IColour getColoring(int index, ArrayList<Color> parameters) {
+    public IColor getColoring(int index, ArrayList<Color> parameters) {
         switch(index) {
             case 0: return new BlackWhite();
             case 1: return new LinearBlackWhite();
