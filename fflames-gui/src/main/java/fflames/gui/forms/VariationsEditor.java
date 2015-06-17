@@ -96,7 +96,7 @@ public class VariationsEditor extends javax.swing.JPanel {
 			);
 			
 			wariationsJTable.getModel().setValueAt(
-					variation.getCoefficient().toString(),
+					Double.toString(variation.getCoefficient()),
 					VariationsFactory.getVariationIndex(variation.getName()), 
 					1
 			);

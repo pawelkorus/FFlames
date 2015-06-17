@@ -10,12 +10,12 @@ import java.util.ArrayList;
 public class NullVariation extends AbstractWariation {
 
 	@Override
-	public Double getCoefficient() {
-		return (double) 0;
+	public double getCoefficient() {
+		return 0;
 	}
 
 	@Override
-	public void setCoefficient(Double _coefficient) {
+	public void setCoefficient(double _coefficient) {
 	}
 
 	@Override

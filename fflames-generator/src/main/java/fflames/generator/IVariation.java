@@ -14,14 +14,14 @@ public interface IVariation {
 	 *
 	 * @return coefficient value
 	 */
-	public Double getCoefficient();
+	public double getCoefficient();
 
 	/**
 	 * Sets variation coefficient
 	 *
 	 * @param _coefficient new coefficient value
 	 */
-	public void setCoefficient(Double _coefficient);
+	public void setCoefficient(double _coefficient);
 
 	/**
 	 * Calculates new coordinates for the given point. It doesn't change given 

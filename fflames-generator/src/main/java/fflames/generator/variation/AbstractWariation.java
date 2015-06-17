@@ -14,15 +14,15 @@ import fflames.generator.IVariation;
 public abstract class AbstractWariation implements IVariation {
 
 	protected ArrayList<Double> _parameters = new ArrayList<>();
-	protected Double _coefficient = 0.0;
+	protected double _coefficient = 0.0;
 
 	@Override
-	public Double getCoefficient() {
+	public double getCoefficient() {
 		return _coefficient;
 	}
 
 	@Override
-	public void setCoefficient(Double _coefficient) {
+	public void setCoefficient(double _coefficient) {
 		this._coefficient = _coefficient;
 	}
 
