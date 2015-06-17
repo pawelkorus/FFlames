@@ -8,7 +8,9 @@ import fflames.generator.IColoring;
 
 public class ColoringFactory {
     
-    /** Creates a new instance of ColorsFactory */
+    /** 
+	 * Creates a new instance of ColoringFactory 
+	 */
     public ColoringFactory() {
     }
     
