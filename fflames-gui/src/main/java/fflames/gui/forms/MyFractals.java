@@ -5,7 +5,6 @@
  */
 package fflames.gui.forms;
 
-import java.lang.Double;
 import java.util.ArrayList;
 import javax.swing.event.*;
 import javax.swing.*;

@@ -31,11 +31,6 @@ public class FractalGenerator {
 	}
 	
 	public void execute() {
-		Point2D.Double point = new Point2D.Double();
-		Point imagePoint = new Point();
-		point.setLocation(_randomNumberGenerator.nextDouble(), _randomNumberGenerator.nextDouble());
-		int i = 1, index = 0;
-		
 		ColorModel colorModel = _coloringMethod.getColorModel();
 		
 		ISuperSampling superSampling = new NoSuperSampling(_width, _height);
@@ -46,7 +41,7 @@ public class FractalGenerator {
 		int width = superSampling.getRequiredWidth();
 		int height = superSampling.getRequiredHeight();
 		
-		BufferedImage output = new BufferedImage(colorModel, colorModel.createCompatibleWritableRaster(superSampling.getRequiredWidth(), superSampling.getRequiredHeight()), false, new Hashtable<>());
+		BufferedImage output = new BufferedImage(colorModel, colorModel.createCompatibleWritableRaster(width, height), false, new Hashtable<>());
 		WritableRaster raster = output.getRaster();
 		
 		_coloringMethod.initialize(raster);
@@ -54,27 +49,28 @@ public class FractalGenerator {
 		prepareAlgorithmTransforms();
 		
 		ArrayList<Double> bounds = calculateBounds();
-		Double minx = (double) Math.round(bounds.get(0));
-		Double maxx = (double) Math.round(bounds.get(1));
-		Double miny = (double) Math.round(bounds.get(2));
-		Double maxy = (double) Math.round(bounds.get(3));
 		
-		while(i <= _numberOfIterations) {
-			index = selectFunctionIndex();
-			calculateNextPoint(point, index);			
-			Double valX = (point.getX() - minx)/(maxx - minx) * width;
-			Double valY = (point.getY() - miny)/(maxy - miny) * height;
-			imagePoint.setLocation(valX.intValue(), valY.intValue());
-			
-			if(imagePoint.x < width && imagePoint.x >= 0 && imagePoint.y >= 0 && imagePoint.y < height) {
-				if(index < _transforms.size()) { 
-					_coloringMethod.writeColor(raster, i, imagePoint.x, imagePoint.y, index);
-				} else {
-					_coloringMethod.writeColor(raster, i, imagePoint.x, imagePoint.y);
-				}
-			}
-			
-			i++;
+		Object lock = new Object();
+		
+		try {
+		
+		Thread t1 = new Thread(new ExecutionUnit(bounds, _algorithmTransforms, raster, _transforms.size(), _numberOfIterations/4, lock));
+		Thread t2 = new Thread(new ExecutionUnit(bounds, _algorithmTransforms, raster, _transforms.size(), _numberOfIterations/4, lock));
+		Thread t3 = new Thread(new ExecutionUnit(bounds, _algorithmTransforms, raster, _transforms.size(), _numberOfIterations/4, lock));
+		Thread t4 = new Thread(new ExecutionUnit(bounds, _algorithmTransforms, raster, _transforms.size(), _numberOfIterations/4, lock));
+		
+		t1.start();
+		t2.start();
+		t3.start();
+		t4.start();
+		
+		t1.join();
+		t2.join();
+		t3.join();
+		t4.join();
+		
+		} catch(InterruptedException e) {
+		
 		}
 		
 		_coloringMethod.finalize(raster);
@@ -132,6 +128,88 @@ public class FractalGenerator {
 	
 	public BufferedImage getOutput() {
 		return _output;
+	}
+	
+	private class ExecutionUnit implements Runnable {
+		private ArrayList<Double> _bounds;
+		private Random _randomNumberGenerator;
+		private ArrayList<Transform> _algorithmTransforms;
+		private WritableRaster _raster;
+		private int _numberOfRealTransforms;
+		private int _numberOfIterations;
+		private	Object _lock;
+		
+		ExecutionUnit(
+				ArrayList<Double> bounds,
+				ArrayList<Transform> transforms,
+				WritableRaster raster,
+				int numberOfRealTransforms,
+				int numberOfIteractions,
+				Object lock) {
+			
+			_bounds = bounds;
+			_algorithmTransforms = transforms;
+			_raster = raster;
+			_numberOfRealTransforms = numberOfRealTransforms;
+			_lock = lock;
+			_numberOfIterations = numberOfIteractions;
+			
+			_randomNumberGenerator = new Random();
+		}
+		
+		@Override
+		public void run() {
+			Double minx = (double) Math.round(_bounds.get(0));
+			Double maxx = (double) Math.round(_bounds.get(1));
+			Double miny = (double) Math.round(_bounds.get(2));
+			Double maxy = (double) Math.round(_bounds.get(3));
+			
+			int width = _raster.getWidth();
+			int height = _raster.getHeight();
+			
+			int index = 0;
+			
+			Point2D.Double point = new Point2D.Double(_randomNumberGenerator.nextDouble(), _randomNumberGenerator.nextDouble());
+			Point imagePoint = new Point();
+					
+			int i = 0;
+			
+			while(i <= _numberOfIterations) {
+				index = selectFunctionIndex();
+				calculateNextPoint(point, index);			
+				Double valX = (point.getX() - minx)/(maxx - minx) * width;
+				Double valY = (point.getY() - miny)/(maxy - miny) * height;
+				imagePoint.setLocation(valX.intValue(), valY.intValue());
+
+				if(imagePoint.x < width && imagePoint.x >= 0 && imagePoint.y >= 0 && imagePoint.y < height) {
+					
+					synchronized(_lock) {
+						if(index < _numberOfRealTransforms) { 
+							_coloringMethod.writeColor(_raster, i, imagePoint.x, imagePoint.y, index);
+						} else {
+							_coloringMethod.writeColor(_raster, i, imagePoint.x, imagePoint.y);
+						}
+					}
+				
+				}
+
+				i++;
+			}
+		}
+		
+		private int selectFunctionIndex() {
+			double random = _randomNumberGenerator.nextDouble();
+			double currentPr = 0.0;
+			for(int i = 0; i < _algorithmTransforms.size() - 1; i++) {
+				currentPr += _algorithmTransforms.get(i).getPropability();
+				if(random <= currentPr) return i;
+			}
+			return _algorithmTransforms.size() - 1;
+		}
+		
+		private void calculateNextPoint(Point2D.Double point, int index) {
+			_algorithmTransforms.get(index).transform(point);
+		}
 	}
 	
 	private ArrayList<Double> calculateBounds() {
