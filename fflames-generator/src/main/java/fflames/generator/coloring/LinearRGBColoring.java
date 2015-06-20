@@ -21,7 +21,7 @@ public class LinearRGBColoring extends DensityBasedRGBColoring {
 	}
 
 	@Override
-	public void writeColour(WritableRaster raster, int interaction, int x,
+	public void writeColor(WritableRaster raster, int interaction, int x,
 			int y, int index) {
 		if(!skip()) {
 			float[] colorComponents = getColorComponents(index);
@@ -49,7 +49,7 @@ public class LinearRGBColoring extends DensityBasedRGBColoring {
 	public int getParametersQuantity() { return 2; }
 
 	@Override
-	public void writeColour(WritableRaster raster, int interaction, int x, int y) {
+	public void writeColor(WritableRaster raster, int interaction, int x, int y) {
 		if(!skip()) {
 			float[] colorComponents = getPreviousColorComponents();
 			writeColour(raster, x, y, colorComponents);

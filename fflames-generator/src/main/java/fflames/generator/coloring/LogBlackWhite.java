@@ -25,7 +25,7 @@ public class LogBlackWhite extends DensityBasedColoring {
 	}
 
 	@Override
-	public void writeColour(WritableRaster raster, int interaction, int x, int y, int index) {
+	public void writeColor(WritableRaster raster, int interaction, int x, int y, int index) {
 		if(!skip()) {	
 			hit(x, y);
 		}
@@ -48,7 +48,7 @@ public class LogBlackWhite extends DensityBasedColoring {
 	}
 
 	@Override
-	public void writeColour(WritableRaster raster, int interaction, int x, int y) {
-		writeColour(raster, interaction, x, y, 0);
+	public void writeColor(WritableRaster raster, int interaction, int x, int y) {
+		writeColor(raster, interaction, x, y, 0);
 	}
 }

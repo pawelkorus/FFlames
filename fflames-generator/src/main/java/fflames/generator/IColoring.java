@@ -13,7 +13,7 @@ public interface IColoring {
 
 	public ColorModel getColorModel();
 
-	public void writeColour(WritableRaster raster, int interaction, int x, int y);
+	public void writeColor(WritableRaster raster, int interaction, int x, int y);
 
-	public void writeColour(WritableRaster raster, int interaction, int x, int y, int index);
+	public void writeColor(WritableRaster raster, int interaction, int x, int y, int index);
 }

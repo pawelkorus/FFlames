@@ -68,9 +68,9 @@ public class FractalGenerator {
 			
 			if(imagePoint.x < width && imagePoint.x >= 0 && imagePoint.y >= 0 && imagePoint.y < height) {
 				if(index < _transforms.size()) { 
-					_coloringMethod.writeColour(raster, i, imagePoint.x, imagePoint.y, index);
+					_coloringMethod.writeColor(raster, i, imagePoint.x, imagePoint.y, index);
 				} else {
-					_coloringMethod.writeColour(raster, i, imagePoint.x, imagePoint.y);
+					_coloringMethod.writeColor(raster, i, imagePoint.x, imagePoint.y);
 				}
 			}
 			
