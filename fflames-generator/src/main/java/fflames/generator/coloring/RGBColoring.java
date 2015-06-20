@@ -38,8 +38,11 @@ public class RGBColoring extends AbstractColoring {
 		_lastColor[1] = _randomGenerator.nextFloat();
 		_lastColor[2] = _randomGenerator.nextFloat();
 	}
-    
-    public int getParametersQuantity() { return 2; }
+
+	@Override
+	public boolean supportsCustomColors() {
+		return true;
+	}
 
 	@Override
 	public ColorModel getColorModel() {
@@ -70,6 +73,6 @@ public class RGBColoring extends AbstractColoring {
 		}
 	}
 	
-    private ArrayList<Color> _colors;
+    private final ArrayList<Color> _colors;
     private float[] _lastColor;
 }

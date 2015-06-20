@@ -10,6 +10,11 @@ abstract public class DensityBasedRGBColoring extends DensityBasedColoring {
 	public DensityBasedRGBColoring(ArrayList<Color> colors) {
 		_colors = colors;
 	}
+
+	@Override
+	public boolean supportsCustomColors() {
+		return true;
+	}
 	
 	protected boolean mixColorComponents(float[] current, float[] mix) {
 		try {
@@ -44,5 +49,5 @@ abstract public class DensityBasedRGBColoring extends DensityBasedColoring {
 		return _previousColorComponents;
 	}
 	
-	private ArrayList<Color> _colors;
+	private final ArrayList<Color> _colors;
 }

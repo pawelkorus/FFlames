@@ -9,7 +9,6 @@ import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 
 public class LinearRGBColoring extends DensityBasedRGBColoring {
-	float[] _lastColorComponents = new float[0];
 	
 	public LinearRGBColoring(ArrayList<Color> colors) {
 		super(colors);
@@ -17,7 +16,13 @@ public class LinearRGBColoring extends DensityBasedRGBColoring {
 
 	@Override
 	public ColorModel getColorModel() {
-		return new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB), true, false, ComponentColorModel.OPAQUE, DataBuffer.TYPE_BYTE);
+		return new ComponentColorModel(
+				ColorSpace.getInstance(ColorSpace.CS_sRGB), 
+				true, 
+				false, 
+				ComponentColorModel.OPAQUE, 
+				DataBuffer.TYPE_BYTE
+		);
 	}
 
 	@Override
@@ -44,9 +49,6 @@ public class LinearRGBColoring extends DensityBasedRGBColoring {
 			}
 		}
 	}
-	
-	@Override
-	public int getParametersQuantity() { return 2; }
 
 	@Override
 	public void writeColor(WritableRaster raster, int interaction, int x, int y) {

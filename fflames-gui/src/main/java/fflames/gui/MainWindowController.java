@@ -174,10 +174,11 @@ public final class MainWindowController implements IMainWindowController, Action
 				if(selectedIndex < 0) return;
 				
 				ColoringFactory factory = new ColoringFactory();
-				int buttonsNumber = factory.getColoring(selectedIndex, null).getParametersQuantity();
-				if(buttonsNumber == 1) {
-					_view.getColoringEditor().setNumberOfColorSlots(1);	
-				} else if(buttonsNumber == 2) {
+				boolean showEditor = 
+						factory.getColoring(selectedIndex, null)
+								.supportsCustomColors();
+				
+				if(showEditor) {
 					_view.getColoringEditor().setNumberOfColorSlots(_transformsModel.getRowCount());
 				} else {
 					_view.getColoringEditor().setNumberOfColorSlots(0);

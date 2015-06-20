@@ -6,11 +6,11 @@ import fflames.generator.IColoring;
 
 public abstract class AbstractColoring implements IColoring {
 	private int _skippedInteractions = 0;
-	private int _skipInteractions = 20;
+	private final int _skipInteractions = 20;
 
 	@Override
-	public int getParametersQuantity() {
-		return 0;
+	public boolean supportsCustomColors() {
+		return false;
 	}
 
 	@Override

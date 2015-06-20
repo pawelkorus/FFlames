@@ -7,47 +7,42 @@ import fflames.generator.coloring.ColoringFactory;
 import fflames.generator.IColoring;
 
 import java.util.ArrayList;
-import java.util.Vector;
 import java.awt.Color;
 
 public class ColoringListModel implements ListModel<String> {
 
-	private Vector<ListDataListener> listeners;
-	private String[] lista = {"Black & White", "Linear Black & White", "Log Black & White", "Simple RGB", "Linear RGB", "Log RGB"};
-	private ColoringFactory colorsFactory = new ColoringFactory();
+	private final ArrayList<ListDataListener> _listeners;
+	private final String[] _coloringStrategyNames = {"Black & White", "Linear Black & White", "Log Black & White", "Simple RGB", "Linear RGB", "Log RGB"};
+	private final ColoringFactory _colorsFactory = new ColoringFactory();
 
 	/**
 	 * Creates a new instance of ColoringListModel
 	 */
 	public ColoringListModel() {
-		listeners = new Vector<ListDataListener>();
+		this._listeners = new ArrayList<>();
 	}
 
 	@Override
 	public void addListDataListener(ListDataListener l) {
-		listeners.add(l);
+		_listeners.add(l);
 	}
 
 	@Override
 	public void removeListDataListener(ListDataListener l) {
-		listeners.remove(l);
+		_listeners.remove(l);
 	}
 
 	@Override
 	public String getElementAt(int index) {
-		return lista[index];
-	}
-
-	public int getColoursNumberAt(int index) {
-		return colorsFactory.getColoring(index, null).getParametersQuantity();
+		return _coloringStrategyNames[index];
 	}
 
 	@Override
 	public int getSize() {
-		return lista.length;
+		return _coloringStrategyNames.length;
 	}
 
 	public IColoring getColoring(int index, ArrayList<Color> parameters) {
-		return colorsFactory.getColoring(index, parameters);
+		return _colorsFactory.getColoring(index, parameters);
 	}
 }
