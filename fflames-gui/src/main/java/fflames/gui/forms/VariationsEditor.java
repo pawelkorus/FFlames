@@ -10,9 +10,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 
-import fflames.generator.IVariation;
+import fflames.base.IVariation;
 import fflames.gui.model.VariationsTableModel;
-import fflames.generator.variation.VariationsFactory;
+import fflames.base.variation.VariationsFactory;
 
 import javax.swing.BoxLayout;
 

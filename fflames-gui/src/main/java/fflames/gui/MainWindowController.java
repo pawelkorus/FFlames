@@ -1,5 +1,5 @@
 package fflames.gui;
-import fflames.generator.FractalGenerator;
+import fflames.base.FractalGenerator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
@@ -16,13 +16,13 @@ import javax.swing.event.ListSelectionListener;
 
 import prefs.Settings;
 
-import fflames.generator.coloring.ColoringFactory;
+import fflames.base.coloring.ColoringFactory;
 import fflames.gui.events.LoadProject;
 import fflames.gui.exceptions.ImportXMLFractalFileException;
 import fflames.gui.forms.AboutDialog;
 import fflames.gui.forms.AffineTransformEditor;
 import fflames.gui.forms.MyFractals;
-import fflames.generator.IColoring;
+import fflames.base.IColoring;
 import fflames.gui.interfaces.IMainWindowController;
 import fflames.gui.model.AffineTransformModel;
 import fflames.gui.model.AlgorithmConfigurationModel;
@@ -133,7 +133,14 @@ public final class MainWindowController implements IMainWindowController, Action
 			fractalGenerator.setNumberOfIterations(_algorithmConfigurationModel.getIterationsNumber());
 			fractalGenerator.setNumberOfRotations(_algorithmConfigurationModel.getRotationsNumber());
 			fractalGenerator.setSamples(_algorithmConfigurationModel.getSuperSampling());
+			
+			long startTime = System.nanoTime();
+
 			fractalGenerator.execute();
+			
+			long endTime = System.nanoTime();
+			long duration = (endTime - startTime)/1000000; // miliseconds
+			System.out.println("Generator execution time: " + duration );
 			
 			_view.getRysunekJPanel().resetPoints();
 			_view.getRysunekJPanel().setImage(fractalGenerator.getOutput());

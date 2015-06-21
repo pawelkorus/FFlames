@@ -1,6 +1,6 @@
 package fflames.gui;
 
-import fflames.generator.IVariation;
+import fflames.base.IVariation;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.FileReader;
@@ -15,8 +15,8 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import fflames.generator.Transform;
-import fflames.generator.variation.VariationsFactory;
+import fflames.base.Transform;
+import fflames.base.variation.VariationsFactory;
 import fflames.gui.exceptions.ImportXMLFractalFileException;
 import fflames.gui.model.TransformTableModel;
 

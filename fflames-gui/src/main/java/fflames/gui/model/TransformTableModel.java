@@ -1,13 +1,13 @@
 package fflames.gui.model;
 
-import fflames.generator.Transform;
+import fflames.base.Transform;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.table.AbstractTableModel;
 
-import fflames.generator.IVariation;
+import fflames.base.IVariation;
 
 public class TransformTableModel extends AbstractTableModel {
 

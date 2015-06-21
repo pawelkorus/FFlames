@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import fflames.generator.Transform;
+import fflames.base.Transform;
 
 public class ExportXMLFileFractal {
 	private ArrayList<Transform> _transforms;

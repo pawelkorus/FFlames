@@ -10,8 +10,8 @@ package fflames.gui.model;
 
 import javax.swing.table.*;
 
-import fflames.generator.IVariation;
-import fflames.generator.variation.VariationsFactory;
+import fflames.base.IVariation;
+import fflames.base.variation.VariationsFactory;
 
 import java.util.ArrayList;
 
