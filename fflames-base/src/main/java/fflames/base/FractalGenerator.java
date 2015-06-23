@@ -11,14 +11,15 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 
 public class FractalGenerator { 
 	
-	public FractalGenerator(ArrayList<Transform> transforms, IColoring _coloringMethod, int width, int height) {
+	public FractalGenerator(ArrayList<Transform> transforms, IColoring _coloringMethod, ExecutorService executor ) {
 		super();
-		_width = width;
-		_height = height;
 		_transforms = transforms;
 		_samples = 1;
 		this._coloringMethod = _coloringMethod;
@@ -27,15 +28,17 @@ public class FractalGenerator {
 		_numberOfIterations = 100000;
 		_numberOfRotations = 0;
 		
-		_algorithmTransforms = new ArrayList<Transform>();
+		_algorithmTransforms = new ArrayList<>();
+		
+		_executor = executor;
 	}
 	
-	public void execute() {
+	public void execute(int outputWidth, int outputHeight) {
 		ColorModel colorModel = _coloringMethod.getColorModel();
 		
-		ISuperSampling superSampling = new NoSuperSampling(_width, _height);
+		ISuperSampling superSampling = new NoSuperSampling(outputWidth, outputHeight);
 		if(_samples > 1) {
-			superSampling = new SuperSampling(_width, _height, _samples);
+			superSampling = new SuperSampling(outputWidth, outputHeight, _samples);
 		}
 		
 		int width = superSampling.getRequiredWidth();
@@ -52,26 +55,17 @@ public class FractalGenerator {
 		
 		Object lock = new Object();
 		
-		try {
-		
-		Thread t1 = new Thread(new ExecutionUnit(bounds, _algorithmTransforms, raster, _transforms.size(), _numberOfIterations/4, lock));
-		Thread t2 = new Thread(new ExecutionUnit(bounds, _algorithmTransforms, raster, _transforms.size(), _numberOfIterations/4, lock));
-		Thread t3 = new Thread(new ExecutionUnit(bounds, _algorithmTransforms, raster, _transforms.size(), _numberOfIterations/4, lock));
-		Thread t4 = new Thread(new ExecutionUnit(bounds, _algorithmTransforms, raster, _transforms.size(), _numberOfIterations/4, lock));
-		
-		t1.start();
-		t2.start();
-		t3.start();
-		t4.start();
-		
-		t1.join();
-		t2.join();
-		t3.join();
-		t4.join();
-		
-		} catch(InterruptedException e) {
-		
+		ArrayList<Future> jobResults = new ArrayList<>();
+		int split = 4;
+		for(int i = 0; i < split; i++) {
+			jobResults.add(_executor.submit(new ExecutionUnit(bounds, _algorithmTransforms, raster, _transforms.size(), _numberOfIterations/split, lock)));
 		}
+		jobResults.stream().forEach((future) -> {
+			try {
+				future.get();
+			} catch(InterruptedException | ExecutionException e) {
+			}
+		});
 		
 		_coloringMethod.finalize(raster);
 		_output = superSampling.processImage(output);
@@ -270,6 +264,7 @@ public class FractalGenerator {
 	ArrayList<Transform> _algorithmTransforms;
 	IColoring _coloringMethod;
 	BufferedImage _output;
-	int _numberOfIterations, _width, _height, _numberOfRotations, _samples;
+	int _numberOfIterations, _numberOfRotations, _samples;
 	Random _randomNumberGenerator;
+	ExecutorService _executor;
 }

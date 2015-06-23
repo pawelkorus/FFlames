@@ -30,6 +30,11 @@ import fflames.gui.model.ApplicationState;
 import fflames.gui.model.RecentOpenedModel;
 import fflames.gui.model.TransformTableModel;
 import fflames.gui.model.VariationsTableModel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public final class MainWindowController implements IMainWindowController, ActionListener {
 	private TransformTableModel _transformsModel;
@@ -39,6 +44,7 @@ public final class MainWindowController implements IMainWindowController, Action
 	private AffineTransformModel _affineTransformModel = null;
 	private VariationsTableModel _variationsTableModel = null;
 	private AlgorithmConfigurationModel _algorithmConfigurationModel;
+	private ExecutorService _threadPool;
 	
 	MainWindowController(ApplicationState state, AlgorithmConfigurationModel algorithmConfigurationModel, TransformTableModel transformsModel, MyFractals view) {
 		_state = state;
@@ -57,6 +63,23 @@ public final class MainWindowController implements IMainWindowController, Action
 		
 		_view.getTranformsList().setModel(_transformsModel);
 		_view.getTranformsList().getSelectionModel().addListSelectionListener(new TransformListSelectionListener());
+		
+		_threadPool = Executors.newFixedThreadPool(6);
+		
+		_view.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent event) {
+				try {
+					_threadPool.shutdown();
+					_threadPool.awaitTermination(2, TimeUnit.SECONDS);
+				} catch(InterruptedException e) {
+
+				} finally {
+					if(!_threadPool.isTerminated()) {
+						_threadPool.shutdownNow();
+					}
+				}
+			}
+		});
 	}
 
 	public void showMainWindow() {
@@ -129,14 +152,14 @@ public final class MainWindowController implements IMainWindowController, Action
 			ColoringFactory colorsFactory = new ColoringFactory();
 			IColoring coloringMethod = colorsFactory.getColoring(_view.getColoringEditor().getSelectedIndex(), _view.getColoringEditor().getSelectedColors()); 
 			
-			FractalGenerator fractalGenerator = new FractalGenerator(_transformsModel.getTransforms(), coloringMethod, _algorithmConfigurationModel.getImageWidth(), _algorithmConfigurationModel.getImageHeight());
+			FractalGenerator fractalGenerator = new FractalGenerator(_transformsModel.getTransforms(), coloringMethod, _threadPool);
 			fractalGenerator.setNumberOfIterations(_algorithmConfigurationModel.getIterationsNumber());
 			fractalGenerator.setNumberOfRotations(_algorithmConfigurationModel.getRotationsNumber());
 			fractalGenerator.setSamples(_algorithmConfigurationModel.getSuperSampling());
 			
 			long startTime = System.nanoTime();
 
-			fractalGenerator.execute();
+			fractalGenerator.execute(_algorithmConfigurationModel.getImageWidth(), _algorithmConfigurationModel.getImageHeight());
 			
 			long endTime = System.nanoTime();
 			long duration = (endTime - startTime)/1000000; // miliseconds
