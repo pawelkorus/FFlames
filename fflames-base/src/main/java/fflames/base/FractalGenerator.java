@@ -14,6 +14,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class FractalGenerator { 
@@ -23,7 +24,7 @@ public class FractalGenerator {
 		_transforms = transforms;
 		_samples = 1;
 		this._coloringMethod = _coloringMethod;
-		this._randomNumberGenerator = new Random();
+		this.randomNumberGenerator = new Random();
 		
 		_numberOfIterations = 100000;
 		_numberOfRotations = 0;
@@ -126,7 +127,6 @@ public class FractalGenerator {
 	
 	private class ExecutionUnit implements Runnable {
 		private ArrayList<Double> _bounds;
-		private Random _randomNumberGenerator;
 		private ArrayList<Transform> _algorithmTransforms;
 		private WritableRaster _raster;
 		private int _numberOfRealTransforms;
@@ -147,12 +147,12 @@ public class FractalGenerator {
 			_numberOfRealTransforms = numberOfRealTransforms;
 			_lock = lock;
 			_numberOfIterations = numberOfIteractions;
-			
-			_randomNumberGenerator = new Random();
 		}
 		
 		@Override
 		public void run() {
+			ThreadLocalRandom randomNumberGenerator = ThreadLocalRandom.current();
+			
 			Double minx = (double) Math.round(_bounds.get(0));
 			Double maxx = (double) Math.round(_bounds.get(1));
 			Double miny = (double) Math.round(_bounds.get(2));
@@ -163,7 +163,7 @@ public class FractalGenerator {
 			
 			int index = 0;
 			
-			Point2D.Double point = new Point2D.Double(_randomNumberGenerator.nextDouble(), _randomNumberGenerator.nextDouble());
+			Point2D.Double point = new Point2D.Double(randomNumberGenerator.nextDouble(), randomNumberGenerator.nextDouble());
 			Point imagePoint = new Point();
 					
 			int i = 0;
@@ -192,7 +192,9 @@ public class FractalGenerator {
 		}
 		
 		private int selectFunctionIndex() {
-			double random = _randomNumberGenerator.nextDouble();
+			ThreadLocalRandom randomNumberGenerator = ThreadLocalRandom.current();
+			
+			double random = randomNumberGenerator.nextDouble();
 			double currentPr = 0.0;
 			for(int i = 0; i < _algorithmTransforms.size() - 1; i++) {
 				currentPr += _algorithmTransforms.get(i).getPropability();
@@ -210,7 +212,7 @@ public class FractalGenerator {
 		int sampleSize = 200000;
 		
 		ArrayList<Point2D.Double> points = new ArrayList<>();
-		Point2D.Double point = new Point2D.Double(_randomNumberGenerator.nextDouble(), _randomNumberGenerator.nextDouble());
+		Point2D.Double point = new Point2D.Double(randomNumberGenerator.nextDouble(), randomNumberGenerator.nextDouble());
 		Double meanx = (double) 0;
 		Double meany = (double) 0;
 		Double stdDevx = (double) 0;
@@ -251,7 +253,7 @@ public class FractalGenerator {
 	}
 	
 	private int selectFunctionIndex() {
-		double random = _randomNumberGenerator.nextDouble();
+		double random = randomNumberGenerator.nextDouble();
 		double currentPr = 0.0;
 		for(int i = 0; i < _algorithmTransforms.size() - 1; i++) {
 			currentPr += _algorithmTransforms.get(i).getPropability();
@@ -265,6 +267,6 @@ public class FractalGenerator {
 	IColoring _coloringMethod;
 	BufferedImage _output;
 	int _numberOfIterations, _numberOfRotations, _samples;
-	Random _randomNumberGenerator;
+	Random randomNumberGenerator;
 	ExecutorService _executor;
 }
