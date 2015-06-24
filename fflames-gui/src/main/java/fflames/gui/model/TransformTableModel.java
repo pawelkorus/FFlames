@@ -109,8 +109,11 @@ public class TransformTableModel extends AbstractTableModel {
 
 	public void reset() {
 		int size = _transforms.size();
-		_transforms.clear();
-		fireTableRowsDeleted(0, size - 1);
+		
+		if(size > 0) {
+			_transforms.clear();
+			fireTableRowsDeleted(0, size - 1);
+		}
 	}
 
 	private ArrayList<Transform> _transforms = new ArrayList<Transform>();
