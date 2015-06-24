@@ -23,6 +23,7 @@ import fflames.gui.forms.AboutDialog;
 import fflames.gui.forms.AffineTransformEditor;
 import fflames.gui.forms.MyFractals;
 import fflames.base.IColoring;
+import fflames.base.Transform;
 import fflames.gui.interfaces.IMainWindowController;
 import fflames.gui.model.AffineTransformModel;
 import fflames.gui.model.AlgorithmConfigurationModel;
@@ -34,6 +35,7 @@ import fflames.gui.model.VariationsTableModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -102,11 +104,19 @@ public final class MainWindowController implements IMainWindowController, Action
 	 */
 	@Override
 	public void loadFractalFile(String filePath) {
+		ArrayList<Transform> transforms = new ArrayList<>();
 		ImportXMLFractalFile importer = new ImportXMLFractalFile();
+		
 		try {
-			importer.load(_transformsModel, filePath);
+			importer.load(transforms, filePath);
+			
+			transforms.stream().forEach((t) -> {
+				_transformsModel.add(t);
+			});
+			
 			_state.setParam(ApplicationState.LOADED_FRACTAL_FILE_PATH, filePath);
 			_recentOpenedModel.add(filePath);
+		
 		} catch (ImportXMLFractalFileException exception) {
 			JOptionPane.showMessageDialog(_view, "Error occured when parsing choosen file", "Import error", JOptionPane.ERROR_MESSAGE);
 			exception.printStackTrace();

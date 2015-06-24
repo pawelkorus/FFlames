@@ -18,7 +18,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import fflames.base.Transform;
 import fflames.base.variation.VariationsFactory;
 import fflames.gui.exceptions.ImportXMLFractalFileException;
-import fflames.gui.model.TransformTableModel;
+import java.util.List;
 
 public class ImportXMLFractalFile {
 
@@ -26,25 +26,31 @@ public class ImportXMLFractalFile {
 		super();
 	}
 
-	public void load(TransformTableModel transformsModel, String path) throws IOException, ImportXMLFractalFileException {
+	public void load(List<Transform> transforms, String path) throws IOException, ImportXMLFractalFileException {
 		File file = new File(path);
-		load(transformsModel, file);
+		load(transforms, file);
 	}
 
-	public void load(TransformTableModel transformsModel, File file) throws IOException, ImportXMLFractalFileException {
+	public void load(List<Transform> transforms, File file) throws IOException, ImportXMLFractalFileException {
 		FileReader r = new FileReader(file);
-		load(transformsModel, r);
+		load(transforms, r);
 	}
 
-	public void load(TransformTableModel transformsModel, InputStreamReader input) throws IOException, ImportXMLFractalFileException {
+	public void load(List<Transform> transforms, InputStreamReader input) throws IOException, ImportXMLFractalFileException {
+		List<Transform> temp = new ArrayList<>();
+		
 		try {
 			XMLReader xr = XMLReaderFactory.createXMLReader();
 
-			XMLHandler handler = new XMLHandler(transformsModel.getTransforms());
+			XMLHandler handler = new XMLHandler(temp);
 			xr.setContentHandler(handler);
 			xr.setErrorHandler(handler);
 
 			xr.parse(new InputSource(input));
+			
+			temp.stream().forEach((t) -> {
+				transforms.add(t);
+			});
 		} catch (SAXException e) {
 			throw new ImportXMLFractalFileException(e);
 		}
@@ -52,7 +58,7 @@ public class ImportXMLFractalFile {
 
 	class XMLHandler extends DefaultHandler {
 
-		XMLHandler(ArrayList<Transform> transforms) {
+		XMLHandler(List<Transform> transforms) {
 			super();
 			_transforms = transforms;
 		}
@@ -64,7 +70,7 @@ public class ImportXMLFractalFile {
 		private Double propability = new Double(0.0);
 		private int flag = 0;
 		private int i = 0;
-		ArrayList<Transform> _transforms;
+		List<Transform> _transforms;
 
 		@Override
 		public void startElement(String uri, String localName, String qName,
