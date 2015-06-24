@@ -11,67 +11,95 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Random;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
-
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class FractalGenerator { 
 	
-	public FractalGenerator(ArrayList<Transform> transforms, IColoring _coloringMethod, ExecutorService executor ) {
+	public FractalGenerator(
+			ArrayList<Transform> transforms, 
+			IColoring coloringMethod, 
+			int[] size,
+			int numberOfIterations,
+			int samples,
+			int rotations,
+			ExecutorService executor 
+	) {
+		
 		super();
 		_transforms = transforms;
-		_samples = 1;
-		this._coloringMethod = _coloringMethod;
-		this.randomNumberGenerator = new Random();
+		_coloringMethod = coloringMethod;
 		
-		_numberOfIterations = 100000;
-		_numberOfRotations = 0;
+		_numberOfIterations = numberOfIterations;
+		_numberOfRotations = rotations;
 		
 		_algorithmTransforms = new ArrayList<>();
 		
 		_executor = executor;
+		
+		_progress = new AtomicInteger(0);
+		
+		_width = size[0];
+		_height = size[1];
+		
+		_jobs = 4;
+		
+		_lock = new Object();
+		
+		_bounds = new ArrayList<>();
+		
+		_superSampling = new NoSuperSampling(_width, _height);
+		if(samples > 1) {
+			_superSampling = new SuperSampling(_width, _height, samples);
+		}
+		int requiredWidth = _superSampling.getRequiredWidth();
+		int requiredHeight = _superSampling.getRequiredHeight();
+		
+		ColorModel colorModel = _coloringMethod.getColorModel();
+		_output = new BufferedImage(
+				colorModel, 
+				colorModel.createCompatibleWritableRaster(
+						requiredWidth, 
+						requiredHeight
+				), 
+				false, 
+				new Hashtable<>()
+		);
 	}
 	
-	public void execute(int outputWidth, int outputHeight) {
-		ColorModel colorModel = _coloringMethod.getColorModel();
-		
-		ISuperSampling superSampling = new NoSuperSampling(outputWidth, outputHeight);
-		if(_samples > 1) {
-			superSampling = new SuperSampling(outputWidth, outputHeight, _samples);
-		}
-		
-		int width = superSampling.getRequiredWidth();
-		int height = superSampling.getRequiredHeight();
-		
-		BufferedImage output = new BufferedImage(colorModel, colorModel.createCompatibleWritableRaster(width, height), false, new Hashtable<>());
-		WritableRaster raster = output.getRaster();
-		
-		_coloringMethod.initialize(raster);
+	public Future<BufferedImage> execute() {
+		_coloringMethod.initialize(_output.getRaster());
 		
 		prepareAlgorithmTransforms();
 		
-		ArrayList<Double> bounds = calculateBounds();
+		CompletableFuture<ArrayList<Double>> futureBounds = 
+				CompletableFuture.supplyAsync(this::calculateBounds, _executor)
+				.thenApply( bounds -> {
+					_bounds = bounds;
+					return _bounds;
+				});
 		
-		Object lock = new Object();
+		CompletableFuture<Void> j1 = futureBounds.thenRunAsync(this::generateFractal, _executor);
+		CompletableFuture<Void> j2 = futureBounds.thenRunAsync(this::generateFractal, _executor);
+		CompletableFuture<Void> j3 = futureBounds.thenRunAsync(this::generateFractal, _executor);
+		CompletableFuture<Void> j4 = futureBounds.thenRunAsync(this::generateFractal, _executor);
 		
-		ArrayList<Future> jobResults = new ArrayList<>();
-		int split = 4;
-		for(int i = 0; i < split; i++) {
-			jobResults.add(_executor.submit(new ExecutionUnit(bounds, _algorithmTransforms, raster, _transforms.size(), _numberOfIterations/split, lock)));
-		}
-		jobResults.stream().forEach((future) -> {
-			try {
-				future.get();
-			} catch(InterruptedException | ExecutionException e) {
-			}
+		CompletableFuture<Void> compute = CompletableFuture.allOf(j1, j2, j3, j4);
+		
+		return compute
+		.thenApplyAsync( (arg) -> {
+			WritableRaster raster = _output.getRaster();
+			_coloringMethod.finalize(raster);
+			return _superSampling.processImage(_output);
+		})
+		.exceptionally((ex) -> {
+			ex.printStackTrace();
+			return _output;
 		});
-		
-		_coloringMethod.finalize(raster);
-		_output = superSampling.processImage(output);
 	}
-	
 	
 	/**
 	 * Prepares algorithm transforms from the algorithm
@@ -79,7 +107,7 @@ public class FractalGenerator {
 	 */
 	protected void prepareAlgorithmTransforms() {
 		_algorithmTransforms.clear();
-		int rotationsNumber = getRotationsNumber();
+		int rotationsNumber = _numberOfRotations;
 		
 		if(rotationsNumber > 0) {
 			Double transformPropability = 1.0/(rotationsNumber + 1);
@@ -97,118 +125,12 @@ public class FractalGenerator {
 		}
 	}
 
-	public int getNumberOfIterations() {
-		return _numberOfIterations;
-	}
-	
-	public void setNumberOfIterations(int numberOfIterations) {
-		_numberOfIterations = numberOfIterations;
-	}
-	
-	public void setNumberOfRotations(int numberOfRotations) {
-		_numberOfRotations = numberOfRotations;
-	}
-	
-	public int getRotationsNumber() {
-		return _numberOfRotations;
-	}
-	
-	public void setSamples(int number) {
-		_samples = number;
-	}
-	
-	public int getSample() {
-		return _samples;
-	}
-	
-	public BufferedImage getOutput() {
-		return _output;
-	}
-	
-	private class ExecutionUnit implements Runnable {
-		private ArrayList<Double> _bounds;
-		private ArrayList<Transform> _algorithmTransforms;
-		private WritableRaster _raster;
-		private int _numberOfRealTransforms;
-		private int _numberOfIterations;
-		private	Object _lock;
-		
-		ExecutionUnit(
-				ArrayList<Double> bounds,
-				ArrayList<Transform> transforms,
-				WritableRaster raster,
-				int numberOfRealTransforms,
-				int numberOfIteractions,
-				Object lock) {
-			
-			_bounds = bounds;
-			_algorithmTransforms = transforms;
-			_raster = raster;
-			_numberOfRealTransforms = numberOfRealTransforms;
-			_lock = lock;
-			_numberOfIterations = numberOfIteractions;
-		}
-		
-		@Override
-		public void run() {
-			ThreadLocalRandom randomNumberGenerator = ThreadLocalRandom.current();
-			
-			Double minx = (double) Math.round(_bounds.get(0));
-			Double maxx = (double) Math.round(_bounds.get(1));
-			Double miny = (double) Math.round(_bounds.get(2));
-			Double maxy = (double) Math.round(_bounds.get(3));
-			
-			int width = _raster.getWidth();
-			int height = _raster.getHeight();
-			
-			int index = 0;
-			
-			Point2D.Double point = new Point2D.Double(randomNumberGenerator.nextDouble(), randomNumberGenerator.nextDouble());
-			Point imagePoint = new Point();
-					
-			int i = 0;
-			
-			while(i <= _numberOfIterations) {
-				index = selectFunctionIndex();
-				calculateNextPoint(point, index);			
-				Double valX = (point.getX() - minx)/(maxx - minx) * width;
-				Double valY = (point.getY() - miny)/(maxy - miny) * height;
-				imagePoint.setLocation(valX.intValue(), valY.intValue());
-
-				if(imagePoint.x < width && imagePoint.x >= 0 && imagePoint.y >= 0 && imagePoint.y < height) {
-					
-					synchronized(_lock) {
-						if(index < _numberOfRealTransforms) { 
-							_coloringMethod.writeColor(_raster, i, imagePoint.x, imagePoint.y, index);
-						} else {
-							_coloringMethod.writeColor(_raster, i, imagePoint.x, imagePoint.y);
-						}
-					}
-				
-				}
-
-				i++;
-			}
-		}
-		
-		private int selectFunctionIndex() {
-			ThreadLocalRandom randomNumberGenerator = ThreadLocalRandom.current();
-			
-			double random = randomNumberGenerator.nextDouble();
-			double currentPr = 0.0;
-			for(int i = 0; i < _algorithmTransforms.size() - 1; i++) {
-				currentPr += _algorithmTransforms.get(i).getPropability();
-				if(random <= currentPr) return i;
-			}
-			return _algorithmTransforms.size() - 1;
-		}
-		
-		private void calculateNextPoint(Point2D.Double point, int index) {
-			_algorithmTransforms.get(index).transform(point);
-		}
+	public int getProgress() {
+		return _progress.get();
 	}
 	
 	private ArrayList<Double> calculateBounds() {
+		ThreadLocalRandom randomNumberGenerator = ThreadLocalRandom.current();
 		int sampleSize = 200000;
 		
 		ArrayList<Point2D.Double> points = new ArrayList<>();
@@ -248,12 +170,54 @@ public class FractalGenerator {
 		return result;
 	}
 	
+	private void generateFractal() {
+		ThreadLocalRandom randomNumberGenerator = ThreadLocalRandom.current();
+		WritableRaster raster = _output.getRaster();
+			
+		Double minx = (double) Math.round(_bounds.get(0));
+		Double maxx = (double) Math.round(_bounds.get(1));
+		Double miny = (double) Math.round(_bounds.get(2));
+		Double maxy = (double) Math.round(_bounds.get(3));
+
+		int width = raster.getWidth();
+		int height = raster.getHeight();
+
+		Point2D.Double point = new Point2D.Double(randomNumberGenerator.nextDouble(), randomNumberGenerator.nextDouble());
+		Point imagePoint = new Point();
+
+		int i = 0;
+		int index;
+
+		while(i <= _numberOfIterations/_jobs) {
+			index = selectFunctionIndex();
+			calculateNextPoint(point, index);			
+			Double valX = (point.getX() - minx)/(maxx - minx) * width;
+			Double valY = (point.getY() - miny)/(maxy - miny) * height;
+			imagePoint.setLocation(valX.intValue(), valY.intValue());
+
+			if(imagePoint.x < width && imagePoint.x >= 0 && imagePoint.y >= 0 && imagePoint.y < height) {
+
+				synchronized(_lock) {
+					if(index < _transforms.size()) { 
+						_coloringMethod.writeColor(raster, i, imagePoint.x, imagePoint.y, index);
+					} else {
+						_coloringMethod.writeColor(raster, i, imagePoint.x, imagePoint.y);
+					}
+				}
+
+			}
+
+			i++;
+			_progress.addAndGet(1);
+		}
+	}
+	
 	private void calculateNextPoint(Point2D.Double point, int index) {
 		_algorithmTransforms.get(index).transform(point);
 	}
 	
 	private int selectFunctionIndex() {
-		double random = randomNumberGenerator.nextDouble();
+		double random = ThreadLocalRandom.current().nextDouble();
 		double currentPr = 0.0;
 		for(int i = 0; i < _algorithmTransforms.size() - 1; i++) {
 			currentPr += _algorithmTransforms.get(i).getPropability();
@@ -266,7 +230,13 @@ public class FractalGenerator {
 	ArrayList<Transform> _algorithmTransforms;
 	IColoring _coloringMethod;
 	BufferedImage _output;
-	int _numberOfIterations, _numberOfRotations, _samples;
-	Random randomNumberGenerator;
+	int _numberOfIterations, _numberOfRotations, _width, _height;
+	Random globalRandomNumberGenerator;
 	ExecutorService _executor;
+	ArrayList<Future> _jobResults;
+	AtomicInteger _progress;
+	ISuperSampling _superSampling;
+	int _jobs;
+	Object _lock;
+	ArrayList<Double> _bounds;
 }

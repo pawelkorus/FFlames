@@ -12,10 +12,6 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
-/**
- * 
- * @author victories
- */
 public class PreviewJPanel extends javax.swing.JPanel {
 	/**
 	 * 

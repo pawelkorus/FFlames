@@ -27,14 +27,20 @@ import fflames.gui.interfaces.IMainWindowController;
 import fflames.gui.model.AffineTransformModel;
 import fflames.gui.model.AlgorithmConfigurationModel;
 import fflames.gui.model.ApplicationState;
+import fflames.gui.model.ProgressModel;
 import fflames.gui.model.RecentOpenedModel;
 import fflames.gui.model.TransformTableModel;
 import fflames.gui.model.VariationsTableModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import javax.swing.SwingWorker;
 
 public final class MainWindowController implements IMainWindowController, ActionListener {
 	private TransformTableModel _transformsModel;
@@ -44,6 +50,7 @@ public final class MainWindowController implements IMainWindowController, Action
 	private AffineTransformModel _affineTransformModel = null;
 	private VariationsTableModel _variationsTableModel = null;
 	private AlgorithmConfigurationModel _algorithmConfigurationModel;
+	private ProgressModel _progressModel;
 	private ExecutorService _threadPool;
 	
 	MainWindowController(ApplicationState state, AlgorithmConfigurationModel algorithmConfigurationModel, TransformTableModel transformsModel, MyFractals view) {
@@ -67,6 +74,7 @@ public final class MainWindowController implements IMainWindowController, Action
 		_threadPool = Executors.newFixedThreadPool(6);
 		
 		_view.addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent event) {
 				try {
 					_threadPool.shutdown();
@@ -80,6 +88,9 @@ public final class MainWindowController implements IMainWindowController, Action
 				}
 			}
 		});
+		
+		_progressModel = new ProgressModel();
+		_view.getProgressBar().registerModel(_progressModel);
 	}
 
 	public void showMainWindow() {
@@ -149,24 +160,8 @@ public final class MainWindowController implements IMainWindowController, Action
 	@Override
 	public void drawFractal() {
 		if(_transformsModel.getRowCount() > 0) {
-			ColoringFactory colorsFactory = new ColoringFactory();
-			IColoring coloringMethod = colorsFactory.getColoring(_view.getColoringEditor().getSelectedIndex(), _view.getColoringEditor().getSelectedColors()); 
-			
-			FractalGenerator fractalGenerator = new FractalGenerator(_transformsModel.getTransforms(), coloringMethod, _threadPool);
-			fractalGenerator.setNumberOfIterations(_algorithmConfigurationModel.getIterationsNumber());
-			fractalGenerator.setNumberOfRotations(_algorithmConfigurationModel.getRotationsNumber());
-			fractalGenerator.setSamples(_algorithmConfigurationModel.getSuperSampling());
-			
-			long startTime = System.nanoTime();
-
-			fractalGenerator.execute(_algorithmConfigurationModel.getImageWidth(), _algorithmConfigurationModel.getImageHeight());
-			
-			long endTime = System.nanoTime();
-			long duration = (endTime - startTime)/1000000; // miliseconds
-			System.out.println("Generator execution time: " + duration );
-			
-			_view.getRysunekJPanel().resetPoints();
-			_view.getRysunekJPanel().setImage(fractalGenerator.getOutput());
+			DrawingWorker task = new DrawingWorker();
+			task.execute();
 		}
 	}
 	
@@ -233,6 +228,71 @@ public final class MainWindowController implements IMainWindowController, Action
 		}
 	}
 	
+	class DrawingWorker extends SwingWorker<BufferedImage, Integer> {
+
+		@Override
+		protected BufferedImage doInBackground() {	
+			ColoringFactory colorsFactory = new ColoringFactory();
+			IColoring coloringMethod = colorsFactory.getColoring(_view.getColoringEditor().getSelectedIndex(), _view.getColoringEditor().getSelectedColors()); 
+			
+			int[] size = { 
+				_algorithmConfigurationModel.getImageWidth(),
+				_algorithmConfigurationModel.getImageHeight()
+			};
+			
+			FractalGenerator fractalGenerator = new FractalGenerator(
+					_transformsModel.getTransforms(), 
+					coloringMethod,
+					size,
+					_algorithmConfigurationModel.getIterationsNumber(),
+					_algorithmConfigurationModel.getSuperSampling(),
+					_algorithmConfigurationModel.getRotationsNumber(),
+					_threadPool);
+			
+			long startTime = System.nanoTime();
+
+			int p = 0;
+			BufferedImage out = new BufferedImage(1, 1, 1);
+			
+			_progressModel.setStartProgressValue(1);
+			_progressModel.setEndProgressValue(_algorithmConfigurationModel.getIterationsNumber());
+			_progressModel.reset();
+			
+			try {
+				Future<BufferedImage> f = fractalGenerator.execute();
+				while(!f.isDone()) {
+					try {
+						f.get(10, TimeUnit.MILLISECONDS);
+					} catch(TimeoutException e) {
+						_progressModel.setProgress(fractalGenerator.getProgress());
+					}
+				}
+				_progressModel.setProgress(100);;
+				out = f.get();
+			} catch(InterruptedException | ExecutionException e) {
+
+			}
+			
+			long endTime = System.nanoTime();
+			long duration = (endTime - startTime)/1000000; // miliseconds
+			System.out.println("Generator execution time: " + duration );
+						
+			return out;
+		}
+		
+		@Override
+		protected void done() {
+			try {
+				BufferedImage result = get();
+			
+				_view.getRysunekJPanel().resetPoints();
+				_view.getRysunekJPanel().setImage(result);
+			} catch(InterruptedException | ExecutionException e) {
+				
+			}
+		}	
+	}
+	
 	private void reset() {
 		_transformsModel.reset();
 		_view.getTranformsList().clearSelection();
@@ -242,6 +302,8 @@ public final class MainWindowController implements IMainWindowController, Action
 		_variationsTableModel.reset();
 		
 		_state.setParam(ApplicationState.LOADED_FRACTAL_FILE_PATH, "");
+		
+		_progressModel.reset();
 	}
 
 	@Override

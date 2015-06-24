@@ -195,7 +195,7 @@ public class MyFractals extends javax.swing.JFrame {
 		rysunekJPanel.setLayout(new java.awt.FlowLayout());
 		GridBagConstraints gbc_rysunekJPanel = new GridBagConstraints();
 		gbc_rysunekJPanel.fill = GridBagConstraints.BOTH;
-		gbc_rysunekJPanel.gridheight = 9;
+		gbc_rysunekJPanel.gridheight = 11;
 		gbc_rysunekJPanel.gridwidth = 2;
 		gbc_rysunekJPanel.gridx = 1;
 		gbc_rysunekJPanel.gridy = 1;
@@ -256,6 +256,15 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc_saveImageButton.gridy = 9;
 		getContentPane().add(saveImageButton, gbc_saveImageButton);
 
+		_progressBar = new ProgressBar();
+		GridBagConstraints gbc_progressBar = new GridBagConstraints();
+		gbc_progressBar.anchor = GridBagConstraints.NORTH;
+		gbc_progressBar.fill = GridBagConstraints.HORIZONTAL;
+		gbc_progressBar.insets = new Insets(0, 5, 5, 5);
+		gbc_progressBar.gridx = 0;
+		gbc_progressBar.gridy = 11;
+		getContentPane().add(_progressBar, gbc_progressBar);
+		
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
 
@@ -281,6 +290,7 @@ public class MyFractals extends javax.swing.JFrame {
 	private JMenu mnAbout;
 	private JMenu mnOpenRecent;
 	private AlgorithmConfigurationEditor _algorithmConfigurationEditor;
+	private ProgressBar _progressBar;
 
 	// End of variables declaration//GEN-END:variables
 	public void setImage(BufferedImage image) {
@@ -343,6 +353,10 @@ public class MyFractals extends javax.swing.JFrame {
 
 	public AlgorithmConfigurationEditor getAlgorithmConfigurationEditor() {
 		return _algorithmConfigurationEditor;
+	}
+	
+	public ProgressBar getProgressBar() {
+		return _progressBar;
 	}
 
 	public void setRecentOpened(final RecentOpenedModel model) {
