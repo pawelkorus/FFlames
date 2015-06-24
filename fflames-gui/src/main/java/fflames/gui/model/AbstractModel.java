@@ -43,4 +43,7 @@ public abstract class AbstractModel implements Serializable {
 		_pcs.removePropertyChangeListener(listener);
 	}
 
+	protected void initParam(String name, Object value) {
+		_params.put(name, value);
+	}
 }
