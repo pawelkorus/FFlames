@@ -104,6 +104,8 @@ public final class MainWindowController implements IMainWindowController, Action
 	 */
 	@Override
 	public void loadFractalFile(String filePath) {
+		reset();
+		
 		ArrayList<Transform> transforms = new ArrayList<>();
 		ImportXMLFractalFile importer = new ImportXMLFractalFile();
 		
