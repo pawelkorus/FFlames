@@ -193,14 +193,19 @@ public class AlgorithmConfigurationEditor extends JPanel {
 			switch(propertyName) {
 			case AlgorithmConfigurationModel.ITERATIONS_NUMBER:
 				_tfIterationsNumber.setText(String.valueOf(_model.getIterationsNumber()));
+				break;
 			case AlgorithmConfigurationModel.IMAGE_WIDTH:
 				_tfImageWidth.setText(String.valueOf(_model.getImageWidth()));
+				break;
 			case AlgorithmConfigurationModel.IMAGE_HEIGHT:
 				_tfImageWidth.setText(String.valueOf(_model.getImageHeight()));
+				break;
 			case AlgorithmConfigurationModel.ROTATIONS_NUMBER:
 				_tfRotations.setText(String.valueOf(_model.getRotationsNumber()));
+				break;
 			case AlgorithmConfigurationModel.SUPER_SAMPLING:
 				_cbSuperSampling.setSelectedItem(String.valueOf(_model.getSuperSampling()));
+				break;
 			}
 		}
 		
