@@ -198,7 +198,7 @@ public class AlgorithmConfigurationEditor extends JPanel {
 				_tfImageWidth.setText(String.valueOf(_model.getImageWidth()));
 				break;
 			case AlgorithmConfigurationModel.IMAGE_HEIGHT:
-				_tfImageWidth.setText(String.valueOf(_model.getImageHeight()));
+				_tfImageHeight.setText(String.valueOf(_model.getImageHeight()));
 				break;
 			case AlgorithmConfigurationModel.ROTATIONS_NUMBER:
 				_tfRotations.setText(String.valueOf(_model.getRotationsNumber()));

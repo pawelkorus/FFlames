@@ -26,7 +26,7 @@ public class AlgorithmConfigurationEditorController implements PropertyChangeLis
 	}
 
 	public void imageHeightChanged(int value) {
-		_model.setImageWidth(value);
+		_model.setImageHeight(value);
 	}
 
 	@Override
