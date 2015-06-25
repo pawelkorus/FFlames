@@ -75,7 +75,7 @@ public class MainWindowActions extends FormActions {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			fireActionEvent(fflames.gui.events.Action.Actions.SaveProject);
+			fireActionEvent(fflames.gui.events.Action.Actions.SaveGeneratedImage);
 		}	
 	}
 	
