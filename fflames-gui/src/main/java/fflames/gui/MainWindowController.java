@@ -20,11 +20,9 @@ import fflames.base.coloring.ColoringFactory;
 import fflames.gui.events.LoadProject;
 import fflames.gui.exceptions.ImportXMLFractalFileException;
 import fflames.gui.forms.AboutDialog;
-import fflames.gui.forms.AffineTransformEditor;
 import fflames.gui.forms.MyFractals;
 import fflames.base.IColoring;
 import fflames.base.Transform;
-import fflames.gui.interfaces.IMainWindowController;
 import fflames.gui.model.AffineTransformModel;
 import fflames.gui.model.AlgorithmConfigurationModel;
 import fflames.gui.model.ApplicationState;
@@ -44,7 +42,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import javax.swing.SwingWorker;
 
-public final class MainWindowController implements IMainWindowController, ActionListener {
+public final class MainWindowController implements ActionListener {
 	private TransformTableModel _transformsModel;
 	private RecentOpenedModel _recentOpenedModel;
 	private MyFractals _view;
@@ -99,10 +97,6 @@ public final class MainWindowController implements IMainWindowController, Action
 		_view.setVisible(true);
 	}
 	
-	/* (non-Javadoc)
-	 * @see fflames.IMainWindowController#loadFractalFile(java.lang.String)
-	 */
-	@Override
 	public void loadFractalFile(String filePath) {
 		reset();
 		
@@ -128,20 +122,12 @@ public final class MainWindowController implements IMainWindowController, Action
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see fflames.IMainWindowController#saveFractalFile()
-	 */
-	@Override
 	public void saveFractalFile() {
 		if(_state.isFractalFileLoaded()) {
 			saveFractalFile(_state.getLoadedFractalFilePath());
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see fflames.IMainWindowController#saveFractalFile(java.lang.String)
-	 */
-	@Override
 	public void saveFractalFile(String filePath) {
 		ExportXMLFileFractal exporter = new ExportXMLFileFractal(_transformsModel.getTransforms());
 		
@@ -153,10 +139,6 @@ public final class MainWindowController implements IMainWindowController, Action
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see fflames.IMainWindowController#saveImageFile(java.io.File)
-	 */
-	@Override
 	public void saveImageFile(File file) {
 		try {
 			ImageIO.write((RenderedImage) _view.getRysunekJPanel().getImage(), "png", file);
@@ -166,10 +148,6 @@ public final class MainWindowController implements IMainWindowController, Action
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see fflames.IMainWindowController#drawFractal()
-	 */
-	@Override
 	public void drawFractal() {
 		if(_transformsModel.getRowCount() > 0) {
 			DrawingWorker task = new DrawingWorker();
@@ -177,28 +155,16 @@ public final class MainWindowController implements IMainWindowController, Action
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see fflames.IMainWindowController#addTransform()
-	 */
-	@Override
 	public void addTransform() {
 		Double propability = _view.getFunctionPropability();
 		_transformsModel.addNew(_affineTransformModel.getTransform(), _variationsTableModel.getVariations(), propability);
 	}
 	
-	/* (non-Javadoc)
-	 * @see fflames.IMainWindowController#removeTransform()
-	 */
-	@Override
 	public void removeTransform() {
 		int selectedIndex = _view.getTranformsList().getSelectedRow();
 		_transformsModel.remove(selectedIndex);
 	}
 	
-	/* (non-Javadoc)
-	 * @see fflames.IMainWindowController#newFractal()
-	 */
-	@Override
 	public void newFractal() {
 		reset();
 	}
