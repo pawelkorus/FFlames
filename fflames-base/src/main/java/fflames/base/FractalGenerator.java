@@ -28,8 +28,10 @@ public class FractalGenerator {
 			int rotations,
 			ExecutorService executor 
 	) {
-		
 		super();
+		
+		_future = null;
+		
 		_transforms = transforms;
 		_coloringMethod = coloringMethod;
 		
@@ -70,35 +72,47 @@ public class FractalGenerator {
 		);
 	}
 	
+	/**
+	 * Function executes process of generating fractal flame asynchronously.
+	 * It returns object representing future results of this algorithm.
+	 * One instance of class FractalGenerator can produce one fractal, 
+	 * so calling execute method many times will always return the same 
+	 * object containing future results of algorithm.
+	 * 
+	 * @return object representing future calculations results
+	 */
 	public Future<BufferedImage> execute() {
-		_coloringMethod.initialize(_output.getRaster());
-		
-		prepareAlgorithmTransforms();
-		
-		CompletableFuture<ArrayList<Double>> futureBounds = 
-				CompletableFuture.supplyAsync(this::calculateBounds, _executor)
-				.thenApply( bounds -> {
-					_bounds = bounds;
-					return _bounds;
-				});
-		
-		CompletableFuture<Void> j1 = futureBounds.thenRunAsync(this::generateFractal, _executor);
-		CompletableFuture<Void> j2 = futureBounds.thenRunAsync(this::generateFractal, _executor);
-		CompletableFuture<Void> j3 = futureBounds.thenRunAsync(this::generateFractal, _executor);
-		CompletableFuture<Void> j4 = futureBounds.thenRunAsync(this::generateFractal, _executor);
-		
-		CompletableFuture<Void> compute = CompletableFuture.allOf(j1, j2, j3, j4);
-		
-		return compute
-		.thenApplyAsync( (arg) -> {
-			WritableRaster raster = _output.getRaster();
-			_coloringMethod.finalize(raster);
-			return _superSampling.processImage(_output);
-		})
-		.exceptionally((ex) -> {
-			ex.printStackTrace();
-			return _output;
-		});
+		if(_future == null) {
+			_coloringMethod.initialize(_output.getRaster());
+
+			prepareAlgorithmTransforms();
+
+			_future = 
+			CompletableFuture.supplyAsync(this::calculateBounds, _executor)
+			.thenApply( bounds -> {
+				_bounds = bounds;
+				return _bounds;
+			})
+			.thenCompose((ArrayList<Double> arg1) -> { 
+				CompletableFuture<Void> j1 = CompletableFuture.runAsync(this::generateFractal, _executor);
+				CompletableFuture<Void> j2 = CompletableFuture.runAsync(this::generateFractal, _executor);
+				CompletableFuture<Void> j3 = CompletableFuture.runAsync(this::generateFractal, _executor);
+				CompletableFuture<Void> j4 = CompletableFuture.runAsync(this::generateFractal, _executor);
+
+				return CompletableFuture.allOf(j1, j2, j3, j4);
+			})
+			.thenApplyAsync( (arg) -> {
+				WritableRaster raster = _output.getRaster();
+				_coloringMethod.finalize(raster);
+				return _superSampling.processImage(_output);
+			})
+			.exceptionally((ex) -> {
+				ex.printStackTrace();
+				return _output;
+			});
+		}
+			
+		return _future;
 	}
 	
 	/**
@@ -239,4 +253,5 @@ public class FractalGenerator {
 	int _jobs;
 	Object _lock;
 	ArrayList<Double> _bounds;
+	Future<BufferedImage> _future;
 }
