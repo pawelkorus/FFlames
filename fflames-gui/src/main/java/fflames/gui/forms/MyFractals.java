@@ -305,10 +305,6 @@ public class MyFractals extends javax.swing.JFrame {
 		_tfPropability.setText(v.toString());
 	}
 
-	public ArrayList<IVariation> getVariations() {
-		return wariationsJPanel.getVariations();
-	}
-
 	public Integer getIterationsNumber() {
 		/**
 		 * @todo return Integer.parseInt(iloscIteracjiJTextField.getText());

@@ -170,9 +170,8 @@ public final class MainWindowController implements IMainWindowController, Action
 	 */
 	@Override
 	public void addTransform() {
-		AffineTransformModel affineTransformModel = _view.getAffineTransformEditor().getModel();
 		Double propability = _view.getFunctionPropability();
-		_transformsModel.addNew(affineTransformModel.getTransform(), _view.getVariations(), propability);
+		_transformsModel.addNew(_affineTransformModel.getTransform(), _variationsTableModel.getVariations(), propability);
 	}
 	
 	/* (non-Javadoc)
@@ -220,10 +219,11 @@ public final class MainWindowController implements IMainWindowController, Action
 				if(selectedTransform < 0) return;
 				
 				_view.setFunctionPropability((Double) _transformsModel.getValueAt(selectedTransform, 0));
+				
 				AffineTransform transform = (AffineTransform) _transformsModel.getAffineTransformAt(selectedTransform);
-				AffineTransformEditor affineTransformEditor = _view.getAffineTransformEditor();
-				affineTransformEditor.getModel().setTransform(transform);
-				_view.getVariationsEditor().setVariations(_transformsModel.getVariationsAt(selectedTransform));
+				_affineTransformModel.setTransform(transform);
+				
+				_variationsTableModel.setVariations(_transformsModel.getVariationsAt(selectedTransform));
 			}
 		}
 	}
@@ -267,7 +267,7 @@ public final class MainWindowController implements IMainWindowController, Action
 						_progressModel.setProgress(fractalGenerator.getProgress());
 					}
 				}
-				_progressModel.setProgress(100);;
+				_progressModel.setProgress(100);
 				out = f.get();
 			} catch(InterruptedException | ExecutionException e) {
 

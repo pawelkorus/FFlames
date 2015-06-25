@@ -116,13 +116,40 @@ public class VariationsTableModel extends AbstractTableModel {
 	 * @param row row index
 	 * @return Variation object
 	 */
-	public IVariation getWariation(int row) {
+	public IVariation getVariation(int row) {
 		IVariation temp = VariationsFactory.getVariation(row, _coefficients.get(row));
 		if (temp.getParametersQuantity() > 0) {
 			ArrayList<Double> parTemp = new ArrayList<>(_parameters.get(row));
 			temp.setParameters(parTemp);
 		}
 		return temp;
+	}
+	
+	public ArrayList<IVariation> getVariations() {
+		if(_rows <= 0) return new ArrayList<>();
+		
+		ArrayList<IVariation> variations = new ArrayList<>();
+		for(int i = 0; i < _rows; i++) {
+			variations.add(getVariation(i));
+		}
+		return variations;
+	}
+	
+	/**
+	 * Sets model values according to the given variations
+	 *
+	 * @param variations variations vector
+	 */
+	public void setVariations(ArrayList<IVariation> variations) {
+		reset();
+		
+		variations.stream().forEach((variation) -> {
+			int row = VariationsFactory.getVariationIndex(variation.getName());
+
+			setValueAt(variation.getName(), row, 0);
+			setValueAt(Double.toString(variation.getCoefficient()), row, 1);
+			setValueAt(variation.getParameters(), row, 2);
+		});
 	}
 
 	@Override
@@ -131,16 +158,19 @@ public class VariationsTableModel extends AbstractTableModel {
 			return;
 		}
 
-		if (col == 1) {
+		if (col == 0) {
+			// we do nothing. Name can't be changed.
+		} else if (col == 1) {
 			_coefficients.set(row, Double.valueOf(value.toString()));
+			fireTableCellUpdated(row, col);
 		} else {
 			int paramIndex = col - 2;
 			ArrayList<Double> additionalParams = _parameters.get(row);
 			if (paramIndex < additionalParams.size()) {
 				additionalParams.set(paramIndex, Double.valueOf(value.toString()));
 			}
+			fireTableCellUpdated(row, col);
 		}
-		fireTableCellUpdated(row, col);
 	}
 
 	@Override
