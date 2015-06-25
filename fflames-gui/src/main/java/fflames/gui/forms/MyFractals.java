@@ -305,28 +305,6 @@ public class MyFractals extends javax.swing.JFrame {
 		_tfPropability.setText(v.toString());
 	}
 
-	public Integer getIterationsNumber() {
-		/**
-		 * @todo return Integer.parseInt(iloscIteracjiJTextField.getText());
-		 */
-		return 0;
-	}
-
-	public Integer getImageWidth() {
-		/**
-		 * @todo return Integer.parseInt(widthJTextField.getText());
-		 */
-		return 0;
-	}
-
-	public Integer getImageHeight() {
-		/**
-		 * @todo return Integer.parseInt(hieghtJTextField.getText());
-		 */
-
-		return 0;
-	}
-
 	public PreviewJPanel getRysunekJPanel() {
 		return rysunekJPanel;
 	}
