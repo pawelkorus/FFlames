@@ -5,13 +5,11 @@
  */
 package fflames.gui.forms;
 
-import java.util.ArrayList;
 import javax.swing.event.*;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 
 import fflames.gui.MainWindowActions;
-import fflames.base.IVariation;
 import fflames.gui.model.ApplicationState;
 import fflames.gui.model.RecentOpenedModel;
 import java.awt.GridLayout;
@@ -87,14 +85,14 @@ public class MyFractals extends javax.swing.JFrame {
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
-		wybraneFunkcjeLabel = new javax.swing.JLabel();
+		choosenFunctionsLabel = new javax.swing.JLabel();
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle(_state.getApplicationName());
 		setMinimumSize(new java.awt.Dimension(800, 600));
 		setName("mainFrame"); // NOI18N
 
-		wybraneFunkcjeLabel.setText("Wybrane funkcje:");
+		choosenFunctionsLabel.setText("Choosen functions:");
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{214, 341, 423, 0};
 		gridBagLayout.rowHeights = new int[]{200, 25, 25, 42, 25, 25, 48, 25, 77, 201, 0};
@@ -105,8 +103,8 @@ public class MyFractals extends javax.swing.JFrame {
 		jTP.setPreferredSize(new Dimension(200, 200));
 		jTP.setMinimumSize(new Dimension(200, 200));
 
-		wariationsJPanel = new fflames.gui.forms.VariationsEditor();
-		wariationsJPanel.setMinimumSize(new Dimension(200, 200));
+		variationsEditor = new fflames.gui.forms.VariationsEditor();
+		variationsEditor.setMinimumSize(new Dimension(200, 200));
 		coloringJPanel = new fflames.gui.forms.ColouringEditor();
 		coloringJPanel.setMinimumSize(new Dimension(200, 200));
 
@@ -148,8 +146,8 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc__btnRandom.gridx = 5;
 		gbc__btnRandom.gridy = 3;
 		_affineTransformEditor.add(_btnRandom, gbc__btnRandom);
-		jTP.addTab("Wariacje", wariationsJPanel);
-		jTP.addTab("Coloring", coloringJPanel);
+		jTP.addTab("Variations", variationsEditor);
+		jTP.addTab("Coloring Methods", coloringJPanel);
 		GridBagConstraints gbc_jTP = new GridBagConstraints();
 		gbc_jTP.fill = GridBagConstraints.HORIZONTAL;
 		gbc_jTP.anchor = GridBagConstraints.NORTH;
@@ -159,9 +157,9 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc_jTP.gridy = 0;
 		getContentPane().add(jTP, gbc_jTP);
 
-		listaFunkcjiScrollPane = new javax.swing.JScrollPane();
-		listaFunkcjiScrollPane.setMinimumSize(new Dimension(200, 200));
-		listaFunkcjiScrollPane.setMaximumSize(new Dimension(200, 200));
+		transformsListScrollPane = new javax.swing.JScrollPane();
+		transformsListScrollPane.setMinimumSize(new Dimension(200, 200));
+		transformsListScrollPane.setMaximumSize(new Dimension(200, 200));
 		_transformsList = new JTable();
 		_transformsList.setPreferredScrollableViewportSize(new Dimension(200, 200));
 		_transformsList.setShowGrid(false);
@@ -170,47 +168,47 @@ public class MyFractals extends javax.swing.JFrame {
 		_transformsList.setTableHeader(null);
 
 		_transformsList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		listaFunkcjiScrollPane.setViewportView(_transformsList);
+		transformsListScrollPane.setViewportView(_transformsList);
 		GridBagConstraints gbc_listaFunkcjiScrollPane = new GridBagConstraints();
 		gbc_listaFunkcjiScrollPane.anchor = GridBagConstraints.NORTH;
 		gbc_listaFunkcjiScrollPane.fill = GridBagConstraints.HORIZONTAL;
 		gbc_listaFunkcjiScrollPane.insets = new Insets(0, 0, 5, 0);
 		gbc_listaFunkcjiScrollPane.gridx = 2;
 		gbc_listaFunkcjiScrollPane.gridy = 0;
-		getContentPane().add(listaFunkcjiScrollPane, gbc_listaFunkcjiScrollPane);
+		getContentPane().add(transformsListScrollPane, gbc_listaFunkcjiScrollPane);
 
-		dodajButton = new javax.swing.JButton();
-		dodajButton.setText("Dodaj");
-		dodajButton.setAction(_actions.createAddTransformAction());
+		addButton = new javax.swing.JButton();
+		addButton.setText("Add");
+		addButton.setAction(_actions.createAddTransformAction());
 		GridBagConstraints gbc_dodajButton = new GridBagConstraints();
 		gbc_dodajButton.anchor = GridBagConstraints.NORTH;
 		gbc_dodajButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_dodajButton.insets = new Insets(0, 0, 5, 5);
 		gbc_dodajButton.gridx = 0;
 		gbc_dodajButton.gridy = 1;
-		getContentPane().add(dodajButton, gbc_dodajButton);
-		rysunekJPanel = new fflames.gui.forms.PreviewJPanel();
+		getContentPane().add(addButton, gbc_dodajButton);
+		previewJPanel = new fflames.gui.forms.PreviewJPanel();
 
-		rysunekJPanel.setMinimumSize(new java.awt.Dimension(640, 480));
-		rysunekJPanel.setLayout(new java.awt.FlowLayout());
+		previewJPanel.setMinimumSize(new java.awt.Dimension(640, 480));
+		previewJPanel.setLayout(new java.awt.FlowLayout());
 		GridBagConstraints gbc_rysunekJPanel = new GridBagConstraints();
 		gbc_rysunekJPanel.fill = GridBagConstraints.BOTH;
 		gbc_rysunekJPanel.gridheight = 11;
 		gbc_rysunekJPanel.gridwidth = 2;
 		gbc_rysunekJPanel.gridx = 1;
 		gbc_rysunekJPanel.gridy = 1;
-		getContentPane().add(rysunekJPanel, gbc_rysunekJPanel);
+		getContentPane().add(previewJPanel, gbc_rysunekJPanel);
 
-		usunButton = new javax.swing.JButton();
-		usunButton.setText("Usun");
-		usunButton.setAction(_actions.createRemoveTransformAction());
+		removeButton = new javax.swing.JButton();
+		removeButton.setText("Remove");
+		removeButton.setAction(_actions.createRemoveTransformAction());
 		GridBagConstraints gbc_usunButton = new GridBagConstraints();
 		gbc_usunButton.anchor = GridBagConstraints.NORTH;
 		gbc_usunButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_usunButton.insets = new Insets(0, 0, 5, 5);
 		gbc_usunButton.gridx = 0;
 		gbc_usunButton.gridy = 2;
-		getContentPane().add(usunButton, gbc_usunButton);
+		getContentPane().add(removeButton, gbc_usunButton);
 
 		loadFractalFileFromXmlJButton = new javax.swing.JButton();
 		loadFractalFileFromXmlJButton.setText("Load fractal from XML file");
@@ -234,16 +232,16 @@ public class MyFractals extends javax.swing.JFrame {
 		gbc_saveFractalToXmlJButton.gridy = 5;
 		getContentPane().add(saveFractalToXmlJButton, gbc_saveFractalToXmlJButton);
 
-		rysujButton = new javax.swing.JButton();
-		rysujButton.setText("Rysuj");
-		rysujButton.setAction(_actions.createDrawAction());
+		drawButton = new javax.swing.JButton();
+		drawButton.setText("Draw");
+		drawButton.setAction(_actions.createDrawAction());
 		GridBagConstraints gbc_rysujButton = new GridBagConstraints();
 		gbc_rysujButton.anchor = GridBagConstraints.NORTH;
 		gbc_rysujButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_rysujButton.insets = new Insets(0, 0, 5, 5);
 		gbc_rysujButton.gridx = 0;
 		gbc_rysujButton.gridy = 7;
-		getContentPane().add(rysujButton, gbc_rysujButton);
+		getContentPane().add(drawButton, gbc_rysujButton);
 
 		saveImageButton = new javax.swing.JButton();
 		saveImageButton.setText("Save image");
@@ -270,17 +268,17 @@ public class MyFractals extends javax.swing.JFrame {
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private fflames.gui.forms.ColouringEditor coloringJPanel;
-	private javax.swing.JButton dodajButton;
+	private javax.swing.JButton addButton;
 	private javax.swing.JTabbedPane jTP;
 	private JTable _transformsList;
-	private javax.swing.JScrollPane listaFunkcjiScrollPane;
+	private javax.swing.JScrollPane transformsListScrollPane;
 	private javax.swing.JButton loadFractalFileFromXmlJButton;
-	private javax.swing.JButton rysujButton;
-	private fflames.gui.forms.PreviewJPanel rysunekJPanel;
+	private javax.swing.JButton drawButton;
+	private fflames.gui.forms.PreviewJPanel previewJPanel;
 	private javax.swing.JButton saveImageButton;
-	private javax.swing.JButton usunButton;
-	private fflames.gui.forms.VariationsEditor wariationsJPanel;
-	private javax.swing.JLabel wybraneFunkcjeLabel;
+	private javax.swing.JButton removeButton;
+	private fflames.gui.forms.VariationsEditor variationsEditor;
+	private javax.swing.JLabel choosenFunctionsLabel;
 	private javax.swing.JButton saveFractalToXmlJButton;
 	private JPanel _affineTranformTab;
 	private JTextField _tfPropability;
@@ -294,7 +292,7 @@ public class MyFractals extends javax.swing.JFrame {
 
 	// End of variables declaration//GEN-END:variables
 	public void setImage(BufferedImage image) {
-		rysunekJPanel.setImage(image);
+		previewJPanel.setImage(image);
 	}
 
 	public Double getFunctionPropability() {
@@ -306,7 +304,7 @@ public class MyFractals extends javax.swing.JFrame {
 	}
 
 	public PreviewJPanel getRysunekJPanel() {
-		return rysunekJPanel;
+		return previewJPanel;
 	}
 
 	public JTable getTranformsList() {
@@ -322,7 +320,7 @@ public class MyFractals extends javax.swing.JFrame {
 	}
 
 	public VariationsEditor getVariationsEditor() {
-		return wariationsJPanel;
+		return variationsEditor;
 	}
 
 	public AlgorithmConfigurationEditor getAlgorithmConfigurationEditor() {
