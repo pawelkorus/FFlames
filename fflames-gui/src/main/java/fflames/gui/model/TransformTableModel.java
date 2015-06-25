@@ -3,7 +3,6 @@ package fflames.gui.model;
 import fflames.base.Transform;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -93,17 +92,6 @@ public class TransformTableModel extends AbstractTableModel {
 			fireTableRowsDeleted(row, row);
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
-		}
-	}
-
-	public void remove(int[] rows) {
-		if (rows.length == 0) {
-			return;
-		}
-
-		int row = rows[0];
-		for (int i = 0; i < rows.length; i++) {
-			remove(row);
 		}
 	}
 
