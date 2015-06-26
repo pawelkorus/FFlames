@@ -6,49 +6,37 @@
 
 package fflames.gui.forms;
 
+import fflames.gui.model.AbstractModel;
+import fflames.gui.model.RenderedImageModel;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.beans.PropertyChangeEvent;
 
 public class PreviewJPanel extends javax.swing.JPanel {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2552472331006455414L;
 	private Image image;
 	private Point2D.Double pointFrom = new Point2D.Double(0.0, 0.0);
 	private Point2D.Double pointTo = new Point2D.Double(0.0, 0.0);
 	private MouseEvent event;
+	private AbstractModel _model;
+	private PropertyChangeListener _listener = new PropertyChangeListener();
 
 	/** Creates new form PreviewJPanel */
 	public PreviewJPanel() {
 		initComponents();
 	}
 
-	public Point2D.Double getPointFrom() {
-		return pointFrom;
+	public void registerModel(AbstractModel model) {
+		if(_model != null) {
+			_model.removePropertyChangeListener(_listener);
+		}
+		_model = model;
+		_model.addPropertyChangeListener(_listener);
 	}
-
-	public Point2D.Double getPointTo() {
-		return pointTo;
-	}
-
-	public void resetPoints() {
-		pointFrom.setLocation(0.0, 0.0);
-		pointTo.setLocation(1.0, 1.0);
-	}
-
-	public Image getImage() {
-		return image;
-	}
-
-	public void setImage(Image bI) {
-		image = bI;
-		repaint();
-	}
-
+	
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
@@ -108,4 +96,18 @@ public class PreviewJPanel extends javax.swing.JPanel {
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	// End of variables declaration//GEN-END:variables
+	
+	private class PropertyChangeListener implements java.beans.PropertyChangeListener {
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			switch (evt.getPropertyName()) {
+				case RenderedImageModel.IMAGE:
+					image = (Image) evt.getNewValue();
+					repaint();
+					break;
+			}
+		}
+
+	}
 }

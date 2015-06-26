@@ -7,7 +7,6 @@ package fflames.gui.forms;
 
 import javax.swing.event.*;
 import javax.swing.*;
-import java.awt.image.BufferedImage;
 
 import fflames.gui.MainWindowActions;
 import fflames.gui.model.ApplicationState;
@@ -291,9 +290,6 @@ public class MyFractals extends javax.swing.JFrame {
 	private ProgressBar _progressBar;
 
 	// End of variables declaration//GEN-END:variables
-	public void setImage(BufferedImage image) {
-		previewJPanel.setImage(image);
-	}
 
 	public Double getFunctionPropability() {
 		return new Double(_tfPropability.getText());
@@ -302,8 +298,8 @@ public class MyFractals extends javax.swing.JFrame {
 	public void setFunctionPropability(Double v) {
 		_tfPropability.setText(v.toString());
 	}
-
-	public PreviewJPanel getRysunekJPanel() {
+	
+	public PreviewJPanel getPreviewPanel() {
 		return previewJPanel;
 	}
 

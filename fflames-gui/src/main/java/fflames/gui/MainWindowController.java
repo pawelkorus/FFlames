@@ -28,6 +28,7 @@ import fflames.gui.model.AlgorithmConfigurationModel;
 import fflames.gui.model.ApplicationState;
 import fflames.gui.model.ProgressModel;
 import fflames.gui.model.RecentOpenedModel;
+import fflames.gui.model.RenderedImageModel;
 import fflames.gui.model.TransformTableModel;
 import fflames.gui.model.VariationsTableModel;
 import java.awt.event.WindowAdapter;
@@ -51,6 +52,7 @@ public final class MainWindowController implements ActionListener {
 	private VariationsTableModel _variationsTableModel = null;
 	private AlgorithmConfigurationModel _algorithmConfigurationModel;
 	private ProgressModel _progressModel;
+	private RenderedImageModel _renderedImageModel;
 	private ExecutorService _threadPool;
 	
 	MainWindowController(ApplicationState state, AlgorithmConfigurationModel algorithmConfigurationModel, TransformTableModel transformsModel, MyFractals view) {
@@ -91,6 +93,9 @@ public final class MainWindowController implements ActionListener {
 		
 		_progressModel = new ProgressModel();
 		_view.getProgressBar().registerModel(_progressModel);
+		
+		_renderedImageModel = new RenderedImageModel();
+		_view.getPreviewPanel().registerModel(_renderedImageModel);
 	}
 
 	public void showMainWindow() {
@@ -141,7 +146,7 @@ public final class MainWindowController implements ActionListener {
 	
 	public void saveImageFile(File file) {
 		try {
-			ImageIO.write((RenderedImage) _view.getRysunekJPanel().getImage(), "png", file);
+			ImageIO.write((RenderedImage) _renderedImageModel.getImage(), "png", file);
 		} catch (IOException exception) {
 			JOptionPane.showMessageDialog(_view, "Error when saving image file", "Export error", JOptionPane.ERROR_MESSAGE);
 			exception.printStackTrace();
@@ -259,12 +264,12 @@ public final class MainWindowController implements ActionListener {
 		}
 		
 		@Override
-		protected void done() {
+		protected void done() { 
+			// this method is executed on the Dispatch Event thread
 			try {
 				BufferedImage result = get();
 			
-				_view.getRysunekJPanel().resetPoints();
-				_view.getRysunekJPanel().setImage(result);
+				_renderedImageModel.setImage(result);
 			} catch(InterruptedException | ExecutionException e) {
 				
 			}
