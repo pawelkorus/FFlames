@@ -1,17 +1,8 @@
 package fflames.gui.model;
 
 import java.awt.geom.AffineTransform;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
 
-public class AffineTransformModel implements Serializable {
-	private static final long serialVersionUID = 1L;
-
-	private final PropertyChangeSupport _pcs;
-	
-	private AffineTransform _transform;
+public class AffineTransformModel extends AbstractModel {
 	
 	public static final String SHEAR_X = "shear_x";
 	public static final String SHEAR_Y = "shear_y";
@@ -22,110 +13,83 @@ public class AffineTransformModel implements Serializable {
 	public static final String TRANSFORM = "transform"; 
 	
 	public AffineTransformModel() {
-		_pcs = new PropertyChangeSupport(this);
 		reset();
 	}
 	
 	public double getScaleX() {
-		return _transform.getScaleX();
+		return (Double) getParam(SCALE_X);
 	}
 	
 	public void setScaleX(double v) {
-		if(_transform.getScaleX() != v) {
-			double oldValue = _transform.getScaleX();
-			_transform.setToScale(v, _transform.getScaleY());
-			_pcs.firePropertyChange(new PropertyChangeEvent(this, SCALE_X, oldValue, v));
-		}
+		setParam(SCALE_X, v);
 	}
 	
 	public double getScaleY() {
-		return _transform.getScaleY();
+		return (Double) getParam(SCALE_Y);
 	}
 	
 	public void setScaleY(double v) {
-		if(_transform.getScaleY() != v) {
-			double oldValue = _transform.getScaleY();
-			_transform.setToScale(_transform.getScaleX(), v);
-			_pcs.firePropertyChange(new PropertyChangeEvent(this, SCALE_Y, oldValue, v));
-		}
+		setParam(SCALE_Y, v);
 	}
 	
 	public double getTranslateX() {
-		return _transform.getTranslateX();
+		return (Double) getParam(TRANSLATE_X);
 	}
 	
 	public void setTranslateX(double v) {
-		if(_transform.getTranslateX() != v) {
-			double oldValue = _transform.getTranslateX();
-			_transform.setToTranslation(v, _transform.getTranslateY());
-			_pcs.firePropertyChange(new PropertyChangeEvent(this, TRANSLATE_X, oldValue, v));
-		}
+		setParam(TRANSLATE_X, v);
 	}
 	
 	public double getTranslateY() {
-		return _transform.getTranslateY();
+		return (Double) getParam(TRANSLATE_Y);
 	}
 	
 	public void setTranslateY(double v) {
-		if(_transform.getTranslateY() != v) {
-			double oldValue = _transform.getTranslateY();
-			_transform.setToTranslation(_transform.getTranslateX(), v);
-			_pcs.firePropertyChange(new PropertyChangeEvent(this, TRANSLATE_Y, oldValue, v));
-		}
+		setParam(TRANSLATE_Y, v);
 	}
 	
 	public double getShearX() {
-		return _transform.getShearX();
+		return (Double) getParam(SHEAR_X);
 	}
 	
 	public void setShearX(double v) {
-		if(_transform.getShearX() != v) {
-			double oldValue = _transform.getShearX();
-			_transform.setToShear(v, _transform.getShearX());
-			_pcs.firePropertyChange(new PropertyChangeEvent(this, SHEAR_X, oldValue, v));
-		}
+		setParam(SHEAR_X, v);
 	}
 	
 	public double getShearY() {
-		return _transform.getShearY();
+		return (Double) getParam(SHEAR_Y);
 	}
 	
 	public void setShearY(double v) {
-		if(_transform.getShearY() != v) {
-			double oldValue = _transform.getShearY();
-			_transform.setToShear(_transform.getShearX(), v);
-			_pcs.firePropertyChange(new PropertyChangeEvent(this, SHEAR_Y, oldValue, v));
-		}
+		setParam(SHEAR_Y, v);
 	}
 
 	
 	/**
-	 * Returns instance of the AffineTransform class initialised
+	 * Returns instance of the AffineTransform class initialized
 	 * with current parameter values
 	 * 
 	 * @return new instance of AffineTransform class
 	 */
 	public AffineTransform getTransform() {
-		return new AffineTransform(_transform);
+		double[] params = {
+			getScaleX(), getShearY(), 
+			getShearX(), getScaleY(),
+			getTranslateX(), getTranslateY()
+		};
+		return new AffineTransform(params);
 	}
 	
 	public void setTransform(AffineTransform transform) {
-		if(_transform != transform) {
-			AffineTransform oldValue = _transform;
-			_transform = transform;
-			_pcs.firePropertyChange(new PropertyChangeEvent(this, TRANSFORM, oldValue, transform));
-		}
+		setScaleX(transform.getScaleX());
+		setScaleY(transform.getScaleY());
+		setShearX(transform.getShearX());
+		setShearY(transform.getShearY());
+		setTranslateX(transform.getTranslateX());
+		setTranslateY(transform.getTranslateY());
 	}
 	
 	public void reset() {
 		setTransform(new AffineTransform());
-	}
-
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		_pcs.addPropertyChangeListener(listener);
-	}
-	
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		_pcs.removePropertyChangeListener(listener);
 	}
 }
