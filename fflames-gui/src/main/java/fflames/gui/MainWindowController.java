@@ -95,7 +95,7 @@ public final class MainWindowController implements ActionListener {
 		_view.getProgressBar().registerModel(_progressModel);
 		
 		_renderedImageModel = new RenderedImageModel();
-		_view.getPreviewPanel().registerModel(_renderedImageModel);
+		_view.getPreviewPanel().setModel(_renderedImageModel);
 	}
 
 	public void showMainWindow() {

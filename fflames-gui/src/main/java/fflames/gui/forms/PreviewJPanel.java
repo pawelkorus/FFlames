@@ -6,7 +6,6 @@
 
 package fflames.gui.forms;
 
-import fflames.gui.model.AbstractModel;
 import fflames.gui.model.RenderedImageModel;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -16,20 +15,25 @@ import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 
 public class PreviewJPanel extends javax.swing.JPanel {
+	
 	private static final long serialVersionUID = 2552472331006455414L;
 	private Image image;
 	private Point2D.Double pointFrom = new Point2D.Double(0.0, 0.0);
 	private Point2D.Double pointTo = new Point2D.Double(0.0, 0.0);
 	private MouseEvent event;
-	private AbstractModel _model;
-	private PropertyChangeListener _listener = new PropertyChangeListener();
+	private RenderedImageModel _model;
+	private final PropertyChangeListener _listener = new PropertyChangeListener();
 
 	/** Creates new form PreviewJPanel */
 	public PreviewJPanel() {
 		initComponents();
 	}
 
-	public void registerModel(AbstractModel model) {
+	public RenderedImageModel getModel() {
+		return _model;
+	}
+	
+	public void setModel(RenderedImageModel model) {
 		if(_model != null) {
 			_model.removePropertyChangeListener(_listener);
 		}
@@ -64,10 +68,12 @@ public class PreviewJPanel extends javax.swing.JPanel {
 	private void initComponents() {
 
 		addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
 			public void mousePressed(java.awt.event.MouseEvent evt) {
 				formMousePressed(evt);
 			}
 
+			@Override
 			public void mouseReleased(java.awt.event.MouseEvent evt) {
 				formMouseReleased(evt);
 			}
