@@ -225,9 +225,9 @@ public class AffineTransformEditor extends JPanel {
 			} else if(sourceModel == textField_B.getDocument()) {
 				_model.setShearX(parseDouble(textField_B));
 			} else if(sourceModel == textField_C.getDocument()) {
-				_model.setScaleY(parseDouble(textField_C));
-			} else if(sourceModel == textField_D.getDocument()) {
 				_model.setShearY(parseDouble(textField_D));
+			} else if(sourceModel == textField_D.getDocument()) {
+				_model.setScaleY(parseDouble(textField_C));
 			} else if(sourceModel == textField_E.getDocument()) {
 				_model.setTranslateX(parseDouble(textField_E));
 			} else if(sourceModel == textField_F.getDocument()) {
