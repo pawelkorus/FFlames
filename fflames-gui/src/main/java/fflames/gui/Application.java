@@ -19,9 +19,7 @@ public final class Application implements Runnable {
 		
 		_mainWindow = new MyFractals(state);
 		
-		AlgorithmConfigurationEditorController algorithmConfigurationEditorController = new AlgorithmConfigurationEditorController(algorithmConfigurationModel);
 		_mainWindow.getAlgorithmConfigurationEditor().setModel(algorithmConfigurationModel);
-		_mainWindow.getAlgorithmConfigurationEditor().getActions().addPropertyChangeListener(algorithmConfigurationEditorController);
 		
 		MainWindowController mainWindowController = new MainWindowController(state, algorithmConfigurationModel, transformsModel, _mainWindow);
 		mainWindowController.showMainWindow();

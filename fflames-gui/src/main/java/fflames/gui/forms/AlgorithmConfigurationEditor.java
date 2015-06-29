@@ -4,7 +4,6 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import fflames.gui.FormActions;
 import fflames.gui.model.AlgorithmConfigurationModel;
 
 import java.awt.GridBagLayout;
@@ -36,6 +35,7 @@ public class AlgorithmConfigurationEditor extends JPanel {
 			_name = name;
 		}
 		
+		@Override
 		public String toString() {
 			return _name;
 		}
@@ -50,7 +50,6 @@ public class AlgorithmConfigurationEditor extends JPanel {
 		
 		_model = new AlgorithmConfigurationModel();
 		_listener = new ModelChangeListener();
-		_actions = new FormActions(this);
 		initGUI();
 		_focusListener = new TextFieldFocusListener();
 		_tfRotations.addFocusListener(_focusListener);
@@ -58,14 +57,7 @@ public class AlgorithmConfigurationEditor extends JPanel {
 		_tfImageWidth.addFocusListener(_focusListener);
 		_tfImageHeight.addFocusListener(_focusListener);
 		
-		_cbSuperSampling.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				_actions.firePropertyChange(Property.SuperSampling.toString(), _model.getSuperSampling(), Integer.parseInt((String) _cbSuperSampling.getSelectedItem()));
-			}
-			
-		});
+		_cbSuperSampling.addActionListener(new ComboBoxObserver());
 	}
 
 	public AlgorithmConfigurationModel getModel() {
@@ -77,10 +69,6 @@ public class AlgorithmConfigurationEditor extends JPanel {
 		_model = model;
 		initValuesFromModel();
 		_model.addPropertyChangeListener(_listener);		
-	}
-	
-	public FormActions getActions() {
-		return _actions;
 	}
 	
 	private void initGUI() {
@@ -168,8 +156,8 @@ public class AlgorithmConfigurationEditor extends JPanel {
 		gbc_lblSuperSampling.gridy = 3;
 		add(lblSuperSampling, gbc_lblSuperSampling);
 		
-		_cbSuperSampling = new JComboBox<String>();
-		_cbSuperSampling.setModel(new DefaultComboBoxModel<String>(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"}));
+		_cbSuperSampling = new JComboBox<>();
+		_cbSuperSampling.setModel(new DefaultComboBoxModel<>(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"}));
 		GridBagConstraints gbc__cbSuperSampling = new GridBagConstraints();
 		gbc__cbSuperSampling.insets = new Insets(0, 0, 0, 5);
 		gbc__cbSuperSampling.fill = GridBagConstraints.HORIZONTAL;
@@ -221,16 +209,25 @@ public class AlgorithmConfigurationEditor extends JPanel {
 		public void focusLost(FocusEvent e) {
 			Object source = e.getSource();
 			if(source == _tfRotations) {
-				_actions.firePropertyChange(Property.RotationsNumber.toString(), _model.getRotationsNumber(), Integer.parseInt(_tfRotations.getText()));
+				_model.setRotationsNumber(Integer.parseInt(_tfRotations.getText()));
 			} else if(source == _tfIterationsNumber) {
-				_actions.firePropertyChange(Property.IterationsNumber.toString(), _model.getIterationsNumber(), Integer.parseInt(_tfIterationsNumber.getText()));
+				_model.setItarationsNumber(Integer.parseInt(_tfIterationsNumber.getText()));
 			} else if(source == _tfImageWidth) {
-				_actions.firePropertyChange(Property.ImageWidth.toString(), _model.getImageWidth(), Integer.parseInt(_tfImageWidth.getText()));
+				_model.setImageWidth(Integer.parseInt(_tfImageWidth.getText()));
 			} else if(source == _tfImageHeight) {
-				_actions.firePropertyChange(Property.ImageHeight.toString(), _model.getImageHeight(), Integer.parseInt(_tfImageHeight.getText()));
+				_model.setImageHeight(Integer.parseInt(_tfImageHeight.getText()));
 			}
 		}
 
+	}
+	
+	private class ComboBoxObserver implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			_model.setSuperSampling(Integer.parseInt((String) _cbSuperSampling.getSelectedItem()));
+		}
+		
 	}
 	
 	private static final long serialVersionUID = 1L;
@@ -244,9 +241,7 @@ public class AlgorithmConfigurationEditor extends JPanel {
 	private JTextField _tfImageHeight;
 	private AlgorithmConfigurationModel _model;
 	private ModelChangeListener _listener;
-	//private AlgorithmConfigurationEditorActions _actions;
 	private TextFieldFocusListener _focusListener;
-	private FormActions _actions;
 	private JLabel lblSuperSampling;
 	private JComboBox<String> _cbSuperSampling;
 }
