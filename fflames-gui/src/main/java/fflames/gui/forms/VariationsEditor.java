@@ -30,7 +30,7 @@ public class VariationsEditor extends javax.swing.JPanel {
 
 		initComponents();
 
-		ListSelectionModel lsm = variationsJTable.getSelectionModel();
+		ListSelectionModel lsm = _variationsJTable.getSelectionModel();
 		lsm.addListSelectionListener(new VariationJTableListSelectionHandler());
 	}
 
@@ -44,20 +44,24 @@ public class VariationsEditor extends javax.swing.JPanel {
 	private void initComponents() {
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-		variationsTableJScrollPane = new javax.swing.JScrollPane();
-		variationsJTable = new javax.swing.JTable();
+		_variationsTableJScrollPane = new javax.swing.JScrollPane();
+		_variationsJTable = new javax.swing.JTable();
 
-		variationsJTable.setModel(_model);
-		variationsTableJScrollPane.setViewportView(variationsJTable);
-		add(variationsTableJScrollPane);
+		_variationsJTable.setModel(_model);
+		_variationsTableJScrollPane.setViewportView(_variationsJTable);
+		add(_variationsTableJScrollPane);
 	}// </editor-fold>//GEN-END:initComponents
 
 	public VariationsTableModel getModel() {
 		return _model;
 	}
 
-	private javax.swing.JTable variationsJTable;
-	private javax.swing.JScrollPane variationsTableJScrollPane;
+	public void setModel(VariationsTableModel model) {
+		_variationsJTable.setModel(model);
+	}
+	
+	private javax.swing.JTable _variationsJTable;
+	private javax.swing.JScrollPane _variationsTableJScrollPane;
 
 	// End of variables declaration//GEN-END:variables
 	class VariationJTableListSelectionHandler implements ListSelectionListener {

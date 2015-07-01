@@ -118,10 +118,14 @@ public class VariationsTableModel extends AbstractTableModel {
 	 */
 	public IVariation getVariation(int row) {
 		IVariation temp = VariationsFactory.getVariation(row, _coefficients.get(row));
+		
+		temp.setCoefficient(_coefficients.get(row));
+		
 		if (temp.getParametersQuantity() > 0) {
 			ArrayList<Double> parTemp = new ArrayList<>(_parameters.get(row));
 			temp.setParameters(parTemp);
 		}
+		
 		return temp;
 	}
 	

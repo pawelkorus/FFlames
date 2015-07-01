@@ -13,7 +13,7 @@ public class ProgressBar extends JProgressBar {
 		_listener = new ModelChangeListener();
 	}
 	
-	public void registerModel(AbstractModel model) {
+	public void setModel(AbstractModel model) {
 		if(_model != null) {
 			_model.removePropertyChangeListener(_listener);
 		}

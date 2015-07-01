@@ -160,37 +160,59 @@ public class AffineTransformEditor extends JPanel {
  	}
 	
 	class ModelChangeHandler implements PropertyChangeListener {
-
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
+		private class SourceNotFoundException extends Exception {};
+		
+		private JTextField findEventSourceTextField(PropertyChangeEvent evt) 
+			throws SourceNotFoundException
+		{
 			switch (evt.getPropertyName()) {
 			case AffineTransformModel.SCALE_X:
-				textField_A.setText(evt.getNewValue().toString());
-				break;
+				return textField_A;
 			case AffineTransformModel.SCALE_Y:
-				textField_C.setText(evt.getNewValue().toString());
-				break;
+				return textField_D;
 			case AffineTransformModel.SHEAR_X:
-				textField_B.setText(evt.getNewValue().toString());
-				break;
+				return textField_B;
 			case AffineTransformModel.SHEAR_Y:
-				textField_D.setText(evt.getNewValue().toString());
-				break;
+				return textField_C;
 			case AffineTransformModel.TRANSLATE_X:
-				textField_E.setText(evt.getNewValue().toString());
-				break;
+				return textField_E;
 			case AffineTransformModel.TRANSLATE_Y:
-				textField_F.setText(evt.getNewValue().toString());
-				break;
-			case AffineTransformModel.TRANSFORM:
-				AffineTransformModel model = (AffineTransformModel) evt.getSource();
+				return textField_F;
+			default:
+				throw new ModelChangeHandler.SourceNotFoundException();
+			}
+		}
+		
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			if(evt.getPropertyName().compareTo(
+					AffineTransformModel.TRANSFORM) == 0) {
+				AffineTransformModel model = _model;
 				textField_A.setText(Double.toString(model.getScaleX()));
 				textField_C.setText(Double.toString(model.getScaleY()));
 				textField_B.setText(Double.toString(model.getShearX()));
 				textField_D.setText(Double.toString(model.getShearY()));
 				textField_E.setText(Double.toString(model.getTranslateX()));
 				textField_F.setText(Double.toString(model.getTranslateY()));
-				break;
+			} else {
+				try {
+					JTextField field = findEventSourceTextField(evt);
+					
+					Double incomingValue = (Double) evt.getNewValue();
+					String str = field.getText();
+					Double currentValue = 0.0;
+					if(!str.isEmpty()) {
+						currentValue = Double.parseDouble(field.getText());
+					}
+					
+					if(incomingValue.compareTo(currentValue) != 0) {
+						field.setText(incomingValue.toString());
+					}
+				} catch(ModelChangeHandler.SourceNotFoundException ex) {
+					// we do nothing for this kind of exception. 
+					// It looks like there is no JTextField that needs to be 
+					// updated.
+				}
 			}
 		}
 	}
@@ -214,8 +236,12 @@ public class AffineTransformEditor extends JPanel {
 		
 		private Double parseDouble(JTextField textField) {
 			String str = textField.getText();
-			Double v = new Double(str);
-			return v;
+			if(str.isEmpty()) {
+				return 0.0;
+			} else {
+				Double v = new Double(str);
+				return v;
+			}
 		}
 		
 		private void handleEvent(DocumentEvent de) {
@@ -225,9 +251,9 @@ public class AffineTransformEditor extends JPanel {
 			} else if(sourceModel == textField_B.getDocument()) {
 				_model.setShearX(parseDouble(textField_B));
 			} else if(sourceModel == textField_C.getDocument()) {
-				_model.setShearY(parseDouble(textField_D));
+				_model.setShearY(parseDouble(textField_C));
 			} else if(sourceModel == textField_D.getDocument()) {
-				_model.setScaleY(parseDouble(textField_C));
+				_model.setScaleY(parseDouble(textField_D));
 			} else if(sourceModel == textField_E.getDocument()) {
 				_model.setTranslateX(parseDouble(textField_E));
 			} else if(sourceModel == textField_F.getDocument()) {

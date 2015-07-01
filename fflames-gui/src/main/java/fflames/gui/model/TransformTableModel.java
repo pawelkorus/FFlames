@@ -7,11 +7,20 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 import fflames.base.IVariation;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 public class TransformTableModel extends AbstractTableModel {
 
-	private static final long serialVersionUID = -4510264602645148388L;
-
+	public static final String CURRENT_TRANSFORM_INDEX = 
+			"current_transform_index";
+	
+	public TransformTableModel() {
+		 _transforms = new ArrayList<>();
+		 _pcs = new PropertyChangeSupport(this);
+		 _currentTransformIndex = -1;
+	}
+	
 	@Override
 	public int getRowCount() {
 		return _transforms.size();
@@ -103,7 +112,38 @@ public class TransformTableModel extends AbstractTableModel {
 			fireTableRowsDeleted(0, size - 1);
 		}
 	}
+	
+	public int getCurrentTransformIndex() {
+		return _currentTransformIndex;
+	}
+	
+	public void setCurrentTransformIndex(int index) {
+		if( index < 0 || index >= getRowCount()) {
+			return;
+		}
+		
+		if(index == _currentTransformIndex) {
+			return;
+		}
+		
+		int oldValue = _currentTransformIndex;
+		_currentTransformIndex = index;
+		
+		_pcs.firePropertyChange(
+				CURRENT_TRANSFORM_INDEX, oldValue, _currentTransformIndex);
+	}
+	
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		_pcs.addPropertyChangeListener(listener);
+	}
+	
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		_pcs.removePropertyChangeListener(listener);
+	}
 
-	private ArrayList<Transform> _transforms = new ArrayList<Transform>();
-	private String[] _columnNames = {"Propability", "Affine transform", "Variations"};
+	private int _currentTransformIndex;
+	private ArrayList<Transform> _transforms;
+	private final PropertyChangeSupport _pcs;
+	private final String[] _columnNames = {"Propability", "Affine transform", "Variations"};
+	private static final long serialVersionUID = -4510264602645148388L;
 }
