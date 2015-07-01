@@ -76,7 +76,7 @@ public class MainWindow extends JComponent implements ActionListener {
 		
 		_threadPool = threadPool;
 		
-		_selectedColoringId = 0;
+		_selectedColoringIndex = 0;
 		
 		updateUI();
 	}
@@ -194,7 +194,8 @@ public class MainWindow extends JComponent implements ActionListener {
 		
 		_progressModel.reset();
 		
-		_selectedColoringId = 0;
+		_selectedColoringIndex = 0;
+		_selectedTransformIndex = 0;
 	}
 	
 	public TransformTableModel getTransformsModel() {
@@ -311,8 +312,7 @@ public class MainWindow extends JComponent implements ActionListener {
 				));
 			}
 			
-			IColoring coloringMethod = colorsFactory.getColoring(
-					_selectedColoringId, selectedColors);
+			IColoring coloringMethod = colorsFactory.getColoring(_selectedColoringIndex, selectedColors);
 			
 			int[] size = { 
 				_algorithmConfigurationModel.getImageWidth(),
@@ -400,7 +400,7 @@ public class MainWindow extends JComponent implements ActionListener {
 					_colorsModel.setSize(0);
 				}
 				
-				_selectedColoringId = index;
+				_selectedColoringIndex = index;
 			}
 		}
 	}
@@ -423,7 +423,7 @@ public class MainWindow extends JComponent implements ActionListener {
 					return;
 				}
 				
-				_transformsModel.setCurrentTransformIndex(index);
+				_selectedTransformIndex = index;
 
 				double propability = (Double) _transformsModel.getValueAt(index, 0);
 
@@ -439,7 +439,8 @@ public class MainWindow extends JComponent implements ActionListener {
 		}
 	}
 	
-	private int _selectedColoringId;
+	private int _selectedTransformIndex;
+	private int _selectedColoringIndex;
 	private final TransformTableModel _transformsModel;
 	private final ApplicationState _state;
 	private final AffineTransformModel _affineTransformModel;
