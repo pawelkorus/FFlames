@@ -1,5 +1,12 @@
 package fflames.gui;
 
+import fflames.gui.action.ExitApplication;
+import fflames.gui.action.NewProject;
+import fflames.gui.action.OpenProjectFile;
+import fflames.gui.action.OpenRecentProjectFile;
+import fflames.gui.action.SaveFractalImage;
+import fflames.gui.action.SaveProjectFile;
+import fflames.gui.action.ShowAboutDialog;
 import fflames.gui.forms.MainWindow;
 import fflames.gui.model.ApplicationState;
 import fflames.gui.model.RecentOpenedModel;
@@ -10,24 +17,44 @@ import java.beans.PropertyChangeListener;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import javax.swing.ActionMap;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.UIManager;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import prefs.Settings;
 
 public final class Application implements Runnable {
-
+	private MainWindow _mainWindow;
+	private JFrame _mainFrame;
+	private JMenuBar _menuBar;
+	private JMenu _mnFile;
+	private JMenu _mnOpenRecent;
+	private JMenu _mnAbout;
+	private ExecutorService _threadPool;
+	private final ApplicationState _appState;
+	private final RecentOpenedModel _recentOpenedModel;
+	private final ActionMap _actions;
+	
+	public enum ActionId {
+		OpenProjectFile,
+		OpenRecentProjectFile,
+		ShowAboutDialog,
+		SaveProjectFile,
+		ExitApplication,
+		NewProject,
+		SaveFractalImage
+	}
+	
 	public Application() {
 		_appState = new ApplicationState();
 		_appState.addPropertyChangeListener(new ModelChangeListener());
 		_recentOpenedModel = 
 				new RecentOpenedModel(
 						Settings.getInstance().getRecentOpenedPaths(), 10);
+		_actions = new ActionMap();
 	}
 
 	@Override
@@ -42,7 +69,15 @@ public final class Application implements Runnable {
 		_mainFrame.setMinimumSize(new java.awt.Dimension(800, 600));
 		_mainFrame.setName("mainFrame"); // NOI18N
 		
-		_actions = new MainWindowActions(_mainFrame);
+		_actions.put(ActionId.OpenProjectFile, new OpenProjectFile(_appState, _mainFrame));
+		_actions.put(ActionId.ShowAboutDialog, new ShowAboutDialog());
+		_actions.put(ActionId.OpenRecentProjectFile, 
+				new OpenRecentProjectFile(_appState, _mainFrame, _recentOpenedModel));
+		_actions.put(ActionId.SaveProjectFile, new SaveProjectFile(_appState, _mainFrame));
+		_actions.put(ActionId.ExitApplication, new ExitApplication(_mainFrame));
+		_actions.put(ActionId.NewProject, new NewProject(_appState));
+		_actions.put(ActionId.SaveFractalImage,
+				new SaveFractalImage(_appState.getRenderedImageModel(), _mainWindow));
 
 		_menuBar = new JMenuBar();
 		_mainFrame.setJMenuBar(_menuBar);
@@ -50,19 +85,16 @@ public final class Application implements Runnable {
 		_mnFile = new JMenu("File");
 		_menuBar.add(_mnFile);
 
-		_mnFile.add(_actions.createNewFractalAction());
+		_mnFile.add(_actions.get(ActionId.NewProject));
 
 		JSeparator separator = new JSeparator();
 		_mnFile.add(separator);
 
-		_mnFile.add(_actions.createOpenAction(""));
+		_mnFile.add(_actions.get(ActionId.OpenProjectFile));
 
-		_mnOpenRecent = new JMenu("Open recent");
-		for (int i = 0; i < _recentOpenedModel.getSize(); i++) {
-			_mnOpenRecent.add(
-					_actions.createOpenAction(
-							_recentOpenedModel.getElementAt(i)));
-		}
+		/*_mnOpenRecent = new JMenu("Open recent");
+		_mnOpenRecent.add(_actions.getAction(MainWindowActions.ActionId.OpenRecentProjectFile));
+		
 		_recentOpenedModel.addListDataListener(new ListDataListener() {
 
 			@Override
@@ -87,27 +119,38 @@ public final class Application implements Runnable {
 			}
 
 		});
-		_mnFile.add(_mnOpenRecent);
+		_mnFile.add(_mnOpenRecent);*/
 
 		JSeparator separator_1 = new JSeparator();
 		_mnFile.add(separator_1);
 
-		_mnFile.add(_actions.createSaveAction());
+		_mnFile.add(_actions.get(ActionId.SaveProjectFile));
 
-		_mnFile.add(_actions.createSaveImageAction());
+		_mnFile.add(_actions.get(ActionId.SaveFractalImage));
 
 		JSeparator separator_2 = new JSeparator();
 		_mnFile.add(separator_2);
 
-		_mnFile.add(_actions.createExitAction());
+		_mnFile.add(_actions.get(ActionId.ExitApplication));
 
 		_mnAbout = new JMenu("About");
 		_menuBar.add(_mnAbout);
 
-		_mnAbout.add(_actions.createShowAboutAction());
+		_mnAbout.add(_actions.get(ActionId.ShowAboutDialog));
 		
 		_mainWindow = new MainWindow(_appState, _threadPool);
-		_actions.addActionListener(_mainWindow);
+		_mainWindow.setAction(MainWindow.ActionId.NewProject,
+				_actions.get(ActionId.NewProject));
+		_mainWindow.setAction(MainWindow.ActionId.ExitApplication,
+				_actions.get(ActionId.ExitApplication));
+		_mainWindow.setAction(MainWindow.ActionId.OpenProjectFile,
+				_actions.get(ActionId.OpenProjectFile));
+		_mainWindow.setAction(MainWindow.ActionId.OpenRecentProjectFile,
+				_actions.get(ActionId.OpenRecentProjectFile));
+		_mainWindow.setAction(MainWindow.ActionId.SaveFractalImage,
+				_actions.get(ActionId.SaveFractalImage));
+		_mainWindow.setAction(MainWindow.ActionId.SaveProjectFile,
+				_actions.get(ActionId.SaveProjectFile));
 		
 		_mainFrame.add(_mainWindow);
 		
@@ -157,16 +200,4 @@ public final class Application implements Runnable {
 	public static void main(String[] args) {
 		java.awt.EventQueue.invokeLater(new Application());
 	}
-	
-	//private MyFractals _mainWindow;
-	private MainWindow _mainWindow;
-	private JFrame _mainFrame;
-	private JMenuBar _menuBar;
-	private JMenu _mnFile;
-	private JMenu _mnOpenRecent;
-	private JMenu _mnAbout;
-	private MainWindowActions _actions;
-	private ExecutorService _threadPool;
-	private final ApplicationState _appState;
-	private final RecentOpenedModel _recentOpenedModel;
 }

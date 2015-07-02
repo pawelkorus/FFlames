@@ -1,6 +1,5 @@
 package fflames.gui.ui;
 
-import fflames.gui.MainWindowActions;
 import fflames.gui.forms.AffineTransformEditor;
 import fflames.gui.forms.AlgorithmConfigurationEditor;
 import fflames.gui.forms.ColoringEditor;
@@ -8,13 +7,11 @@ import fflames.gui.forms.MainWindow;
 import fflames.gui.forms.PreviewJPanel;
 import fflames.gui.forms.ProgressBar;
 import fflames.gui.forms.VariationsEditor;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -41,7 +38,7 @@ public class BasicMainWindowUI extends MainWindowUI {
 	public void installUI(JComponent c) {
 		_mainWindow = (MainWindow) c;
 		
-		_actions = new MainWindowActions(_mainWindow);
+		//_actions = new MainWindowActions();
 		
 		JLabel choosenFunctionsLabel = new javax.swing.JLabel();
 		choosenFunctionsLabel.setText("Choosen functions:");
@@ -142,8 +139,7 @@ public class BasicMainWindowUI extends MainWindowUI {
 		_mainWindow.add(_transformsListScrollPane, gbc_transformsListScrollPane);
 
 		_addButton = new javax.swing.JButton();
-		_addButton.setText("Add");
-		_addButton.setAction(_actions.createAddTransformAction());
+		_addButton.setAction(_mainWindow.getAction(MainWindow.ActionId.AddTransform));
 		GridBagConstraints gbc_addButton = new GridBagConstraints();
 		gbc_addButton.anchor = GridBagConstraints.NORTH;
 		gbc_addButton.fill = GridBagConstraints.HORIZONTAL;
@@ -165,8 +161,7 @@ public class BasicMainWindowUI extends MainWindowUI {
 		_mainWindow.add(_previewJPanel, gbc_previewJPanel);
 
 		_removeButton = new javax.swing.JButton();
-		_removeButton.setText("Remove");
-		_removeButton.setAction(_actions.createRemoveTransformAction());
+		_removeButton.setAction(_mainWindow.getAction(MainWindow.ActionId.RemoveTransform));
 		GridBagConstraints gbc_removeButton = new GridBagConstraints();
 		gbc_removeButton.anchor = GridBagConstraints.NORTH;
 		gbc_removeButton.fill = GridBagConstraints.HORIZONTAL;
@@ -176,8 +171,8 @@ public class BasicMainWindowUI extends MainWindowUI {
 		_mainWindow.add(_removeButton, gbc_removeButton);
 
 		_loadFractalFileFromXmlJButton = new javax.swing.JButton();
-		_loadFractalFileFromXmlJButton.setText("Load fractal from XML file");
-		_loadFractalFileFromXmlJButton.setAction(_actions.createOpenAction(""));
+		_loadFractalFileFromXmlJButton.setAction(
+				_mainWindow.getAction(MainWindow.ActionId.OpenRecentProjectFile));
 		GridBagConstraints gbc_loadFractalFileFromXmlJButton = new GridBagConstraints();
 		gbc_loadFractalFileFromXmlJButton.anchor = GridBagConstraints.NORTH;
 		gbc_loadFractalFileFromXmlJButton.fill = GridBagConstraints.HORIZONTAL;
@@ -187,8 +182,8 @@ public class BasicMainWindowUI extends MainWindowUI {
 		_mainWindow.add(_loadFractalFileFromXmlJButton, gbc_loadFractalFileFromXmlJButton);
 
 		_saveFractalToXmlJButton = new javax.swing.JButton();
-		_saveFractalToXmlJButton.setText("Save fractal as Xml file");
-		_saveFractalToXmlJButton.setAction(_actions.createSaveAction());
+		_saveFractalToXmlJButton.setAction(
+				_mainWindow.getAction(MainWindow.ActionId.SaveProjectFile));
 		GridBagConstraints gbc_saveFractalToXmlJButton = new GridBagConstraints();
 		gbc_saveFractalToXmlJButton.anchor = GridBagConstraints.NORTH;
 		gbc_saveFractalToXmlJButton.fill = GridBagConstraints.HORIZONTAL;
@@ -198,8 +193,7 @@ public class BasicMainWindowUI extends MainWindowUI {
 		_mainWindow.add(_saveFractalToXmlJButton, gbc_saveFractalToXmlJButton);
 
 		_drawButton = new javax.swing.JButton();
-		_drawButton.setText("Draw");
-		_drawButton.setAction(_actions.createDrawAction());
+		_drawButton.setAction(_mainWindow.getAction(MainWindow.ActionId.DrawFractal));
 		GridBagConstraints gbc_drawButton = new GridBagConstraints();
 		gbc_drawButton.anchor = GridBagConstraints.NORTH;
 		gbc_drawButton.fill = GridBagConstraints.HORIZONTAL;
@@ -210,7 +204,8 @@ public class BasicMainWindowUI extends MainWindowUI {
 
 		_saveImageButton = new javax.swing.JButton();
 		_saveImageButton.setText("Save image");
-		_saveImageButton.setAction(_actions.createSaveImageAction());
+		_saveImageButton.setAction(
+				_mainWindow.getAction(MainWindow.ActionId.SaveFractalImage));
 		GridBagConstraints gbc_saveImageButton = new GridBagConstraints();
 		gbc_saveImageButton.anchor = GridBagConstraints.NORTH;
 		gbc_saveImageButton.fill = GridBagConstraints.HORIZONTAL;
@@ -230,8 +225,6 @@ public class BasicMainWindowUI extends MainWindowUI {
 		_mainWindow.add(_progressBar, gbc_progressBar);
 		
 		_transformsList.setModel(_mainWindow.getTransformsModel());
-		
-		_actions.addActionListener(_mainWindow);
 	}
 	
 	@Override
@@ -284,5 +277,4 @@ public class BasicMainWindowUI extends MainWindowUI {
 	private JButton _saveImageButton;
 	private ProgressBar _progressBar;
 	private MainWindow _mainWindow;
-	private MainWindowActions _actions;
 }

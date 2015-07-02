@@ -3,12 +3,7 @@ package fflames.gui.forms;
 import fflames.base.FractalGenerator;
 import fflames.base.IColoring;
 import fflames.base.IVariation;
-import fflames.base.Transform;
 import fflames.base.coloring.ColoringFactory;
-import fflames.gui.ExportXMLFileFractal;
-import fflames.gui.ImportXMLFractalFile;
-import fflames.gui.events.LoadProject;
-import fflames.gui.exceptions.ImportXMLFractalFileException;
 import fflames.gui.model.AffineTransformModel;
 import fflames.gui.model.AlgorithmConfigurationModel;
 import fflames.gui.model.ApplicationState;
@@ -21,23 +16,18 @@ import fflames.gui.ui.BasicMainWindowUI;
 import fflames.gui.ui.MainWindowUI;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
@@ -49,13 +39,39 @@ import javax.swing.event.ListSelectionListener;
  * 
  * @author Pawel Korus
  */
-public class MainWindow extends JComponent implements ActionListener {
+public class MainWindow extends JComponent {
 	/**
 	 * The UI class ID string
 	 */
 	private static final String uiClassID = "FFlamesMainWidnowUI";
+	private int _selectedTransformIndex;
+	private int _selectedColoringIndex;
+	private final TransformTableModel _transformsModel;
+	private final ApplicationState _state;
+	private final AffineTransformModel _affineTransformModel;
+	private final AlgorithmConfigurationModel _algorithmConfigurationModel;
+	private final ProgressModel _progressModel;
+	private final RenderedImageModel _renderedImageModel;
+	private final VariationsTableModel _variationsModel;
+	private final ColorsModel _colorsModel;
+	private final ExecutorService _threadPool;
+	private final ActionMap _actions;
 	
-	public MainWindow(ApplicationState appState, ExecutorService threadPool) {
+	public enum ActionId {
+		OpenProjectFile,
+		OpenRecentProjectFile,
+		SaveProjectFile,
+		ExitApplication,
+		NewProject,
+		SaveFractalImage,
+		AddTransform,
+		RemoveTransform,
+		DrawFractal
+	}
+	
+	public MainWindow(
+			ApplicationState appState,
+			ExecutorService threadPool) {
 		super();
 		
 		_state = appState;
@@ -74,6 +90,11 @@ public class MainWindow extends JComponent implements ActionListener {
 		
 		_selectedColoringIndex = -1;
 		_selectedTransformIndex = -1;
+		
+		_actions = new ActionMap();
+		_actions.put(ActionId.AddTransform, new AddTransformAction());
+		_actions.put(ActionId.RemoveTransform, new RemoveTransformAction());
+		_actions.put(ActionId.DrawFractal, new DrawAction());
 		
 		updateUI();
 	}
@@ -100,91 +121,7 @@ public class MainWindow extends JComponent implements ActionListener {
 		return uiClassID;
 	}
 	
-	public void loadFractalFile(String filePath) {
-		reset();
-		
-		ArrayList<Transform> transforms = new ArrayList<>();
-		ImportXMLFractalFile importer = new ImportXMLFractalFile();
-		
-		try {
-			importer.load(transforms, filePath);
-			
-			transforms.stream().forEach((t) -> {
-				_transformsModel.add(t);
-			});
-			
-			_state.setParam(ApplicationState.LOADED_FRACTAL_FILE_PATH, filePath);
-		
-		} catch (ImportXMLFractalFileException exception) {
-			JOptionPane.showMessageDialog(this, "Error occured when parsing choosen file", "Import error", JOptionPane.ERROR_MESSAGE);
-			exception.printStackTrace();
-		} catch (IOException exception) {
-			JOptionPane.showMessageDialog(this, "Error when reading from choosen file", "Import error", JOptionPane.ERROR_MESSAGE);
-			exception.printStackTrace();
-		}
-	}
-	
-	public void saveFractalFile() {
-		if(_state.isFractalFileLoaded()) {
-			saveFractalFile(_state.getLoadedFractalFilePath());
-		}
-	}
-	
-	public void saveFractalFile(String filePath) {
-		ExportXMLFileFractal exporter = new ExportXMLFileFractal(_transformsModel.getTransforms());
-		
-		try {
-			exporter.save(filePath);
-		} catch (IOException exception) {
-			JOptionPane.showMessageDialog(this, "Error when exporting to choosen file", "Export error", JOptionPane.ERROR_MESSAGE);
-			exception.printStackTrace();
-		}
-	}
-	
-	public void saveImageFile(File file) {
-		try {
-			ImageIO.write((RenderedImage) _renderedImageModel.getImage(), "png", file);
-		} catch (IOException exception) {
-			JOptionPane.showMessageDialog(this, "Error when saving image file", "Export error", JOptionPane.ERROR_MESSAGE);
-			exception.printStackTrace();
-		}
-	}
-	
-	public void drawFractal() {
-		if(_transformsModel.getRowCount() > 0) {
-			MainWindow.DrawingWorker task = new MainWindow.DrawingWorker();
-			task.execute();
-		}
-	}
-	
-	public void addTransform() {
-		Double propability = getUI().getFunctionPropability();
-		
-		ArrayList<IVariation> tempVariations = new ArrayList<>();
-		_variationsModel.getVariations().stream()
-		.filter((variation) -> {
-			return variation.getCoefficient() != 0.0;
-		})
-		.forEach((variation) -> {
-			tempVariations.add(variation);
-		});
-		
-		_transformsModel.addNew(_affineTransformModel.getTransform(), tempVariations, propability);
-	}
-	
-	public void removeTransform(int index) {
-		if(index > -1) {
-			_transformsModel.remove(index);
-		}
-	}
-	
-	public void newFractal() {
-		reset();
-	}
-	
 	public void reset() {
-		
-		
 		_affineTransformModel.reset();
 		
 		_variationsModel.reset();
@@ -233,63 +170,32 @@ public class MainWindow extends JComponent implements ActionListener {
 		return new ColoringMethodSelectionListener();
 	}
 	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		int id = e.getID();
-
-		if(fflames.gui.events.Action.Actions.NewProject.equals(id)) {
-			newFractal();
-		} else if(fflames.gui.events.Action.Actions.AddTransform.equals(id)) {
-			addTransform();
-		} else if(fflames.gui.events.Action.Actions.RemoveTransform.equals(id)) {
-			removeTransform(_selectedTransformIndex);
-		} else if(fflames.gui.events.Action.Actions.LoadProject.equals(id)) {
-			LoadProject evt = (LoadProject) e;
-			String filePath = evt.getFilePath();
-
-			if(filePath.isEmpty()) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setApproveButtonText("Open");
-				fileChooser.setCurrentDirectory(null);
-				fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("XML files", "xml"));
-				int returnValue = fileChooser.showOpenDialog(this);
-				if(returnValue == JFileChooser.APPROVE_OPTION) {
-					filePath = fileChooser.getSelectedFile().getAbsolutePath();
-				} else {
-					return;
-				}
-			}
-
-			loadFractalFile(filePath);
-		} else if(fflames.gui.events.Action.Actions.SaveProject.equals(id)) {
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setApproveButtonText("Save");
-			fileChooser.setCurrentDirectory(null);
-			fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("XML files", "xml"));
-			int returnValue = fileChooser.showSaveDialog(this);
-			if(returnValue == JFileChooser.APPROVE_OPTION) {
-				saveFractalFile(fileChooser.getSelectedFile().getAbsolutePath());
-			} else {
-				return;
-			}
-		} else if(fflames.gui.events.Action.Actions.SaveGeneratedImage.equals(id)) {
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setApproveButtonText("Save");
-			fileChooser.setCurrentDirectory(null);
-			fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PNG files", "png"));
-			int returnValue = fileChooser.showSaveDialog(this);
-			if(returnValue == JFileChooser.APPROVE_OPTION) {
-				saveImageFile(fileChooser.getSelectedFile());
-			} else {
-				return;
-			}
-		} else if(fflames.gui.events.Action.Actions.ExitApplication.equals(id)) {
-			throw new UnsupportedOperationException();
-		} else if(fflames.gui.events.Action.Actions.Draw.equals(id)) {
-			drawFractal();
-		} else if(fflames.gui.events.Action.Actions.ShowAbout.equals(id)) {
-			JDialog dialog = new AboutDialog();
-			dialog.setVisible(true);
+	public void setAction(ActionId actionId, Action action) {
+		_actions.put(actionId, action);
+	}
+	
+	public Action getAction(ActionId actionId) {
+		switch(actionId) {
+			case OpenProjectFile:
+				return _actions.get(ActionId.OpenProjectFile);
+			case OpenRecentProjectFile:
+				return _actions.get(ActionId.OpenRecentProjectFile);
+			case SaveProjectFile:
+				return _actions.get(ActionId.SaveProjectFile);
+			case ExitApplication:
+				return _actions.get(ActionId.ExitApplication);
+			case NewProject:
+				return _actions.get(ActionId.NewProject);
+			case SaveFractalImage:
+				return _actions.get(ActionId.SaveFractalImage);
+			case AddTransform:
+				return new AddTransformAction();
+			case RemoveTransform:
+				return new RemoveTransformAction();
+			case DrawFractal:
+				return new DrawAction();
+			default:
+				return null;
 		}
 	}
 	
@@ -435,16 +341,61 @@ public class MainWindow extends JComponent implements ActionListener {
 			}
 		}
 	}
+
+	private class AddTransformAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+		
+		public AddTransformAction() {
+			putValue(NAME, "Add transform");
+			putValue(SHORT_DESCRIPTION, "Add transform to the algorithm");
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Double propability = getUI().getFunctionPropability();
+		
+			ArrayList<IVariation> tempVariations = new ArrayList<>();
+			_variationsModel.getVariations().stream()
+			.filter((variation) -> {
+				return variation.getCoefficient() != 0.0;
+			})
+			.forEach((variation) -> {
+				tempVariations.add(variation);
+			});
+
+			_transformsModel.addNew(_affineTransformModel.getTransform(), tempVariations, propability);
+		}
+	}
 	
-	private int _selectedTransformIndex;
-	private int _selectedColoringIndex;
-	private final TransformTableModel _transformsModel;
-	private final ApplicationState _state;
-	private final AffineTransformModel _affineTransformModel;
-	private final AlgorithmConfigurationModel _algorithmConfigurationModel;
-	private final ProgressModel _progressModel;
-	private final RenderedImageModel _renderedImageModel;
-	private final VariationsTableModel _variationsModel;
-	private final ColorsModel _colorsModel;
-	private final ExecutorService _threadPool;
+	private class RemoveTransformAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+		
+		public RemoveTransformAction() {
+			putValue(NAME, "Remove transform");
+			putValue(SHORT_DESCRIPTION, "Remove transform from the algorithm");
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(_selectedTransformIndex > -1) {
+				_transformsModel.remove(_selectedTransformIndex);
+			}
+		}
+	}
+	
+	private class DrawAction extends AbstractAction {
+		
+		public DrawAction() {
+			putValue(NAME, "Draw");
+			putValue(SHORT_DESCRIPTION, "Draw fractal flame");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(_transformsModel.getRowCount() > 0) {
+				MainWindow.DrawingWorker task = new MainWindow.DrawingWorker();
+				task.execute();
+			}
+		}
+	}
 }
