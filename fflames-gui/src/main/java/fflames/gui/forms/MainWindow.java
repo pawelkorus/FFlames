@@ -176,7 +176,9 @@ public class MainWindow extends JComponent implements ActionListener {
 	}
 	
 	public void removeTransform(int index) {
-		_transformsModel.remove(index);
+		if(index > -1) {
+			_transformsModel.remove(index);
+		}
 	}
 	
 	public void newFractal() {
@@ -243,9 +245,7 @@ public class MainWindow extends JComponent implements ActionListener {
 		} else if(fflames.gui.events.Action.Actions.AddTransform.equals(id)) {
 			addTransform();
 		} else if(fflames.gui.events.Action.Actions.RemoveTransform.equals(id)) {
-			//int index = _transformsList.getSelectedRow();
-			int index = 0;
-			removeTransform(index);
+			removeTransform(_selectedTransformIndex);
 		} else if(fflames.gui.events.Action.Actions.LoadProject.equals(id)) {
 			LoadProject evt = (LoadProject) e;
 			String filePath = evt.getFilePath();
