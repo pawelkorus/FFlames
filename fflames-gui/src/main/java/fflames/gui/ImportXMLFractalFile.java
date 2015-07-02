@@ -1,23 +1,21 @@
 package fflames.gui;
 
 import fflames.base.IVariation;
+import fflames.base.Transform;
+import fflames.base.variation.VariationsFactory;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-
+import java.util.List;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
-
-import fflames.base.Transform;
-import fflames.base.variation.VariationsFactory;
-import java.util.List;
 
 public class ImportXMLFractalFile {
 
@@ -81,12 +79,6 @@ public class ImportXMLFractalFile {
 	}
 	
 	private class XMLHandler extends DefaultHandler {
-
-		XMLHandler(List<Transform> transforms) {
-			super();
-			_transforms = transforms;
-		}
-
 		private double[] affTrCoefs = new double[6];
 		private ArrayList<IVariation> variations = new ArrayList<>();
 		private ArrayList<Double> param = new ArrayList<>();
@@ -95,6 +87,11 @@ public class ImportXMLFractalFile {
 		private int flag = 0;
 		private int i = 0;
 		List<Transform> _transforms;
+		
+		XMLHandler(List<Transform> transforms) {
+			super();
+			_transforms = transforms;
+		}
 
 		@Override
 		public void startElement(String uri, String localName, String qName,
