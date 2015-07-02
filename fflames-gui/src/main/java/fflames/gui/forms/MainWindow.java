@@ -59,24 +59,21 @@ public class MainWindow extends JComponent implements ActionListener {
 		super();
 		
 		_state = appState;
-		
-		_transformsModel = new TransformTableModel();
-		
-		_affineTransformModel = new AffineTransformModel();
-		
-		_algorithmConfigurationModel = new AlgorithmConfigurationModel();
-		
-		_progressModel = new ProgressModel();
-		
-		_renderedImageModel = new RenderedImageModel();
-		
-		_variationsModel = new VariationsTableModel();
-		
-		_colorsModel = new ColorsModel();
+		_transformsModel = _state.getTransformsModel();
+		_algorithmConfigurationModel = _state.getAlgorithmConfigurationModel();
+		_renderedImageModel = _state.getRenderedImageModel();
+		_colorsModel = _state.getColorsModel();
 		
 		_threadPool = threadPool;
 		
-		_selectedColoringIndex = 0;
+		_affineTransformModel = new AffineTransformModel();
+		
+		_progressModel = new ProgressModel();
+		
+		_variationsModel = new VariationsTableModel();
+		
+		_selectedColoringIndex = -1;
+		_selectedTransformIndex = -1;
 		
 		updateUI();
 	}
@@ -186,18 +183,18 @@ public class MainWindow extends JComponent implements ActionListener {
 	}
 	
 	public void reset() {
-		_transformsModel.reset();
+		
 		
 		_affineTransformModel.reset();
 		
 		_variationsModel.reset();
 		
-		_state.setParam(ApplicationState.LOADED_FRACTAL_FILE_PATH, "");
+		_state.reset();
 		
 		_progressModel.reset();
 		
-		_selectedColoringIndex = 0;
-		_selectedTransformIndex = 0;
+		_selectedColoringIndex = -1;
+		_selectedTransformIndex = -1;
 	}
 	
 	public TransformTableModel getTransformsModel() {

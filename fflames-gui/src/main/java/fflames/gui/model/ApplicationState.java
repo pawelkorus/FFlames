@@ -1,7 +1,17 @@
 package fflames.gui.model;
 
+/**
+ * Stores model objects representing general state of the
+ * application
+ * 
+ * @author Pawel Korus
+ */
 public class ApplicationState extends AbstractModel {
 	private static final long serialVersionUID = 1L;
+	private final AlgorithmConfigurationModel _algorithmConfiguration;
+	private final TransformTableModel _transformsModel;
+	private final ColorsModel _colorsModel;
+	private final RenderedImageModel _renderedImage;
 	
 	public static final String APPLICATION_NAME = "applicationName";
 	public static final String LOADED_FRACTAL_FILE_PATH = "loadedFractalFile";
@@ -9,6 +19,11 @@ public class ApplicationState extends AbstractModel {
 	public ApplicationState() {
 		super();
 		setParam(APPLICATION_NAME, "FFlames");
+		
+		_algorithmConfiguration = new AlgorithmConfigurationModel();
+		_transformsModel = new TransformTableModel();
+		_colorsModel = new ColorsModel();
+		_renderedImage = new RenderedImageModel();
 	}
 	
 	public String getLoadedFractalFilePath() {
@@ -20,10 +35,29 @@ public class ApplicationState extends AbstractModel {
 	}
 	
 	public boolean isFractalFileLoaded() {
-		if(getParam(LOADED_FRACTAL_FILE_PATH) == null) {
-			return false;
-		} else {
-			return true;
-		}
+		return getParam(LOADED_FRACTAL_FILE_PATH) != null;
+	}
+	
+	public AlgorithmConfigurationModel getAlgorithmConfigurationModel() {
+		return _algorithmConfiguration;
+	}
+	
+	public TransformTableModel getTransformsModel() {
+		return _transformsModel;
+	}
+	
+	public ColorsModel getColorsModel() {
+		return _colorsModel;
+	}
+	
+	public RenderedImageModel getRenderedImageModel() {
+		return _renderedImage;
+	}
+	
+	public void reset() {
+		setParam(LOADED_FRACTAL_FILE_PATH, null);
+		
+		_algorithmConfiguration.reset();
+		_transformsModel.reset();
 	}
 }

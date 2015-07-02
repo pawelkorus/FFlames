@@ -10,9 +10,13 @@ public class AlgorithmConfigurationModel extends AbstractModel implements Serial
 	public static final String IMAGE_WIDTH = "image_width";
 	public static final String IMAGE_HEIGHT = "image_height";
 	public static final String SUPER_SAMPLING = "super_sampling";
+
+	public AlgorithmConfigurationModel() {
+		reset();
+	}
 	
 	public int getImageWidth() {
-		return (Integer) getParam(IMAGE_WIDTH, 640);
+		return (Integer) getParam(IMAGE_WIDTH);
 	}
 	
 	public void setImageWidth(int value) {
@@ -20,7 +24,7 @@ public class AlgorithmConfigurationModel extends AbstractModel implements Serial
 	}
 	
 	public int getImageHeight() {
-		return (Integer) getParam(IMAGE_HEIGHT, 480);
+		return (Integer) getParam(IMAGE_HEIGHT);
 	}
 	
 	public void setImageHeight(int value) {
@@ -28,7 +32,7 @@ public class AlgorithmConfigurationModel extends AbstractModel implements Serial
 	}
 	
 	public int getRotationsNumber() {
-		return (Integer) getParam(ROTATIONS_NUMBER, 0);
+		return (Integer) getParam(ROTATIONS_NUMBER);
 	}
 	
 	public void setRotationsNumber(int value) {
@@ -36,7 +40,7 @@ public class AlgorithmConfigurationModel extends AbstractModel implements Serial
 	}
 	
 	public int getIterationsNumber() {
-		return (Integer) getParam(ITERATIONS_NUMBER, 100000);
+		return (Integer) getParam(ITERATIONS_NUMBER);
 	}
 	
 	public void setItarationsNumber(int value) {
@@ -48,6 +52,14 @@ public class AlgorithmConfigurationModel extends AbstractModel implements Serial
 	}
 	
 	public int getSuperSampling() {
-		return (Integer) getParam(SUPER_SAMPLING, 1);
+		return (Integer) getParam(SUPER_SAMPLING);
+	}
+	
+	public void reset() {
+		setParam(IMAGE_WIDTH, 640);
+		setParam(IMAGE_HEIGHT, 480);
+		setParam(ROTATIONS_NUMBER, 0);
+		setParam(ITERATIONS_NUMBER, 100000);
+		setParam(SUPER_SAMPLING, 1);
 	}
 }
