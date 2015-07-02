@@ -2,7 +2,6 @@ package fflames.gui.action;
 
 import fflames.base.Transform;
 import fflames.gui.ImportXMLFractalFile;
-import fflames.gui.exceptions.ImportXMLFractalFileException;
 import fflames.gui.model.ApplicationState;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -63,7 +62,7 @@ public class OpenProjectFile extends AbstractAction {
 			
 			_appState.setParam(ApplicationState.LOADED_FRACTAL_FILE_PATH, filePath);
 		
-		} catch (ImportXMLFractalFileException exception) {
+		} catch (ImportXMLFractalFile.ImportException exception) {
 			JOptionPane.showMessageDialog(_dialogsParent, "Error occured when parsing choosen file", "Import error", JOptionPane.ERROR_MESSAGE);
 			exception.printStackTrace();
 		} catch (IOException exception) {

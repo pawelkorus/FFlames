@@ -17,7 +17,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import fflames.base.Transform;
 import fflames.base.variation.VariationsFactory;
-import fflames.gui.exceptions.ImportXMLFractalFileException;
 import java.util.List;
 
 public class ImportXMLFractalFile {
@@ -26,17 +25,17 @@ public class ImportXMLFractalFile {
 		super();
 	}
 
-	public void load(List<Transform> transforms, String path) throws IOException, ImportXMLFractalFileException {
+	public void load(List<Transform> transforms, String path) throws IOException, ImportException {
 		File file = new File(path);
 		load(transforms, file);
 	}
 
-	public void load(List<Transform> transforms, File file) throws IOException, ImportXMLFractalFileException {
+	public void load(List<Transform> transforms, File file) throws IOException, ImportException {
 		FileReader r = new FileReader(file);
 		load(transforms, r);
 	}
 
-	public void load(List<Transform> transforms, InputStreamReader input) throws IOException, ImportXMLFractalFileException {
+	public void load(List<Transform> transforms, InputStreamReader input) throws IOException, ImportException {
 		List<Transform> temp = new ArrayList<>();
 		
 		try {
@@ -52,11 +51,36 @@ public class ImportXMLFractalFile {
 				transforms.add(t);
 			});
 		} catch (SAXException e) {
-			throw new ImportXMLFractalFileException(e);
+			throw new ImportException(e);
 		}
 	}
 
-	class XMLHandler extends DefaultHandler {
+	public static class ImportException extends Exception {
+		private static final long serialVersionUID = 5505268769493127939L;
+
+		public ImportException() {
+			super();
+		}
+
+		public ImportException(String message, Throwable cause, boolean enableSuppression,
+				boolean writableStackTrace) {
+			super(message, cause, enableSuppression, writableStackTrace);
+		}
+
+		public ImportException(String message, Throwable cause) {
+			super(message, cause);
+		}
+
+		public ImportException(String message) {
+			super(message);
+		}
+
+		public ImportException(Throwable cause) {
+			super(cause);
+		}
+	}
+	
+	private class XMLHandler extends DefaultHandler {
 
 		XMLHandler(List<Transform> transforms) {
 			super();
