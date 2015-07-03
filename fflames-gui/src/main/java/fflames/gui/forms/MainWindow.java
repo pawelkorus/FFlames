@@ -4,6 +4,7 @@ import fflames.base.FractalGenerator;
 import fflames.base.IColoring;
 import fflames.base.IVariation;
 import fflames.base.coloring.ColoringFactory;
+import fflames.gui.Actions;
 import fflames.gui.model.AffineTransformModel;
 import fflames.gui.model.AlgorithmConfigurationModel;
 import fflames.gui.model.ApplicationState;
@@ -58,12 +59,6 @@ public class MainWindow extends JComponent {
 	private final ActionMap _actions;
 	
 	public enum ActionId {
-		OpenProjectFile,
-		OpenRecentProjectFile,
-		SaveProjectFile,
-		ExitApplication,
-		NewProject,
-		SaveFractalImage,
 		AddTransform,
 		RemoveTransform,
 		DrawFractal
@@ -71,7 +66,8 @@ public class MainWindow extends JComponent {
 	
 	public MainWindow(
 			ApplicationState appState,
-			ExecutorService threadPool) {
+			ExecutorService threadPool,
+			ActionMap actions) {
 		super();
 		
 		_state = appState;
@@ -92,6 +88,7 @@ public class MainWindow extends JComponent {
 		_selectedTransformIndex = -1;
 		
 		_actions = new ActionMap();
+		_actions.setParent(actions);
 		_actions.put(ActionId.AddTransform, new AddTransformAction());
 		_actions.put(ActionId.RemoveTransform, new RemoveTransformAction());
 		_actions.put(ActionId.DrawFractal, new DrawAction());
@@ -174,29 +171,8 @@ public class MainWindow extends JComponent {
 		_actions.put(actionId, action);
 	}
 	
-	public Action getAction(ActionId actionId) {
-		switch(actionId) {
-			case OpenProjectFile:
-				return _actions.get(ActionId.OpenProjectFile);
-			case OpenRecentProjectFile:
-				return _actions.get(ActionId.OpenRecentProjectFile);
-			case SaveProjectFile:
-				return _actions.get(ActionId.SaveProjectFile);
-			case ExitApplication:
-				return _actions.get(ActionId.ExitApplication);
-			case NewProject:
-				return _actions.get(ActionId.NewProject);
-			case SaveFractalImage:
-				return _actions.get(ActionId.SaveFractalImage);
-			case AddTransform:
-				return new AddTransformAction();
-			case RemoveTransform:
-				return new RemoveTransformAction();
-			case DrawFractal:
-				return new DrawAction();
-			default:
-				return null;
-		}
+	public Action getAction(Object actionId) {
+		return _actions.get(actionId);
 	}
 	
 	private class DrawingWorker extends SwingWorker<BufferedImage, Integer> {

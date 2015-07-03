@@ -1,5 +1,6 @@
 package fflames.gui.ui;
 
+import fflames.gui.Actions;
 import fflames.gui.forms.AffineTransformEditor;
 import fflames.gui.forms.AlgorithmConfigurationEditor;
 import fflames.gui.forms.ColoringEditor;
@@ -172,7 +173,7 @@ public class BasicMainWindowUI extends MainWindowUI {
 
 		_loadFractalFileFromXmlJButton = new javax.swing.JButton();
 		_loadFractalFileFromXmlJButton.setAction(
-				_mainWindow.getAction(MainWindow.ActionId.OpenRecentProjectFile));
+				_mainWindow.getAction(Actions.Id.OpenRecentProjectFile));
 		GridBagConstraints gbc_loadFractalFileFromXmlJButton = new GridBagConstraints();
 		gbc_loadFractalFileFromXmlJButton.anchor = GridBagConstraints.NORTH;
 		gbc_loadFractalFileFromXmlJButton.fill = GridBagConstraints.HORIZONTAL;
@@ -183,7 +184,7 @@ public class BasicMainWindowUI extends MainWindowUI {
 
 		_saveFractalToXmlJButton = new javax.swing.JButton();
 		_saveFractalToXmlJButton.setAction(
-				_mainWindow.getAction(MainWindow.ActionId.SaveProjectFile));
+				_mainWindow.getAction(Actions.Id.SaveProjectFile));
 		GridBagConstraints gbc_saveFractalToXmlJButton = new GridBagConstraints();
 		gbc_saveFractalToXmlJButton.anchor = GridBagConstraints.NORTH;
 		gbc_saveFractalToXmlJButton.fill = GridBagConstraints.HORIZONTAL;
@@ -205,7 +206,7 @@ public class BasicMainWindowUI extends MainWindowUI {
 		_saveImageButton = new javax.swing.JButton();
 		_saveImageButton.setText("Save image");
 		_saveImageButton.setAction(
-				_mainWindow.getAction(MainWindow.ActionId.SaveFractalImage));
+				_mainWindow.getAction(Actions.Id.SaveFractalImage));
 		GridBagConstraints gbc_saveImageButton = new GridBagConstraints();
 		gbc_saveImageButton.anchor = GridBagConstraints.NORTH;
 		gbc_saveImageButton.fill = GridBagConstraints.HORIZONTAL;
