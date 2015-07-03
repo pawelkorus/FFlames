@@ -1,12 +1,15 @@
 package fflames.gui.model;
 
+import fflames.gui.IVisitable;
+import fflames.gui.IVisitor;
+
 /**
  * Stores model objects representing general state of the
  * application
  * 
  * @author Pawel Korus
  */
-public class ApplicationState extends AbstractModel {
+public class ApplicationState extends AbstractModel implements IVisitable {
 	private static final long serialVersionUID = 1L;
 	private final AlgorithmConfigurationModel _algorithmConfiguration;
 	private final TransformTableModel _transformsModel;
@@ -59,5 +62,13 @@ public class ApplicationState extends AbstractModel {
 		
 		_algorithmConfiguration.reset();
 		_transformsModel.reset();
+	}
+
+	@Override
+	public void accept(IVisitor visitor) {
+		visitor.handle(_algorithmConfiguration);
+		_transformsModel.accept(visitor);
+		_colorsModel.accept(visitor);
+		visitor.handle(this);
 	}
 }

@@ -1,7 +1,5 @@
 package fflames.base;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.ArrayList;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -89,39 +87,6 @@ public class Transform {
 
 	public void setPropability(Double value) {
 		_probability = value;
-	}
-
-	public void writeXML(java.io.OutputStreamWriter out) {
-		double[] temp = new double[6];
-		_affineTransform.getMatrix(temp);
-		
-		try {
-			out.write("<Propability>" + _probability.toString() + "</Propability>\r\n");
-			out.write("<AffineTransform>\r\n");
-			for (int i = 0; i < temp.length; i++) {
-				out.write("<Wsp>" + temp[i] + "</Wsp>\r\n");
-			}
-			out.write("</AffineTransform>\r\n");
-
-			out.write("<Wariations>\r\n");
-			for (IVariation variation : _variations) {
-				out.write("<Wariation>\r\n");
-				
-				Double coefficient = variation.getCoefficient();
-				out.write("<Coefficient>" + coefficient + "</Coefficient>\r\n");
-				
-				List<Double> parameters = variation.getParameters();
-				for(Double par : parameters) {
-					out.write("<Par>" + par + "</Par>\r\n");
-				}
-				
-				out.write("<Name>" + variation.getName() + "</Name>\r\n");
-				out.write("</Wariation>\r\n");
-			}
-			out.write("</Wariations>\r\n");
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
 	}
 
 	private Point2D pointSum(Point2D a, Point2D b) {

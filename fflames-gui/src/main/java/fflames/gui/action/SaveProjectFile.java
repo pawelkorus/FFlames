@@ -1,10 +1,10 @@
 package fflames.gui.action;
 
-import fflames.gui.ExportXMLFileFractal;
+import fflames.gui.ProjectExporter;
 import fflames.gui.model.ApplicationState;
-import fflames.gui.model.TransformTableModel;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
@@ -36,14 +36,15 @@ public class SaveProjectFile extends AbstractAction {
 		int returnValue = fileChooser.showSaveDialog(_dialogsRoot);
 		if(returnValue == JFileChooser.APPROVE_OPTION) {
 			String filePath = fileChooser.getSelectedFile().getAbsolutePath();
-			TransformTableModel transformsModel = _appState.getTransformsModel();
 			
-			ExportXMLFileFractal exporter = new ExportXMLFileFractal(
-					transformsModel.getTransforms());
-		
-			try {
-				exporter.save(filePath);
-			} catch (IOException exception) {
+			try(FileOutputStream fileStream = new FileOutputStream(filePath)) {
+				
+				ProjectExporter exporter = new ProjectExporter(fileStream);
+				exporter.begin();
+				_appState.accept(exporter);
+				exporter.end();
+				
+			} catch(IOException exception) {
 				JOptionPane.showMessageDialog(_dialogsRoot, "Error when exporting to choosen file", "Export error", JOptionPane.ERROR_MESSAGE);
 				exception.printStackTrace();
 			}

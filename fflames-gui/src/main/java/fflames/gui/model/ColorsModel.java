@@ -5,6 +5,8 @@
  */
 package fflames.gui.model;
 
+import fflames.gui.IVisitable;
+import fflames.gui.IVisitor;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 import javax.swing.ListModel;
@@ -12,11 +14,11 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 /**
- *
+ * Model that stores colors assigned by the user to the transforms.
+ * 
  * @author Pawel Korus
  */
-public class ColorsModel implements ListModel<float[]> {
-
+public class ColorsModel implements ListModel<float[]>, IVisitable {
 	private final float[] _defaultComponents;
 	private final ArrayList<float[]> _values;
 	private final ArrayList<ListDataListener> _listeners;
@@ -94,5 +96,10 @@ public class ColorsModel implements ListModel<float[]> {
 		for(int i = _listeners.size() - 1; i >= 0; i--) {
 			c.accept(_listeners.get(i));
 		}
+	}
+
+	@Override
+	public void accept(IVisitor visitor) {
+		visitor.handle(this);
 	}
 }

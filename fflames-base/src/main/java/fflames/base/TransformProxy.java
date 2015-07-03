@@ -2,7 +2,6 @@ package fflames.base;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 
@@ -44,10 +43,4 @@ public class TransformProxy extends Transform {
 	public void setPropability(Double value) {
 		_propability = value;
 	}
-
-	@Override
-	public void writeXML(OutputStreamWriter out) {
-		_sourceTransform.writeXML(out);
-	}
-	
 }
