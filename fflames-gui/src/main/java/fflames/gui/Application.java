@@ -129,18 +129,6 @@ public final class Application implements Runnable {
 		_mnAbout.add(_actions.get(Actions.Id.ShowAboutDialog));
 		
 		_mainWindow = new MainWindow(_appState, _threadPool, _actions);
-		/*_mainWindow.setAction(MainWindow.ActionId.NewProject,
-				_actions.get(ActionId.NewProject));
-		_mainWindow.setAction(MainWindow.ActionId.ExitApplication,
-				_actions.get(ActionId.ExitApplication));
-		_mainWindow.setAction(MainWindow.ActionId.OpenProjectFile,
-				_actions.get(ActionId.OpenProjectFile));
-		_mainWindow.setAction(MainWindow.ActionId.OpenRecentProjectFile,
-				_actions.get(ActionId.OpenRecentProjectFile));
-		_mainWindow.setAction(MainWindow.ActionId.SaveFractalImage,
-				_actions.get(ActionId.SaveFractalImage));
-		_mainWindow.setAction(MainWindow.ActionId.SaveProjectFile,
-				_actions.get(ActionId.SaveProjectFile));*/
 		
 		_mainFrame.add(_mainWindow);
 		
