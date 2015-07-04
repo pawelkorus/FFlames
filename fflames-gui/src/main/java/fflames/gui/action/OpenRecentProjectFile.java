@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
  */
 public class OpenRecentProjectFile extends OpenProjectFile {
 	private final RecentOpenedModel _recentOpened;
+	private final int _index;
 	
 	public OpenRecentProjectFile(
 			ApplicationState appState, 
@@ -19,11 +20,26 @@ public class OpenRecentProjectFile extends OpenProjectFile {
 			RecentOpenedModel recentOpenedModel) {
 		super(appState, dialogsParent);
 		_recentOpened = recentOpenedModel;
+		_index = 0;
+		
+		putValue(NAME, "Open recent");
 	}
 
+	public OpenRecentProjectFile(
+			ApplicationState appState,
+			Component dialogsParent,
+			RecentOpenedModel recentOpenedModel,
+			int index ) {
+		super(appState, dialogsParent);
+		_recentOpened = recentOpenedModel;
+		_index = index;
+		
+		putValue(NAME, _recentOpened.getElementAt(index));
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		setFilePath(_recentOpened.getElementAt(0));
+		setFilePath(_recentOpened.getElementAt(_index));
 		super.actionPerformed(e);
 	}
 }

@@ -17,6 +17,7 @@ import java.beans.PropertyChangeListener;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -24,6 +25,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.UIManager;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import prefs.Settings;
 
 public final class Application implements Runnable {
@@ -82,18 +85,23 @@ public final class Application implements Runnable {
 
 		_mnFile.add(_actions.get(Actions.Id.OpenProjectFile));
 
-		/*_mnOpenRecent = new JMenu("Open recent");
-		_mnOpenRecent.add(_actions.getAction(MainWindowActions.ActionId.OpenRecentProjectFile));
-		
+		_mnOpenRecent = new JMenu("Open recent");
+		for(int i = 0; i < _recentOpenedModel.getSize(); i++) {
+			Action a = new OpenRecentProjectFile(_appState, 
+									_mainFrame, _recentOpenedModel, i);
+			
+			_mnOpenRecent.add(new JMenuItem(a));
+		}
+				
 		_recentOpenedModel.addListDataListener(new ListDataListener() {
 
 			@Override
 			public void intervalAdded(ListDataEvent e) {
 				for (int i = e.getIndex0(); i <= e.getIndex1(); i++) {
-					_mnOpenRecent.add(
-							new JMenuItem(
-									_actions.createOpenAction(
-											_recentOpenedModel.getElementAt(i))), i);
+					Action a = new OpenRecentProjectFile(_appState, 
+									_mainFrame, _recentOpenedModel, i);
+					
+					_mnOpenRecent.add(new JMenuItem(a), i);
 				}
 			}
 
@@ -106,10 +114,13 @@ public final class Application implements Runnable {
 
 			@Override
 			public void contentsChanged(ListDataEvent e) {
+				// it should be propably implemented in case of changes in
+				// RecentOpenedModel. Up to now thi model does't emit this
+				// events
 			}
 
 		});
-		_mnFile.add(_mnOpenRecent);*/
+		_mnFile.add(_mnOpenRecent);
 
 		JSeparator separator_1 = new JSeparator();
 		_mnFile.add(separator_1);
