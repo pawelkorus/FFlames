@@ -5,8 +5,8 @@
  */
 package fflames.gui.model;
 
-import fflames.gui.IVisitable;
-import fflames.gui.IVisitor;
+import fflames.gui.IVisitableModel;
+import fflames.gui.IModelVisitor;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 import javax.swing.ListModel;
@@ -18,7 +18,7 @@ import javax.swing.event.ListDataListener;
  * 
  * @author Pawel Korus
  */
-public class ColorsModel implements ListModel<float[]>, IVisitable {
+public class ColorsModel implements ListModel<float[]>, IVisitableModel {
 	private final float[] _defaultComponents;
 	private final ArrayList<float[]> _values;
 	private final ArrayList<ListDataListener> _listeners;
@@ -99,7 +99,7 @@ public class ColorsModel implements ListModel<float[]>, IVisitable {
 	}
 
 	@Override
-	public void accept(IVisitor visitor) {
+	public void accept(IModelVisitor visitor) {
 		visitor.handle(this);
 	}
 }

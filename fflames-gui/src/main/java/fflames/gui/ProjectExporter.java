@@ -18,7 +18,7 @@ import java.util.List;
  * 
  * @author Pawel Korus
  */
-public class ProjectExporter implements IVisitor {
+public class ProjectExporter implements IModelVisitor {
 	private final OutputStream _out;
 	private boolean _exportSucceeded;
 	

@@ -2,14 +2,14 @@ package fflames.gui.model;
 
 import fflames.base.IVariation;
 import fflames.base.Transform;
-import fflames.gui.IVisitable;
-import fflames.gui.IVisitor;
+import fflames.gui.IVisitableModel;
+import fflames.gui.IModelVisitor;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 public class TransformTableModel extends AbstractTableModel 
-	implements IVisitable {
+	implements IVisitableModel {
 	
 	public TransformTableModel() {
 		 _transforms = new ArrayList<>();
@@ -112,7 +112,7 @@ public class TransformTableModel extends AbstractTableModel
 	private static final long serialVersionUID = -4510264602645148388L;
 
 	@Override
-	public void accept(IVisitor visitor) {
+	public void accept(IModelVisitor visitor) {
 		visitor.handle(this);
 	}
 }

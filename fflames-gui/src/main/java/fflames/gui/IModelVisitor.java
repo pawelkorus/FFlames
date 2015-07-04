@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fflames.gui;
 
 import fflames.gui.model.AlgorithmConfigurationModel;
@@ -12,10 +7,12 @@ import fflames.gui.model.RenderedImageModel;
 import fflames.gui.model.TransformTableModel;
 
 /**
- *
+ * Interface for classes that want to go over models representing
+ * state of the application.
+ * 
  * @author Pawel Korus
  */
-public interface IVisitor {
+public interface IModelVisitor {
 	public void handle(AlgorithmConfigurationModel model);
 	public void handle(TransformTableModel model);
 	public void handle(ColorsModel model);
