@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
  * @author p.korus
  */
 public class RenderedImageModel extends AbstractModel {
-	public static final String IMAGE = "image_changed";
+	public static final String IMAGE = "image";
 
 	public BufferedImage getImage() {
 		return (BufferedImage) getParam(IMAGE);
