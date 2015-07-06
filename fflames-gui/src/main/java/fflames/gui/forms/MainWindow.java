@@ -4,11 +4,11 @@ import fflames.base.FractalGenerator;
 import fflames.base.IColoring;
 import fflames.base.IVariation;
 import fflames.base.coloring.ColoringFactory;
-import fflames.gui.Actions;
 import fflames.gui.model.AffineTransformModel;
 import fflames.gui.model.AlgorithmConfigurationModel;
 import fflames.gui.model.ApplicationState;
 import fflames.gui.model.ColorsModel;
+import fflames.gui.model.IndexValue;
 import fflames.gui.model.ProgressModel;
 import fflames.gui.model.RenderedImageModel;
 import fflames.gui.model.TransformTableModel;
@@ -45,8 +45,6 @@ public class MainWindow extends JComponent {
 	 * The UI class ID string
 	 */
 	private static final String uiClassID = "FFlamesMainWidnowUI";
-	private int _selectedTransformIndex;
-	private int _selectedColoringIndex;
 	private final TransformTableModel _transformsModel;
 	private final ApplicationState _state;
 	private final AffineTransformModel _affineTransformModel;
@@ -84,9 +82,6 @@ public class MainWindow extends JComponent {
 		
 		_variationsModel = new VariationsTableModel();
 		
-		_selectedColoringIndex = -1;
-		_selectedTransformIndex = -1;
-		
 		_actions = new ActionMap();
 		_actions.setParent(actions);
 		_actions.put(ActionId.AddTransform, new AddTransformAction());
@@ -120,15 +115,9 @@ public class MainWindow extends JComponent {
 	
 	public void reset() {
 		_affineTransformModel.reset();
-		
 		_variationsModel.reset();
-		
 		_state.reset();
-		
 		_progressModel.reset();
-		
-		_selectedColoringIndex = -1;
-		_selectedTransformIndex = -1;
 	}
 	
 	public TransformTableModel getTransformsModel() {
@@ -191,7 +180,13 @@ public class MainWindow extends JComponent {
 				));
 			}
 			
-			IColoring coloringMethod = colorsFactory.getColoring(_selectedColoringIndex, selectedColors);
+			IndexValue v = _state.getSelectedColoringIndex();
+			int coloringId = 0;
+			if(v != IndexValue.InvalidValue) {
+				coloringId = v.toInt();
+			}
+			IColoring coloringMethod = colorsFactory.getColoring(
+					coloringId, selectedColors);
 			
 			int[] size = { 
 				_algorithmConfigurationModel.getImageWidth(),
@@ -279,7 +274,7 @@ public class MainWindow extends JComponent {
 					_colorsModel.setSize(0);
 				}
 				
-				_selectedColoringIndex = index;
+				_state.setSelectedColoringIndex(new IndexValue(index));
 			}
 		}
 	}
@@ -302,7 +297,7 @@ public class MainWindow extends JComponent {
 					return;
 				}
 				
-				_selectedTransformIndex = index;
+				_state.setSelectedTransformIndex(new IndexValue(index));
 
 				double propability = (Double) _transformsModel.getValueAt(index, 0);
 
@@ -353,8 +348,10 @@ public class MainWindow extends JComponent {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(_selectedTransformIndex > -1) {
-				_transformsModel.remove(_selectedTransformIndex);
+			IndexValue v = _state.getSelectedTransformIndex();
+			
+			if(v != IndexValue.InvalidValue) {
+				_transformsModel.remove(v.toInt());
 			}
 		}
 	}

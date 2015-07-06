@@ -18,10 +18,14 @@ public class ApplicationState extends AbstractModel implements IVisitableModel {
 	
 	public static final String APPLICATION_NAME = "applicationName";
 	public static final String LOADED_FRACTAL_FILE_PATH = "loadedFractalFile";
+	public static final String SELECTED_COLORING_INDEX = "selectedColoringIndex";
+	public static final String SELECTED_TRANSFORM_INDEX = "selectedTransformIndex";
 	
 	public ApplicationState() {
 		super();
-		setParam(APPLICATION_NAME, "FFlames");
+		initParam(APPLICATION_NAME, "FFlames");
+		initParam(SELECTED_COLORING_INDEX, IndexValue.InvalidValue);
+		initParam(SELECTED_TRANSFORM_INDEX, IndexValue.InvalidValue);
 		
 		_algorithmConfiguration = new AlgorithmConfigurationModel();
 		_transformsModel = new TransformTableModel();
@@ -57,8 +61,26 @@ public class ApplicationState extends AbstractModel implements IVisitableModel {
 		return _renderedImage;
 	}
 	
+	public IndexValue getSelectedColoringIndex() {
+		return (IndexValue) getParam(SELECTED_COLORING_INDEX);
+	}
+	
+	public void setSelectedColoringIndex(IndexValue value) {
+		setParam(SELECTED_COLORING_INDEX, value);
+	}
+	
+	public IndexValue getSelectedTransformIndex() {
+		return (IndexValue) getParam(SELECTED_TRANSFORM_INDEX);
+	}
+	
+	public void setSelectedTransformIndex(IndexValue value) {
+		setParam(SELECTED_TRANSFORM_INDEX, value);
+	}
+	
 	public void reset() {
 		setParam(LOADED_FRACTAL_FILE_PATH, null);
+		setParam(SELECTED_COLORING_INDEX, IndexValue.InvalidValue);
+		setParam(SELECTED_TRANSFORM_INDEX, IndexValue.InvalidValue);
 		
 		_algorithmConfiguration.reset();
 		_transformsModel.reset();
