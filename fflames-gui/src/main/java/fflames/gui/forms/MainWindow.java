@@ -1,9 +1,8 @@
 package fflames.gui.forms;
 
-import fflames.base.FractalGenerator;
-import fflames.base.IColoring;
 import fflames.base.IVariation;
 import fflames.base.coloring.ColoringFactory;
+import fflames.gui.action.Draw;
 import fflames.gui.model.AffineTransformModel;
 import fflames.gui.model.AlgorithmConfigurationModel;
 import fflames.gui.model.ApplicationState;
@@ -15,22 +14,15 @@ import fflames.gui.model.TransformTableModel;
 import fflames.gui.model.VariationsTableModel;
 import fflames.gui.ui.BasicMainWindowUI;
 import fflames.gui.ui.MainWindowUI;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.JComponent;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -53,7 +45,6 @@ public class MainWindow extends JComponent {
 	private final RenderedImageModel _renderedImageModel;
 	private final VariationsTableModel _variationsModel;
 	private final ColorsModel _colorsModel;
-	private final ExecutorService _threadPool;
 	private final ActionMap _actions;
 	
 	public enum ActionId {
@@ -73,9 +64,7 @@ public class MainWindow extends JComponent {
 		_algorithmConfigurationModel = _state.getAlgorithmConfigurationModel();
 		_renderedImageModel = _state.getRenderedImageModel();
 		_colorsModel = _state.getColorsModel();
-		
-		_threadPool = threadPool;
-		
+	
 		_affineTransformModel = new AffineTransformModel();
 		
 		_progressModel = new ProgressModel();
@@ -86,7 +75,9 @@ public class MainWindow extends JComponent {
 		_actions.setParent(actions);
 		_actions.put(ActionId.AddTransform, new AddTransformAction());
 		_actions.put(ActionId.RemoveTransform, new RemoveTransformAction());
-		_actions.put(ActionId.DrawFractal, new DrawAction());
+		
+		
+		_actions.put(ActionId.DrawFractal, new Draw(_state, threadPool, _progressModel));
 		
 		updateUI();
 	}
@@ -162,88 +153,6 @@ public class MainWindow extends JComponent {
 	
 	public Action getAction(Object actionId) {
 		return _actions.get(actionId);
-	}
-	
-	private class DrawingWorker extends SwingWorker<BufferedImage, Integer> {
-
-		@Override
-		protected BufferedImage doInBackground() {	
-			ColoringFactory colorsFactory = new ColoringFactory();
-			
-			ArrayList<Color> selectedColors = new ArrayList<>();
-			for(int i = 0; i < _colorsModel.getSize(); i++) {
-				float[] components = _colorsModel.getElementAt(i);
-				selectedColors.add(new Color(
-						components[0],
-						components[1],
-						components[2]
-				));
-			}
-			
-			IndexValue v = _state.getSelectedColoringIndex();
-			int coloringId = 0;
-			if(v != IndexValue.InvalidValue) {
-				coloringId = v.toInt();
-			}
-			IColoring coloringMethod = colorsFactory.getColoring(
-					coloringId, selectedColors);
-			
-			int[] size = { 
-				_algorithmConfigurationModel.getImageWidth(),
-				_algorithmConfigurationModel.getImageHeight()
-			};
-			
-			FractalGenerator fractalGenerator = new FractalGenerator(
-					_transformsModel.getTransforms(), 
-					coloringMethod,
-					size,
-					_algorithmConfigurationModel.getIterationsNumber(),
-					_algorithmConfigurationModel.getSuperSampling(),
-					_algorithmConfigurationModel.getRotationsNumber(),
-					_threadPool);
-			
-			long startTime = System.nanoTime();
-
-			int p = 0;
-			BufferedImage out = new BufferedImage(1, 1, 1);
-			
-			_progressModel.setStartProgressValue(1);
-			_progressModel.setEndProgressValue(_algorithmConfigurationModel.getIterationsNumber());
-			_progressModel.reset();
-			
-			try {
-				Future<BufferedImage> f = fractalGenerator.execute();
-				while(!f.isDone()) {
-					try {
-						f.get(10, TimeUnit.MILLISECONDS);
-					} catch(TimeoutException e) {
-						_progressModel.setProgress(fractalGenerator.getProgress());
-					}
-				}
-				_progressModel.setProgress(100);
-				out = f.get();
-			} catch(InterruptedException | ExecutionException e) {
-
-			}
-			
-			long endTime = System.nanoTime();
-			long duration = (endTime - startTime)/1000000; // miliseconds
-			System.out.println("Generator execution time: " + duration );
-						
-			return out;
-		}
-		
-		@Override
-		protected void done() { 
-			// this method is executed on the Dispatch Event thread
-			try {
-				BufferedImage result = get();
-			
-				_renderedImageModel.setImage(result);
-			} catch(InterruptedException | ExecutionException e) {
-				
-			}
-		}	
 	}
 	
 	private class ColoringMethodSelectionListener implements ListSelectionListener {
@@ -352,22 +261,6 @@ public class MainWindow extends JComponent {
 			
 			if(v != IndexValue.InvalidValue) {
 				_transformsModel.remove(v.toInt());
-			}
-		}
-	}
-	
-	private class DrawAction extends AbstractAction {
-		
-		public DrawAction() {
-			putValue(NAME, "Draw");
-			putValue(SHORT_DESCRIPTION, "Draw fractal flame");
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if(_transformsModel.getRowCount() > 0) {
-				MainWindow.DrawingWorker task = new MainWindow.DrawingWorker();
-				task.execute();
 			}
 		}
 	}

@@ -2,11 +2,9 @@ package fflames.gui.model;
 
 import java.io.Serializable;
 
-public class ProgressModel extends AbstractModel implements Serializable {
-	public static final String PROGRESS = "progress";
-	public static final String START_PROGRESS_VALUE = "start_progress_value";
-	public static final String END_PROGRESS_VALUE = "end_progress_value";
-
+public class ProgressModel extends AbstractModel 
+	implements Serializable, IProgressModel {
+	
 	public ProgressModel() {
 		super();
 		initParam(PROGRESS, (Integer) 0);
@@ -14,26 +12,32 @@ public class ProgressModel extends AbstractModel implements Serializable {
 		initParam(END_PROGRESS_VALUE, (Integer) 100);
 	}
 	
+	@Override
 	public int getStartProgressValue() {
 		return (Integer)getParam(START_PROGRESS_VALUE);
 	}
 	
+	@Override
 	public void setStartProgressValue(int value) {
 		setParam(START_PROGRESS_VALUE, value);
 	}
 	
+	@Override
 	public int getEndProgressValue() {
 		return (Integer)getParam(END_PROGRESS_VALUE);
 	}
 	
+	@Override
 	public void setEndProgressValue(int value) {
 		setParam(END_PROGRESS_VALUE, value);
 	} 
 	
+	@Override
 	public int getProgress() {
 		return (Integer)getParam(PROGRESS);
 	}
 	
+	@Override
 	public void setProgress(int value) {
 		if(value < getStartProgressValue()) {
 			setParam(PROGRESS, getStartProgressValue());
@@ -44,6 +48,7 @@ public class ProgressModel extends AbstractModel implements Serializable {
 		}
 	}
 	
+	@Override
 	public void reset() {
 		setProgress(getStartProgressValue());
 	}
