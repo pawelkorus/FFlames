@@ -5,7 +5,7 @@
  */
 package fflames.gui.action;
 
-import fflames.gui.model.RenderedImageModel;
+import fflames.gui.model.IRenderedImageModel;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.image.RenderedImage;
@@ -22,10 +22,10 @@ import javax.swing.JOptionPane;
  * @author Pawel Korus
  */
 public class SaveFractalImage extends AbstractAction {
-	private final RenderedImageModel _renderedImageModel;
+	private final IRenderedImageModel _renderedImageModel;
 	private final Component _dialogsRoot;
 	
-	public SaveFractalImage(RenderedImageModel renderedImageModel, 
+	public SaveFractalImage(IRenderedImageModel renderedImageModel, 
 			Component dialogsRoot) {
 		putValue(NAME, "Save Image");
 		putValue(SHORT_DESCRIPTION, "Save fractal to file");
@@ -50,8 +50,6 @@ public class SaveFractalImage extends AbstractAction {
 				JOptionPane.showMessageDialog(_dialogsRoot, "Error when saving image file", "Export error", JOptionPane.ERROR_MESSAGE);
 				exception.printStackTrace();
 			}
-		} else {
-			return;
 		}
 	}
 	
