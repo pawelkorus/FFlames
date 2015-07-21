@@ -13,6 +13,7 @@ public class Arch extends AbstractVariation {
 		this._coefficient = _coefficient;
 	}
 
+	@Override
 	public Point2D calculate(Point2D point) {
 		double ang = Math.random() * Math.PI * _coefficient;
 		point.setLocation(_coefficient * Math.sin(ang),

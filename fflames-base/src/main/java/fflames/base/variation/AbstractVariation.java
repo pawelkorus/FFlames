@@ -52,12 +52,6 @@ public abstract class AbstractVariation implements IVariation {
 		return true;
 	}
 	
-	/**
-	 * Returns the name of variation. Default implementation 
-	 * returns name of the class.
-	 * 
-	 * @return name of variation as string
-	 */
 	@Override
 	public String getName() {
 		return getClass().getSimpleName();
@@ -67,19 +61,19 @@ public abstract class AbstractVariation implements IVariation {
 	public String toString() {
 		return getName() + " " + getCoefficient() + " " + getParameters().toString();
 	}
-	
+
 	@Override
 	public void transform(Point2D source, Point2D out) {
-		Point2D result = calculate(source);
-		out.setLocation(result);
+		out.setLocation(source);
+		calculate(out);
 	}
 	
 	/**
 	 * Calculates new coordinates for the given point. It doesn't change given 
 	 * object. It returns new instance of Point2D object.
-	 *
+	 * 
 	 * @param point source point
 	 * @return new Point2D instance containing calculated coordinates
 	 */
-	protected abstract Point2D calculate(Point2D point);
+	public abstract Point2D calculate(Point2D point);
 }
