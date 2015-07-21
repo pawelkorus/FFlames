@@ -7,7 +7,7 @@ import java.util.List;
  * Variation interface. Classes implementing this interface provides
  * are used to transform point coordinates.
  */
-public interface IVariation {
+public interface IVariation extends IPointTransform {
 
 	/**
 	 * Returns coefficient value

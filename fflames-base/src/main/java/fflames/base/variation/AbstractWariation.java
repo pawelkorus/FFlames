@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import fflames.base.IVariation;
+import java.awt.geom.Point2D;
 
 /**
  * Variation abstract class. Provides basic implementation of IVariation 
@@ -65,5 +66,11 @@ public abstract class AbstractWariation implements IVariation {
 	@Override
 	public String toString() {
 		return getName() + " " + getCoefficient() + " " + getParameters().toString();
+	}
+	
+	@Override
+	public void transform(Point2D source, Point2D out) {
+		Point2D result = calculate(source);
+		out.setLocation(result);
 	}
 }

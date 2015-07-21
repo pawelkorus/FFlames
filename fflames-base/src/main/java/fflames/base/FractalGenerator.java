@@ -148,19 +148,26 @@ public class FractalGenerator {
 		int sampleSize = 200000;
 		
 		ArrayList<Point2D.Double> points = new ArrayList<>();
-		Point2D.Double point = new Point2D.Double(randomNumberGenerator.nextDouble(), randomNumberGenerator.nextDouble());
+		Point2D.Double sourcePoint = new Point2D.Double(randomNumberGenerator.nextDouble(), randomNumberGenerator.nextDouble());
+		Point2D.Double outPoint = new Point2D.Double();
 		Double meanx = (double) 0;
 		Double meany = (double) 0;
 		Double stdDevx = (double) 0;
 		Double stdDevy = (double) 0;
 		for(int i = 0; i < sampleSize; i++) {
 			int index = selectFunctionIndex();
-			calculateNextPoint(point, index);
+			calculateNextPoint(
+					_algorithmTransforms.get(index), 
+					sourcePoint, 
+					outPoint);
+			
 			if(i >= 20) {
-				meanx +=  point.getX();
-				meany += point.getY();
-				points.add((Point2D.Double)point.clone());
+				meanx +=  outPoint.getX();
+				meany += outPoint.getY();
+				points.add((Point2D.Double)outPoint.clone());
 			}
+			
+			sourcePoint.setLocation(outPoint);
 		}
 		
 		meanx = meanx/sampleSize;
@@ -168,7 +175,7 @@ public class FractalGenerator {
 		
 		Iterator<Point2D.Double> it = points.iterator();
 		while(it.hasNext()) {
-			point = it.next();
+			Point2D point = it.next();
 			stdDevx += (point.getX() - meanx) * (point.getX() - meanx);
 			stdDevy += (point.getY() - meanx) * (point.getY() - meanx);
 		}
@@ -196,7 +203,8 @@ public class FractalGenerator {
 		int width = raster.getWidth();
 		int height = raster.getHeight();
 
-		Point2D.Double point = new Point2D.Double(randomNumberGenerator.nextDouble(), randomNumberGenerator.nextDouble());
+		Point2D sourcePoint = new Point2D.Double(randomNumberGenerator.nextDouble(), randomNumberGenerator.nextDouble());
+		Point2D outPoint = new Point2D.Double();
 		Point imagePoint = new Point();
 
 		int i = 0;
@@ -204,9 +212,11 @@ public class FractalGenerator {
 
 		while(i <= _numberOfIterations/_jobs) {
 			index = selectFunctionIndex();
-			calculateNextPoint(point, index);			
-			Double valX = (point.getX() - minx)/(maxx - minx) * width;
-			Double valY = (point.getY() - miny)/(maxy - miny) * height;
+			
+			calculateNextPoint(_algorithmTransforms.get(index), sourcePoint, outPoint);			
+			
+			Double valX = (outPoint.getX() - minx)/(maxx - minx) * width;
+			Double valY = (outPoint.getY() - miny)/(maxy - miny) * height;
 			imagePoint.setLocation(valX.intValue(), valY.intValue());
 
 			if(imagePoint.x < width && imagePoint.x >= 0 && imagePoint.y >= 0 && imagePoint.y < height) {
@@ -221,13 +231,17 @@ public class FractalGenerator {
 
 			}
 
+			sourcePoint.setLocation(outPoint);
 			i++;
 			_progress.addAndGet(1);
 		}
 	}
 	
-	private void calculateNextPoint(Point2D.Double point, int index) {
-		_algorithmTransforms.get(index).transform(point);
+	private void calculateNextPoint(
+			IPointTransform transform, 
+			Point2D source,
+			Point2D out) {
+		transform.transform(source, out);
 	}
 	
 	private int selectFunctionIndex() {

@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
-public class Transform {
-
+public class Transform implements IPointTransform {
+	private final AffineTransform _affineTransform;
+	private final ArrayList<IVariation> _variations;
+	private Double _probability;
+	
 	/**
 	 * Creates empty transform with probability 0.0
 	 */
@@ -88,13 +91,15 @@ public class Transform {
 	public void setPropability(Double value) {
 		_probability = value;
 	}
+	
+	@Override
+	public void transform(Point2D source, Point2D out) {
+		Point2D result = transform(source);
+		out.setLocation(result);
+	}
 
 	private Point2D pointSum(Point2D a, Point2D b) {
 		a.setLocation(a.getX() + b.getX(), a.getY() + b.getY());
 		return a;
 	}
-	
-	private final AffineTransform _affineTransform;
-	private final ArrayList<IVariation> _variations;
-	private Double _probability;
 }
