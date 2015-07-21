@@ -1,6 +1,5 @@
 package fflames.base;
 
-import java.awt.geom.Point2D;
 import java.util.List;
 
 /**
@@ -22,15 +21,6 @@ public interface IVariation extends IPointTransform {
 	 * @param _coefficient new coefficient value
 	 */
 	public void setCoefficient(double _coefficient);
-
-	/**
-	 * Calculates new coordinates for the given point. It doesn't change given 
-	 * object. It returns new instance of Point2D object.
-	 *
-	 * @param point source point
-	 * @return new Point2D instance containing calculated coordinates
-	 */
-	public Point2D calculate(Point2D point);
 
 	/**
 	 * Returns number of additional parameters.

@@ -73,4 +73,13 @@ public abstract class AbstractWariation implements IVariation {
 		Point2D result = calculate(source);
 		out.setLocation(result);
 	}
+	
+	/**
+	 * Calculates new coordinates for the given point. It doesn't change given 
+	 * object. It returns new instance of Point2D object.
+	 *
+	 * @param point source point
+	 * @return new Point2D instance containing calculated coordinates
+	 */
+	protected abstract Point2D calculate(Point2D point);
 }

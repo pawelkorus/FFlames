@@ -54,9 +54,13 @@ public class Transform implements IPointTransform {
 	 */
 	public Point2D transform(Point2D point) {
 		_affineTransform.transform(point, point);
+		
+		Point2D sum = new Point2D.Double(0.0, 0.0);
 		Point2D temp = new Point2D.Double(0.0, 0.0);
+		
 		_variations.stream().forEach((_variation) -> {
-			temp.setLocation(pointSum(temp, _variation.calculate(point)));
+			_variation.transform(point, temp);
+			pointSum(sum, temp);
 		});
 		return temp;
 	}
