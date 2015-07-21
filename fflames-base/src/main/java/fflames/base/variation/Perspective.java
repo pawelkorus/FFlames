@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Perspective variation
  */
-public class Perspective extends AbstractWariation {
+public class Perspective extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Perspective

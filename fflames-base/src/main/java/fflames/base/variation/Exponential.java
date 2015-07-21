@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Exponential variation
  */
-public class Exponential extends AbstractWariation {
+public class Exponential extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Exponential

@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Heart variation
  */
-public class Heart extends AbstractWariation {
+public class Heart extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Heart

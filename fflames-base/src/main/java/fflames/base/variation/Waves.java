@@ -10,7 +10,7 @@ import java.awt.geom.Point2D;
  * two additional parameters will not be counted as normal parameters and method
  * getParametersQuantity will return 0.
  */
-public class Waves extends AbstractWariation {
+public class Waves extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Waves

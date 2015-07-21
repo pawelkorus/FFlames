@@ -2,7 +2,7 @@ package fflames.base.variation;
 
 import java.awt.geom.Point2D;
 
-public class Blob extends AbstractWariation {
+public class Blob extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Blob

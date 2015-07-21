@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Rings variation
  */
-public class Rings extends AbstractWariation {
+public class Rings extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Rings

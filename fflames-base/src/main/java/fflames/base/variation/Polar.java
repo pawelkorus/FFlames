@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Polar variation
  */
-public class Polar extends AbstractWariation {
+public class Polar extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Polar

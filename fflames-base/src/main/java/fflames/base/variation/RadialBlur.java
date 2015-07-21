@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * RadialBlur variation
  */
-public class RadialBlur extends AbstractWariation {
+public class RadialBlur extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of RadialBlur

@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Gaussian variation
  */
-public class Gaussian extends AbstractWariation {
+public class Gaussian extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Gaussian

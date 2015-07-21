@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Blade variation
  */
-public class Blade extends AbstractWariation {
+public class Blade extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Blade

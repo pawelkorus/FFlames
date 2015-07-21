@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * JuliaScope variation
  */
-public class JuliaScope extends AbstractWariation {
+public class JuliaScope extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of JuliaScope

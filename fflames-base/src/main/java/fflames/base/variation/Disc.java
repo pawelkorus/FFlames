@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Disc variation
  */
-public class Disc extends AbstractWariation {
+public class Disc extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Disc

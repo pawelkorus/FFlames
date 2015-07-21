@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Swirl variation
  */
-public class Swirl extends AbstractWariation {
+public class Swirl extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Swirl

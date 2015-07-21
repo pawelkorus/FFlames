@@ -9,7 +9,7 @@ import java.awt.geom.Point2D;
 /**
  * Horseshoe variation
  */
-public class Horseshoe extends AbstractWariation {
+public class Horseshoe extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Horseshoe

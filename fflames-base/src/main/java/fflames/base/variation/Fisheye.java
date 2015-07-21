@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Fisheye variation
  */
-public class Fisheye extends AbstractWariation {
+public class Fisheye extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Fisheye

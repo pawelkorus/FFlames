@@ -2,7 +2,7 @@ package fflames.base.variation;
 
 import java.awt.geom.Point2D;
 
-public class Curl extends AbstractWariation {
+public class Curl extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Curl

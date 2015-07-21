@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Sinusoidal variation
  */
-public class Sinusoidal extends AbstractWariation {
+public class Sinusoidal extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Sinusoidal

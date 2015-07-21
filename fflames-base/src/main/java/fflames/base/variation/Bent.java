@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Bent variation
  */
-public class Bent extends AbstractWariation {
+public class Bent extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Bent

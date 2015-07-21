@@ -12,7 +12,7 @@ import java.awt.geom.Point2D;
  * coefficient is set to 0 .
  *
  */
-public abstract class AbstractWariation implements IVariation {
+public abstract class AbstractVariation implements IVariation {
 
 	protected ArrayList<Double> _parameters = new ArrayList<>();
 	protected double _coefficient = 0.0;

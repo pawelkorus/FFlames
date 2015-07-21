@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Julia variation
  */
-public class Julia extends AbstractWariation {
+public class Julia extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Julia

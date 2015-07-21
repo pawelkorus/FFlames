@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * JuliaN variation
  */
-public class JuliaN extends AbstractWariation {
+public class JuliaN extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of JuliaN

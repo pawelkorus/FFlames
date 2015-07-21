@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Spiral variation
  */
-public class Spiral extends AbstractWariation {
+public class Spiral extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Spiral

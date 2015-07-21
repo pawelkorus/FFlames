@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Noise variation
  */
-public class Noise extends AbstractWariation {
+public class Noise extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Noise

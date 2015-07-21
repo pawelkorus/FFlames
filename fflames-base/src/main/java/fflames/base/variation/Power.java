@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Power variation
  */
-public class Power extends AbstractWariation {
+public class Power extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Power

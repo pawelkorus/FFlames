@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Popcorn variation
  */
-public class Popcorn extends AbstractWariation {
+public class Popcorn extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Popcorn

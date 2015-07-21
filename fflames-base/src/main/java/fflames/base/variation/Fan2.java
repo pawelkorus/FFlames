@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Fan2 variation
  */
-public class Fan2 extends AbstractWariation {
+public class Fan2 extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Fan2

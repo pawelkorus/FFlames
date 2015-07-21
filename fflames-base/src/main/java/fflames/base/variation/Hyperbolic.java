@@ -13,7 +13,7 @@ import java.awt.geom.Point2D;
 /**
  * Hyperbolic variation
  */
-public class Hyperbolic extends AbstractWariation {
+public class Hyperbolic extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Hyperbolic

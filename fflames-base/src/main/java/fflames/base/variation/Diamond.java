@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Diamond variation
  */
-public class Diamond extends AbstractWariation {
+public class Diamond extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Diamond

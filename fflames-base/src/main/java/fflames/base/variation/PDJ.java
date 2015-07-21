@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * PDJ variation
  */
-public class PDJ extends AbstractWariation {
+public class PDJ extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of PDJ

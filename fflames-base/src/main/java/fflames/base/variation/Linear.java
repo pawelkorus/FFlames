@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Linear variation
  */
-public class Linear extends AbstractWariation {
+public class Linear extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Linear

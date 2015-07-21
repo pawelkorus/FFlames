@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Null variation
  */
-public class NullVariation extends AbstractWariation {
+public class NullVariation extends AbstractVariation {
 
 	@Override
 	public double getCoefficient() {

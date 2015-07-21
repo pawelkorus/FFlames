@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Ex variation
  */
-public class Ex extends AbstractWariation {
+public class Ex extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Ex

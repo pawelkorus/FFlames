@@ -2,7 +2,7 @@ package fflames.base.variation;
 
 import java.awt.geom.Point2D;
 
-public class Arch extends AbstractWariation {
+public class Arch extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Arch

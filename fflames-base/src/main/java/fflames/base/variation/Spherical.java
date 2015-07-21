@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Spherical variation
  */
-public class Spherical extends AbstractWariation {
+public class Spherical extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Spherical

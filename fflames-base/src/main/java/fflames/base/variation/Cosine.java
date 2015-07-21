@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Cosine variation
  */
-public class Cosine extends AbstractWariation {
+public class Cosine extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Cosine

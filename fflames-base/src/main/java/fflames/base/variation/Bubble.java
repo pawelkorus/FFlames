@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Bubble variation
  */
-public class Bubble extends AbstractWariation {
+public class Bubble extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Bubble

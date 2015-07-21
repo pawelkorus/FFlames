@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Rectangles variation
  */
-public class Rectangles extends AbstractWariation {
+public class Rectangles extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Rectangles

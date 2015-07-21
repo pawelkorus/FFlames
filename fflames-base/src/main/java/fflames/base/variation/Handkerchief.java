@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Handkerchief variation
  */
-public class Handkerchief extends AbstractWariation {
+public class Handkerchief extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Handkerchief

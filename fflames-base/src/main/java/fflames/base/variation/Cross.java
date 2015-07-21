@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Cross variation
  */
-public class Cross extends AbstractWariation {
+public class Cross extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Cross

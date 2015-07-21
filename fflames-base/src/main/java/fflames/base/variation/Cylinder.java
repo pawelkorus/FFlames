@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Cylinder variation
  */
-public class Cylinder extends AbstractWariation {
+public class Cylinder extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Cylinder

@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Secant variation
  */
-public class Secant extends AbstractWariation {
+public class Secant extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Secant

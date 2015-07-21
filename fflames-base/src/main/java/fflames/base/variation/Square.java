@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Square variation
  */
-public class Square extends AbstractWariation {
+public class Square extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Square

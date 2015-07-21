@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Blur variation
  */
-public class Blur extends AbstractWariation {
+public class Blur extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Blur

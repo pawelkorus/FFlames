@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Eyefish variation
  */
-public class Eyefish extends AbstractWariation {
+public class Eyefish extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Eyefish

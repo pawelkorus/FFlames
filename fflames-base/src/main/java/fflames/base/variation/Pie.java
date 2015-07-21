@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * Pie variation
  */
-public class Pie extends AbstractWariation {
+public class Pie extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Pie

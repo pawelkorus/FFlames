@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Tangent variation
  */
-public class Tangent extends AbstractWariation {
+public class Tangent extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Tangent

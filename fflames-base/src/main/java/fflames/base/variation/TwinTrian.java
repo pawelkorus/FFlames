@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * TwinTrian variation
  */
-public class TwinTrian extends AbstractWariation {
+public class TwinTrian extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of TwinTrian

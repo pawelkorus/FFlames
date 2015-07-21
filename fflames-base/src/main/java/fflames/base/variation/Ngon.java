@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * Ngon variation
  */
-public class Ngon extends AbstractWariation {
+public class Ngon extends AbstractVariation {
 
 	/**
 	 * Creates a new instance of Ngon
