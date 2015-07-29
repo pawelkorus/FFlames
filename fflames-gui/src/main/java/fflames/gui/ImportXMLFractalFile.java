@@ -143,7 +143,7 @@ public class ImportXMLFractalFile {
 					param.add(Double.valueOf(value));
 				}
 				if (flag == 5) {
-					variations.add(VariationsFactory.getWariation(value,
+					variations.add(VariationsFactory.getVariation(value,
 							coefficient));
 					if (param.size() > 0) {
 						variations.get(variations.size() - 1).setParameters(param);

@@ -12,7 +12,7 @@ public class Sinusoidal extends AbstractVariation {
 	 *
 	 * @param _coefficient _coefficient value
 	 */
-	public Sinusoidal(double _coefficient) {
+	public Sinusoidal(Double _coefficient) {
 		this._coefficient = new Double(_coefficient);
 	}
 

@@ -8,7 +8,7 @@ public class RotationalSymmetryTransform extends Transform {
 		super();
 
 		getAffineTr().setToRotation(radians);
-		getVariations().add(VariationsFactory.getWariation("Linear", 1.0));
+		getVariations().add(VariationsFactory.getVariation("Linear", 1.0));
 
 		setPropability(pr);
 	}
