@@ -69,15 +69,20 @@ public class DrawingWorker extends SwingWorker<BufferedImage, Integer> {
 		ColoringFactory colorsFactory = new ColoringFactory();
 		IColoring coloring = colorsFactory.getColoring(_coloringId, _colors);
 		
-		FractalGenerator fractalGenerator = new FractalGenerator(
-				_transforms, 
-				coloring,
-				size,
-				_iterationsNumber,
-				_superSampling,
-				_rotationsNumber,
+		FractalGenerator.Builder builder = new FractalGenerator.Builder(
 				_threadPool);
-
+		builder.numberOfIterations(_iterationsNumber);
+		builder.numberOfRotations(_rotationsNumber);
+		builder.samples(_superSampling);
+		builder.width(_width);
+		builder.height(_width);
+		builder.coloringMethod(coloring);
+		for(Transform t : _transforms) {
+			builder.addTransform(t);
+		}
+		
+		FractalGenerator fractalGenerator = builder.build();
+		
 		long startTime = System.nanoTime();
 
 		int p = 0;

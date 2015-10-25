@@ -1,5 +1,6 @@
 package fflames.base;
 
+import fflames.base.coloring.BlackWhite;
 import fflames.base.supersampling.NoSuperSampling;
 import fflames.base.supersampling.SuperSampling;
 import java.awt.Point;
@@ -8,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Random;
@@ -19,8 +21,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class FractalGenerator { 
 	
-	public FractalGenerator(
-			ArrayList<Transform> transforms, 
+	private FractalGenerator(
+			Collection<Transform> transforms, 
 			IColoring coloringMethod, 
 			int[] size,
 			int numberOfIterations,
@@ -32,7 +34,9 @@ public class FractalGenerator {
 		
 		_future = null;
 		
-		_transforms = transforms;
+		_transforms = new ArrayList<>();
+		_transforms.addAll(transforms);
+		
 		_coloringMethod = coloringMethod;
 		
 		_numberOfIterations = numberOfIterations;
@@ -268,4 +272,58 @@ public class FractalGenerator {
 	Object _lock;
 	ArrayList<Double> _bounds;
 	Future<BufferedImage> _future;
+	
+	public static class Builder {
+		private final Collection<Transform> transforms = new ArrayList<>();
+		private final ExecutorService executorService;
+		private int numberOfIterations = 1000000;
+		private int numberOfRotations = 0;
+		private int width = 800;
+		private int height = 600;
+		private int samples = 1;
+		private IColoring coloringMethod = new BlackWhite();
+		
+		public Builder(ExecutorService executorService) {
+			this.executorService = executorService;
+		}
+		
+		public Builder width(int v) { 
+			width = v; return this;
+		}
+		
+		public Builder height(int v) { 
+			height = v; return this;
+		}
+		
+		public Builder numberOfIterations(int v) {
+			numberOfIterations = v; return this;
+		}
+		
+		public Builder numberOfRotations(int v) {
+			numberOfRotations = v; return this;
+		}
+		
+		public Builder samples(int s) {
+			samples = s; return this;
+		}
+		
+		public Builder coloringMethod(IColoring coloring) { 
+			coloringMethod = coloring; return this;
+		}
+		
+		public Builder addTransform(Transform transform) {
+			transforms.add(transform); return this;
+		}
+		
+		public FractalGenerator build() {
+			int[] size = { 
+				width,
+				height
+			};
+			
+			return new FractalGenerator(transforms, coloringMethod, size, 
+					numberOfIterations, samples, numberOfRotations, 
+					executorService);
+		}
+	}
 }
