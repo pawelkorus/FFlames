@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -22,7 +23,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class FractalGenerator { 
 	
 	private FractalGenerator(
-			Collection<Transform> transforms, 
 			IColoring coloringMethod, 
 			int[] size,
 			int numberOfIterations,
@@ -35,7 +35,6 @@ public class FractalGenerator {
 		_future = null;
 		
 		_transforms = new ArrayList<>();
-		_transforms.addAll(transforms);
 		
 		_coloringMethod = coloringMethod;
 		
@@ -130,13 +129,22 @@ public class FractalGenerator {
 		if(rotationsNumber > 0) {
 			Double transformPropability = 1.0/(rotationsNumber + 1);
 			
-			_transforms.stream().forEach((transform) -> {
-			    _algorithmTransforms.add(new TransformProxy(transform, transform.getPropability()*transformPropability));
-			});
+			for(TransformPropability tp : _transforms) {
+				
+				TransformPropability newTp = new TransformPropability();
+				newTp.propability = tp.propability * transformPropability;
+			    newTp.transform = new TransformProxy(
+						(Transform) tp.transform, tp.propability);
+				
+				_algorithmTransforms.add(newTp);	
+			}
 			
 			Double rotationAngle = 2*Math.PI/(rotationsNumber + 1);
 			for(int i = 1; i <= rotationsNumber; i++) {
-				_algorithmTransforms.add(new RotationalSymmetryTransform(i * rotationAngle, transformPropability));
+				TransformPropability tp = new TransformPropability();
+				tp.propability = transformPropability;
+				tp.transform = new RotationalSymmetryTransform(i * rotationAngle);
+				_algorithmTransforms.add(tp);
 			}
 		} else {
 			_algorithmTransforms.addAll(_transforms);
@@ -161,7 +169,7 @@ public class FractalGenerator {
 		for(int i = 0; i < sampleSize; i++) {
 			int index = selectFunctionIndex();
 			calculateNextPoint(
-					_algorithmTransforms.get(index), 
+					_algorithmTransforms.get(index).transform, 
 					sourcePoint, 
 					outPoint);
 			
@@ -217,7 +225,7 @@ public class FractalGenerator {
 		while(i <= _numberOfIterations/_jobs) {
 			index = selectFunctionIndex();
 			
-			calculateNextPoint(_algorithmTransforms.get(index), sourcePoint, outPoint);			
+			calculateNextPoint(_algorithmTransforms.get(index).transform, sourcePoint, outPoint);			
 			
 			Double valX = (outPoint.getX() - minx)/(maxx - minx) * width;
 			Double valY = (outPoint.getY() - miny)/(maxy - miny) * height;
@@ -251,15 +259,18 @@ public class FractalGenerator {
 	private int selectFunctionIndex() {
 		double random = ThreadLocalRandom.current().nextDouble();
 		double currentPr = 0.0;
-		for(int i = 0; i < _algorithmTransforms.size() - 1; i++) {
-			currentPr += _algorithmTransforms.get(i).getPropability();
-			if(random <= currentPr) return i;
+		for(int index = 0; index < _algorithmTransforms.size(); index++) {
+			TransformPropability tp = _algorithmTransforms.get(index);
+			currentPr += tp.propability;
+			if(random <= currentPr) return index;
 		}
-		return _algorithmTransforms.size() - 1;
+		
+		assert false : "It looks like all transform propabilities do not sum to 1";
+		return -1;
 	}
 	
-	ArrayList<Transform> _transforms;
-	ArrayList<Transform> _algorithmTransforms;
+	List<TransformPropability> _transforms;
+	List<TransformPropability> _algorithmTransforms;
 	IColoring _coloringMethod;
 	BufferedImage _output;
 	int _numberOfIterations, _numberOfRotations, _width, _height;
@@ -273,8 +284,12 @@ public class FractalGenerator {
 	ArrayList<Double> _bounds;
 	Future<BufferedImage> _future;
 	
+	private void addTransform(TransformPropability t) {
+		_transforms.add(t);
+	}
+	
 	public static class Builder {
-		private final Collection<Transform> transforms = new ArrayList<>();
+		private final Collection<TransformPropability> transforms = new ArrayList<>();
 		private final ExecutorService executorService;
 		private int numberOfIterations = 1000000;
 		private int numberOfRotations = 0;
@@ -311,8 +326,14 @@ public class FractalGenerator {
 			coloringMethod = coloring; return this;
 		}
 		
-		public Builder addTransform(Transform transform) {
-			transforms.add(transform); return this;
+		public Builder addTransform(double propability, Transform transform) {
+			TransformPropability t = new TransformPropability();
+			t.propability = propability;
+			t.transform = transform;
+			
+			transforms.add(t);
+			
+			return this;
 		}
 		
 		public FractalGenerator build() {
@@ -321,9 +342,20 @@ public class FractalGenerator {
 				height
 			};
 			
-			return new FractalGenerator(transforms, coloringMethod, size, 
+			FractalGenerator fg = new FractalGenerator(coloringMethod, size, 
 					numberOfIterations, samples, numberOfRotations, 
 					executorService);
+			
+			for(TransformPropability t : transforms) {
+				fg.addTransform(t);
+			}
+			
+			return fg;
 		}
+	}
+	
+	private static class TransformPropability {
+		double propability;
+		IPointTransform transform;
 	}
 }

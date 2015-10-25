@@ -7,11 +7,9 @@ import java.util.ArrayList;
 
 public class TransformProxy extends Transform {
 	private final Transform _sourceTransform;
-	private Double _propability;
 	
 	public TransformProxy(Transform sourceTransform, Double pr) {
 		_sourceTransform = sourceTransform;
-		_propability = pr;
 	}
 	
 	@Override
@@ -32,15 +30,5 @@ public class TransformProxy extends Transform {
 	@Override
 	public ArrayList<IVariation> getVariations() {
 		return _sourceTransform.getVariations();
-	}
-
-	@Override
-	public Double getPropability() {
-		return _propability;
-	}
-
-	@Override
-	public void setPropability(Double value) {
-		_propability = value;
 	}
 }

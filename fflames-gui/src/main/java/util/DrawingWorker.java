@@ -28,24 +28,16 @@ import javax.swing.SwingWorker;
  * @author Pawel Korus
  */
 public class DrawingWorker extends SwingWorker<BufferedImage, Integer> {
-	private ArrayList<Transform> _transforms;
-	private ArrayList<Color> _colors;
-	private int _coloringId;
-	private int _width;
-	private int _height;
-	private int _iterationsNumber;
-	private int _superSampling;
-	private int _rotationsNumber;
 	private IProgressModel _progress;
 	private IRenderedImageModel _renderedImageModel;
-	private ExecutorService _threadPool;
+	private final FractalGenerator.Builder _generatorBuilder;
+	private int _iterationsNumber = 0;
 	
 	public DrawingWorker(ApplicationState _state, ExecutorService threadPool) {
-		_transforms = new ArrayList<>();
+		_generatorBuilder = new FractalGenerator.Builder(threadPool);
+		
 		_progress = new NullProgress();
 		_renderedImageModel = new NullRenderedImageModel();
-		
-		_threadPool = threadPool;
 		
 		ModelVisitor visitor = new ModelVisitor();
 		_state.accept(visitor);
@@ -60,32 +52,11 @@ public class DrawingWorker extends SwingWorker<BufferedImage, Integer> {
 	}
 	
 	@Override
-	protected BufferedImage doInBackground() {	
-		int[] size = { 
-			_width,
-			_height
-		};
-
-		ColoringFactory colorsFactory = new ColoringFactory();
-		IColoring coloring = colorsFactory.getColoring(_coloringId, _colors);
-		
-		FractalGenerator.Builder builder = new FractalGenerator.Builder(
-				_threadPool);
-		builder.numberOfIterations(_iterationsNumber);
-		builder.numberOfRotations(_rotationsNumber);
-		builder.samples(_superSampling);
-		builder.width(_width);
-		builder.height(_width);
-		builder.coloringMethod(coloring);
-		for(Transform t : _transforms) {
-			builder.addTransform(t);
-		}
-		
-		FractalGenerator fractalGenerator = builder.build();
+	protected BufferedImage doInBackground() {		
+		FractalGenerator fractalGenerator = _generatorBuilder.build();
 		
 		long startTime = System.nanoTime();
 
-		int p = 0;
 		BufferedImage out = new BufferedImage(1, 1, 1);
 
 		_progress.setStartProgressValue(1);
@@ -127,21 +98,32 @@ public class DrawingWorker extends SwingWorker<BufferedImage, Integer> {
 	}
 	
 	private class ModelVisitor implements IModelVisitor {
+		private final ArrayList<Color> _colors = new ArrayList<>();
+		
 		private ModelVisitor() {
 		}
 		
 		@Override
 		public void handle(AlgorithmConfigurationModel model) {
-			_width = model.getImageWidth();
-			_height = model.getImageHeight();
+			_generatorBuilder
+			.width(model.getImageWidth())
+			.height(model.getImageHeight())
+			.numberOfIterations(model.getIterationsNumber())
+			.numberOfRotations(model.getRotationsNumber())
+			.samples(model.getSuperSampling());
+			
 			_iterationsNumber = model.getIterationsNumber();
-			_rotationsNumber = model.getRotationsNumber();
-			_superSampling = model.getSuperSampling();
 		}
 
 		@Override
 		public void handle(TransformTableModel model) {
-			_transforms.addAll(model.getTransforms());
+			for(int i = 0; i < model.getRowCount(); i++) {
+				Transform t = new Transform(model.getAffineTransformAt(i),
+					model.getVariationsAt(i));
+				
+				_generatorBuilder
+				.addTransform(model.getPropabilityAt(i), t);
+			}
 		}
 
 		@Override
@@ -165,9 +147,14 @@ public class DrawingWorker extends SwingWorker<BufferedImage, Integer> {
 		public void handle(ApplicationState model) {
 			IndexValue selectedColoringId = model.getSelectedColoringIndex();
 			
-			_coloringId = 0;
+			int _coloringId = 0;
 			if(selectedColoringId != IndexValue.InvalidValue) {
 				_coloringId = selectedColoringId.toInt();
+				
+				ColoringFactory colorsFactory = new ColoringFactory();
+				IColoring coloring = colorsFactory.getColoring(_coloringId, _colors);
+				
+				_generatorBuilder.coloringMethod(coloring);
 			}
 		}
 	}

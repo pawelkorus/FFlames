@@ -6,13 +6,13 @@ import fflames.gui.IVisitableModel;
 import fflames.gui.IModelVisitor;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 public class TransformTableModel extends AbstractTableModel 
 	implements IVisitableModel {
 	
 	public TransformTableModel() {
-		 _transforms = new ArrayList<>();
 	}
 	
 	@Override
@@ -40,19 +40,10 @@ public class TransformTableModel extends AbstractTableModel
 		}
 	}
 
-	public void setTransforms(ArrayList<Transform> transforms) {
-		_transforms = transforms;
-		fireTableDataChanged();
-	}
-
-	public ArrayList<Transform> getTransforms() {
-		return _transforms;
-	}
-
 	public ArrayList<IVariation> getVariationsAt(int index) {
 		try {
-			Transform transform = _transforms.get(index);
-			return transform.getVariations();
+			TransformsEntry entry = _transforms.get(index);
+			return entry.transform.getVariations();
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
 			return null;
@@ -61,8 +52,8 @@ public class TransformTableModel extends AbstractTableModel
 
 	public AffineTransform getAffineTransformAt(int index) {
 		try {
-			Transform transform = _transforms.get(index);
-			return transform.getAffineTr();
+			TransformsEntry entry = _transforms.get(index);
+			return entry.transform.getAffineTr();
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
 			return null;
@@ -71,22 +62,22 @@ public class TransformTableModel extends AbstractTableModel
 
 	public Double getPropabilityAt(int index) {
 		try {
-			Transform transform = _transforms.get(index);
-			return transform.getPropability();
+			TransformsEntry entry = _transforms.get(index);
+			return entry.propability;
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
-	public void add(Transform transform) {
-		_transforms.add(transform);
+	public void add(double propability, Transform transform) {
+		_transforms.add(TransformsEntry.create(propability, transform));
 		fireTableRowsInserted(getRowCount() - 1, getRowCount());
 	}
 
-	public void addNew(AffineTransform _affineTr, ArrayList<IVariation> _variations, Double pr) {
-		Transform newTransform = new Transform(_affineTr, _variations, pr);
-		_transforms.add(newTransform);
+	public void addNew(AffineTransform _affineTr, ArrayList<IVariation> _variations, double pr) {
+		Transform newTransform = new Transform(_affineTr, _variations);
+		_transforms.add(TransformsEntry.create(pr, newTransform));
 	}
 
 	public void remove(int row) {
@@ -107,12 +98,24 @@ public class TransformTableModel extends AbstractTableModel
 		}
 	}
 
-	private ArrayList<Transform> _transforms;
+	private final List<TransformsEntry> _transforms = new ArrayList<>();
 	private final String[] _columnNames = {"Propability", "Affine transform", "Variations"};
 	private static final long serialVersionUID = -4510264602645148388L;
 
 	@Override
 	public void accept(IModelVisitor visitor) {
 		visitor.handle(this);
+	}
+	
+	private static class TransformsEntry {
+		double propability;
+		Transform transform;
+		
+		public static TransformsEntry create(double propability, Transform transform) {
+			TransformsEntry entry = new TransformsEntry();
+			entry.propability = propability;
+			entry.transform = transform;
+			return entry;
+		}
 	}
 }

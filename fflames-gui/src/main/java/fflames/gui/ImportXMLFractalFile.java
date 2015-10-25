@@ -23,34 +23,36 @@ public class ImportXMLFractalFile {
 		super();
 	}
 
-	public void load(List<Transform> transforms, String path) throws IOException, ImportException {
+	public void load(List<Transform> transforms, List<Double> propabilities, String path) throws IOException, ImportException {
 		File file = new File(path);
-		load(transforms, file);
+		load(transforms, propabilities, file);
 	}
 
-	public void load(List<Transform> transforms, File file) throws IOException, ImportException {
+	public void load(List<Transform> transforms, List<Double> propabilities, File file) throws IOException, ImportException {
 		FileReader r = new FileReader(file);
-		load(transforms, r);
+		load(transforms, propabilities, r);
 	}
 
-	public void load(List<Transform> transforms, InputStreamReader input) throws IOException, ImportException {
-		List<Transform> temp = new ArrayList<>();
+	public void load(List<Transform> transforms, List<Double> propabilities, InputStreamReader input) throws IOException, ImportException {
+		List<Transform> tempTransforms = new ArrayList<>();
+		List<Double> tempPropabilities = new ArrayList<>();
 		
 		try {
 			XMLReader xr = XMLReaderFactory.createXMLReader();
 
-			XMLHandler handler = new XMLHandler(temp);
+			XMLHandler handler = new XMLHandler(tempTransforms, tempPropabilities);
 			xr.setContentHandler(handler);
 			xr.setErrorHandler(handler);
 
 			xr.parse(new InputSource(input));
-			
-			temp.stream().forEach((t) -> {
-				transforms.add(t);
-			});
 		} catch (SAXException e) {
 			throw new ImportException(e);
 		}
+		
+		assert tempTransforms.size() == tempPropabilities.size();
+		
+		transforms.addAll(tempTransforms);
+		propabilities.addAll(tempPropabilities);
 	}
 
 	public static class ImportException extends Exception {
@@ -87,10 +89,12 @@ public class ImportXMLFractalFile {
 		private int flag = 0;
 		private int i = 0;
 		List<Transform> _transforms;
+		List<Double> _propabilities;
 		
-		XMLHandler(List<Transform> transforms) {
+		XMLHandler(List<Transform> transforms, List<Double> propabilities) {
 			super();
 			_transforms = transforms;
+			_propabilities = propabilities;
 		}
 
 		@Override
@@ -113,8 +117,11 @@ public class ImportXMLFractalFile {
 		@Override
 		public void endElement(String uri, String localName, String qName) {
 			if (localName.compareTo("Function") == 0) {
+				
 				_transforms.add(new Transform(new AffineTransform(
-						affTrCoefs), variations, propability));
+						affTrCoefs), variations));
+				_propabilities.add(propability);
+				
 				variations = new ArrayList<>();
 				param.clear();
 			} else if (localName.compareTo("Wsp") == 0) {

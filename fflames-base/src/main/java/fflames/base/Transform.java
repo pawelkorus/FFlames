@@ -7,7 +7,6 @@ import java.awt.geom.Point2D;
 public class Transform implements IPointTransform {
 	private final AffineTransform _affineTransform;
 	private final ArrayList<IVariation> _variations;
-	private Double _probability;
 	
 	/**
 	 * Creates empty transform with probability 0.0
@@ -15,7 +14,6 @@ public class Transform implements IPointTransform {
 	public Transform() {
 		_affineTransform = new AffineTransform();
 		_variations = new ArrayList<>();
-		_probability = (double) 0.0;
 	}
 
 	/**
@@ -23,9 +21,8 @@ public class Transform implements IPointTransform {
 	 *
 	 * @param _affineTr affine transform
 	 * @param _wariations list of assigned variations
-	 * @param pr probability that this transform will be chosen
 	 */
-	public Transform(AffineTransform _affineTr, ArrayList<IVariation> _wariations, Double pr) {
+	public Transform(AffineTransform _affineTr, ArrayList<IVariation> _wariations) {
 		_affineTransform = new AffineTransform(_affineTr);
 		_variations = new ArrayList<>(_wariations);
 
@@ -44,8 +41,6 @@ public class Transform implements IPointTransform {
 			temp.addAll(_variation.getParameters());
 			_variation.setParameters(temp);
 		});
-		
-		_probability = (double) pr;
 	}
 
 	/**
@@ -86,14 +81,6 @@ public class Transform implements IPointTransform {
 	 */
 	public ArrayList<IVariation> getVariations() {
 		return _variations;
-	}
-
-	public Double getPropability() {
-		return _probability;
-	}
-
-	public void setPropability(Double value) {
-		_probability = value;
 	}
 	
 	@Override

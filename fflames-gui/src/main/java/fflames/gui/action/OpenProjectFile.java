@@ -7,6 +7,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -50,15 +51,17 @@ public class OpenProjectFile extends AbstractAction {
 
 		_appState.reset();
 		
-		ArrayList<Transform> transforms = new ArrayList<>();
+		List<Transform> transforms = new ArrayList<>();
+		List<Double> propabilities = new ArrayList<>();
 		ImportXMLFractalFile importer = new ImportXMLFractalFile();
 		
 		try {
-			importer.load(transforms, filePath);
+			importer.load(transforms, propabilities, filePath);
 			
-			transforms.stream().forEach((t) -> {
-				_appState.getTransformsModel().add(t);
-			});
+			for(int i = 0; i < transforms.size(); i++) {
+				_appState.getTransformsModel().add(
+						propabilities.get(i), transforms.get(i));
+			}
 			
 			_appState.setParam(ApplicationState.LOADED_FRACTAL_FILE_PATH, filePath);
 		
